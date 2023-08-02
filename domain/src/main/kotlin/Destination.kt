@@ -1,4 +1,10 @@
 sealed interface Destination {
-    class DM(val user: User) : Destination
-    class MailingList(val users: List<User>) : Destination
+    data class DM(
+        val id: DestinationId,
+        val first: Email,
+        val second: Email,
+    ) : Destination
 }
+
+@JvmInline
+value class DestinationId(val value: String)

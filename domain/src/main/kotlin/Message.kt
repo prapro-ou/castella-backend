@@ -1,12 +1,21 @@
 import kotlinx.datetime.Instant
 
-data class Message(
+open class Message(
     val id: MessageId,
     val sender: User,
     val subject: Subject,
     val body: Body,
     val createdAt: CreatedAt,
 )
+
+class Reply(
+    id: MessageId,
+    parent: MessageId,
+    sender: User,
+    subject: Subject,
+    body: Body,
+    createdAt: CreatedAt,
+) : Message(id, sender, subject, body, createdAt)
 
 @JvmInline
 value class MessageId(val value: String)
