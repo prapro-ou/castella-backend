@@ -29,7 +29,7 @@ fun Route.getDestinationIndex(path: String) {
                 },
                 failure = { ExceptionSerializable.from(it) },
             ).consume(
-                success = { destinations -> call.respond(destinations) },
+                success = { response -> call.respond(response) },
                 failure = { (exception, code) -> call.respond(code, exception.message) },
             )
     }
