@@ -8,6 +8,7 @@ import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
 
 class KtlintPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -22,16 +23,16 @@ class KtlintPlugin : Plugin<Project> {
                 }
             }
 
-            tasks.creating(JavaExec::class) {
-                group = "verification"
+            tasks.register<JavaExec>("ktlintCheck") {
+                group = "ktlint"
                 description = "Check Kotlin code style."
                 classpath = ktlint
                 mainClass.set("com.pinterest.ktlint.Main")
                 args = listOf("src/**/*.kt", "**.kts", "!**/build/**")
             }
 
-            tasks.creating(JavaExec::class) {
-                group = "formatting"
+            tasks.register<JavaExec>("ktlintFormat") {
+                group = "ktlint"
                 description = "Fix Kotlin code style deviations."
                 classpath = ktlint
                 mainClass.set("com.pinterest.ktlint.Main")
