@@ -1,6 +1,7 @@
 plugins {
     id(Plugins.kotlin)
-    id("io.ktor.plugin") version "2.3.2"
+    alias(libs.plugins.ktor)
+    alias(libs.plugins.serialization)
 }
 
 dependencies {

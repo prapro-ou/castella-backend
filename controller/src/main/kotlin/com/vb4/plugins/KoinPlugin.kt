@@ -4,8 +4,8 @@ import GetDestinationsUseCase
 import GetMessagesByDestinationUseCase
 import GetMessagesWithRepliesUseCase
 import destination.DestinationRepository
-import io.ktor.server.application.*
 import io.ktor.server.application.Application
+import io.ktor.server.application.install
 import message.MessageRepository
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -27,5 +27,5 @@ fun Application.configureKoinPlugin() {
         single<UserRepository> { FakeUserRepositoryImpl() }
     }
 
-    install(Koin) { module }
+    install(Koin) { modules(module) }
 }
