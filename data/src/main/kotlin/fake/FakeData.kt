@@ -15,15 +15,18 @@ import user.User
 internal val fakeDestinationData: List<Destination> = List(4) {
     Destination.DM(
         id = DestinationId("DestinationId$it"),
-        user = fakeUserData.last(),
-        to = fakeUserData[it - 1],
+        user = Email("sample0@example.com"),
+        to = Email("sample${it + 1}@example.com"),
     )
 }
+
+internal val fakeUserData: List<User> = List(4) { User(Email("sample${it + 1}@example.com"), listOf()) } +
+    User(Email("sample0@example.com"), fakeDestinationData)
 
 internal val fakeMessageData: List<Message> = List(4) {
     Message(
         id = MessageId("MessageId$it"),
-        sender = fakeUserData[it - 1],
+        sender = fakeUserData[it + 1],
         subject = Subject("Subject$it"),
         body = Body("Body$it"),
         createdAt = CreatedAt(Clock.System.now()),
@@ -38,6 +41,3 @@ internal val fakeMessageData: List<Message> = List(4) {
         createdAt = CreatedAt(Clock.System.now()),
     )
 }
-
-internal val fakeUserData: List<User> = List(4) { User(Email("sample${it + 1}@example.com"), listOf()) } +
-    User(Email("sample1@example.com"), fakeDestinationData)

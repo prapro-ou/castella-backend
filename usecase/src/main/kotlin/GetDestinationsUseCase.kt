@@ -1,4 +1,5 @@
 import com.vb4.result.ApiResult
+import com.vb4.result.flatMap
 import com.vb4.result.map
 import destination.Destination
 import kotlinx.coroutines.CoroutineDispatcher

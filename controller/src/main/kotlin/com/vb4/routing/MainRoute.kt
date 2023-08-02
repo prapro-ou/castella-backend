@@ -7,9 +7,8 @@ import io.ktor.server.routing.routing
 
 fun Application.mainRoute() {
     routing {
-        route("destination") {
+        route("destinations") {
             getDestinationIndex("")
-
         }
     }
 }
