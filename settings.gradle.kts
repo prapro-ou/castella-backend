@@ -17,4 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "castella-backend"
 include("controller")
 include("domain")
+include("usecase")
 include("utils")
