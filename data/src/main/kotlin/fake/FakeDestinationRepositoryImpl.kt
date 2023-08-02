@@ -9,11 +9,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import repository.runCatchDomainException
-import user.Email
 
 class FakeDestinationRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) : DestinationRepository {
+) : DestinationRepository {
     override suspend fun getDestination(
         destinationId: DestinationId,
     ): ApiResult<Destination, DomainException> = withContext(dispatcher) {

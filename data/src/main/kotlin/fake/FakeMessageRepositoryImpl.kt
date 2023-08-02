@@ -14,7 +14,7 @@ import repository.runCatchDomainException
 
 class FakeMessageRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) : MessageRepository {
+) : MessageRepository {
     override suspend fun getMessages(destination: Destination): ApiResult<List<Message>, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
@@ -28,7 +28,7 @@ class FakeMessageRepositoryImpl(
         withContext(dispatcher) {
             runCatchDomainException {
                 listOf(fakeMessageData.first { it.id == messageId }) +
-                        fakeMessageData.filterIsInstance<Reply>().filter { it.inReplyTo == messageId }
+                    fakeMessageData.filterIsInstance<Reply>().filter { it.inReplyTo == messageId }
             }
         }
 }

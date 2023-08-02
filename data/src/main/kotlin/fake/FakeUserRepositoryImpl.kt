@@ -12,7 +12,7 @@ import user.UserRepository
 
 class FakeUserRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) : UserRepository {
+) : UserRepository {
     override suspend fun getUser(email: Email): ApiResult<User, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
