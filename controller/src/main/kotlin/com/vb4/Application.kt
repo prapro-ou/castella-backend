@@ -1,6 +1,5 @@
 package com.vb4
 
-import com.vb4.plugins.configureRouting
 import com.vb4.plugins.installPlugins
 import com.vb4.routing.mainRoute
 import io.ktor.server.application.Application
