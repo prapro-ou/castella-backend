@@ -17,7 +17,7 @@ class FakeMessageRepositoryImpl(
 
     /*** 本来はIMAPを使って取ってくるところ ***/
 
-    override suspend fun getMessages(destination: Destination): ApiResult<List<Message>, DomainException> =
+    override suspend fun getMessagesByDestination(destination: Destination): ApiResult<List<Message>, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
                 fakeMessageData.filter {
@@ -26,7 +26,7 @@ class FakeMessageRepositoryImpl(
             }
         }
 
-    override suspend fun getMessageWithReplies(messageId: MessageId): ApiResult<Message, DomainException> =
+    override suspend fun getMessageById(messageId: MessageId): ApiResult<Message, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
                 fakeMessageData.first { it.id == messageId }

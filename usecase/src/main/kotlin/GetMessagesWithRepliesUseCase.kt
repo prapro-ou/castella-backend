@@ -12,6 +12,6 @@ class GetMessagesWithRepliesUseCase(
 ) {
     suspend operator fun invoke(messageId: MessageId): ApiResult<Message, DomainException> =
         withContext(dispatcher) {
-            messageRepository.getMessageWithReplies(messageId)
+            messageRepository.getMessageById(messageId)
         }
 }

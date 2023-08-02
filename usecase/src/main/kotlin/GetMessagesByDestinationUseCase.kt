@@ -17,6 +17,6 @@ class GetMessagesByDestinationUseCase(
         withContext(dispatcher) {
             destinationRepository
                 .getDestination(destinationId)
-                .flatMap { destination -> messageRepository.getMessages(destination) }
+                .flatMap { destination -> messageRepository.getMessagesByDestination(destination) }
         }
 }

@@ -5,7 +5,7 @@ import com.vb4.result.ApiResult
 import destination.Destination
 
 interface MessageRepository {
-    suspend fun getMessages(destination: Destination): ApiResult<List<Message>, DomainException>
+    suspend fun getMessagesByDestination(destination: Destination): ApiResult<List<Message>, DomainException>
 
-    suspend fun getMessageWithReplies(messageId: MessageId): ApiResult<Message, DomainException>
+    suspend fun getMessageById(messageId: MessageId): ApiResult<Message, DomainException>
 }
