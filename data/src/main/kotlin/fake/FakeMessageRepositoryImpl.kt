@@ -4,6 +4,7 @@ import DomainException
 import com.vb4.result.ApiResult
 import destination.Destination
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import message.Message
 import message.MessageId
@@ -11,7 +12,9 @@ import message.MessageRepository
 import message.Reply
 import repository.runCatchDomainException
 
-class FakeMessageRepositoryImpl(private val dispatcher: CoroutineDispatcher) : MessageRepository {
+class FakeMessageRepositoryImpl(
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    ) : MessageRepository {
     override suspend fun getMessages(destination: Destination): ApiResult<List<Message>, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
