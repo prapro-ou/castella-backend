@@ -1,7 +1,7 @@
 package message
 
-import user.User
 import kotlinx.datetime.Instant
+import user.User
 
 open class Message(
     val id: MessageId,
