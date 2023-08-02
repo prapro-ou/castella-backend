@@ -10,7 +10,7 @@ class GetMessagesWithRepliesUseCase(
     private val messageRepository: MessageRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {
-    suspend operator fun invoke(messageId: MessageId): ApiResult<List<Message>, DomainException> =
+    suspend operator fun invoke(messageId: MessageId): ApiResult<Message, DomainException> =
         withContext(dispatcher) {
             messageRepository.getMessageWithReplies(messageId)
         }

@@ -54,6 +54,15 @@ internal val fakeMessageData: List<Message> = listOf(
         sender = Avatar(Email("sample2@example.com")),
         subject = Subject("Subject1"),
         body = Body("Body1"),
+        replies = listOf(
+            Reply(
+                id = MessageId("MessageId4"),
+                sender = Avatar(Email("sample1@example.com")),
+                subject = Subject("ReplySubject1"),
+                body = Body("ReplyBody1"),
+                createdAt = CreatedAt(Clock.System.now()),
+            ),
+        ),
         createdAt = CreatedAt(Clock.System.now()),
     ),
     Message(
@@ -61,6 +70,7 @@ internal val fakeMessageData: List<Message> = listOf(
         sender = Avatar(Email("sample3@example.com")),
         subject = Subject("Subject2"),
         body = Body("Body2"),
+        replies = listOf(),
         createdAt = CreatedAt(Clock.System.now()),
     ),
     Message(
@@ -68,14 +78,7 @@ internal val fakeMessageData: List<Message> = listOf(
         sender = Avatar(Email("sample4@example.com")),
         subject = Subject("Subject3"),
         body = Body("Body3"),
-        createdAt = CreatedAt(Clock.System.now()),
-    ),
-    Reply(
-        id = MessageId("MessageId4"),
-        inReplyTo = MessageId("MessageId1"),
-        sender = Avatar(Email("sample1@example.com")),
-        subject = Subject("ReplySubject1"),
-        body = Body("ReplyBody1"),
+        replies = listOf(),
         createdAt = CreatedAt(Clock.System.now()),
     ),
 )

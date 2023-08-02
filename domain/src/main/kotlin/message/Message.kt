@@ -2,24 +2,23 @@ package message
 
 import avatar.Avatar
 import kotlinx.datetime.Instant
-import user.User
 
-open class Message(
+data class Message(
+    val id: MessageId,
+    val sender: Avatar,
+    val subject: Subject,
+    val body: Body,
+    val replies: List<Reply>,
+    val createdAt: CreatedAt,
+)
+
+data class Reply(
     val id: MessageId,
     val sender: Avatar,
     val subject: Subject,
     val body: Body,
     val createdAt: CreatedAt,
 )
-
-class Reply(
-    id: MessageId,
-    val inReplyTo: MessageId,
-    sender: Avatar,
-    subject: Subject,
-    body: Body,
-    createdAt: CreatedAt,
-) : Message(id, sender, subject, body, createdAt)
 
 @JvmInline
 value class MessageId(val value: String)

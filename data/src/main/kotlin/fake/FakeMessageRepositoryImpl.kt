@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 import message.Message
 import message.MessageId
 import message.MessageRepository
-import message.Reply
 import repository.runCatchDomainException
 
 class FakeMessageRepositoryImpl(
@@ -27,11 +26,10 @@ class FakeMessageRepositoryImpl(
             }
         }
 
-    override suspend fun getMessageWithReplies(messageId: MessageId): ApiResult<List<Message>, DomainException> =
+    override suspend fun getMessageWithReplies(messageId: MessageId): ApiResult<Message, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
-                listOf(fakeMessageData.first { it.id == messageId }) +
-                    fakeMessageData.filterIsInstance<Reply>().filter { it.inReplyTo == messageId }
+                fakeMessageData.first { it.id == messageId }
             }
         }
 }
