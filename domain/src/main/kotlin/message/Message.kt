@@ -1,3 +1,6 @@
+package message
+
+import user.User
 import kotlinx.datetime.Instant
 
 open class Message(

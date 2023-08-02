@@ -1,7 +1,10 @@
 import com.vb4.result.ApiResult
 import com.vb4.result.map
+import destination.Destination
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import user.Email
+import user.UserRepository
 
 class GetDestinationsUseCase(
     private val userRepository: UserRepository,

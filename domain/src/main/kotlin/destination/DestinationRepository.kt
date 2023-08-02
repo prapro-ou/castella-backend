@@ -1,3 +1,6 @@
+package destination
+
+import DomainException
 import com.vb4.result.ApiResult
 
 interface DestinationRepository {

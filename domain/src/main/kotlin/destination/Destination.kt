@@ -1,3 +1,7 @@
+package destination
+
+import user.Email
+
 sealed interface Destination {
     data class DM(
         val id: DestinationId,

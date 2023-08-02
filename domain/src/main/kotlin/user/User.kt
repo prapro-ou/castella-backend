@@ -1,3 +1,7 @@
+package user
+
+import destination.Destination
+
 data class User(
     val email: Email,
     val destinations: List<Destination>,

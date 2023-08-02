@@ -1,3 +1,6 @@
+package user
+
+import DomainException
 import com.vb4.result.ApiResult
 
 interface UserRepository {
