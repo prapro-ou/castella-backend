@@ -6,7 +6,7 @@ import message.Message
 import message.MessageId
 import message.MessageRepository
 
-class GetMessagesWithRepliesUseCase(
+class GetMessageByIdUseCase(
     private val messageRepository: MessageRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {

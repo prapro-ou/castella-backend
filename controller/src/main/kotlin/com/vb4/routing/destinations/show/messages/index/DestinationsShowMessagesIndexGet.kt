@@ -1,4 +1,4 @@
-package com.vb4.routing.destinations.show
+package com.vb4.routing.destinations.show.messages.index
 
 import GetMessagesByDestinationUseCase
 import com.vb4.ext.getParameter
@@ -14,11 +14,11 @@ import io.ktor.server.routing.get
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
-fun Route.destinationsShowGet(path: String, param: String) {
+fun Route.destinationsShowMessagesIndexGet(path: String, destinationIdParam: String) {
     val getMessagesByDestinationUseCase by inject<GetMessagesByDestinationUseCase>()
 
     get(path) {
-        call.getParameter<String>(param)
+        call.getParameter<String>(destinationIdParam)
             .flatMap { id -> getMessagesByDestinationUseCase(DestinationId(id)) }
             .mapBoth(
                 success = { messages -> GetDestinationShowResponse(messages.map { it.id.value }) },

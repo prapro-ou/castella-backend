@@ -2,7 +2,7 @@ package com.vb4.plugins
 
 import GetDestinationsUseCase
 import GetMessagesByDestinationUseCase
-import GetMessagesWithRepliesUseCase
+import GetMessageByIdUseCase
 import destination.DestinationRepository
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -19,7 +19,7 @@ fun Application.configureKoinPlugin() {
         /*** UseCase ***/
         single<GetDestinationsUseCase> { GetDestinationsUseCase(get()) }
         single<GetMessagesByDestinationUseCase> { GetMessagesByDestinationUseCase(get(), get()) }
-        single<GetMessagesWithRepliesUseCase> { GetMessagesWithRepliesUseCase(get()) }
+        single<GetMessageByIdUseCase> { GetMessageByIdUseCase(get()) }
 
         /*** Repository ***/
         single<DestinationRepository> { FakeDestinationRepositoryImpl() }
