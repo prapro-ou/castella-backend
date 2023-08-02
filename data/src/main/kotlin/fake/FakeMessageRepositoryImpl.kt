@@ -15,11 +15,14 @@ import repository.runCatchDomainException
 class FakeMessageRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MessageRepository {
+
+    /*** 本来はIMAPを使って取ってくるところ ***/
+
     override suspend fun getMessages(destination: Destination): ApiResult<List<Message>, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
                 fakeMessageData.filter {
-                    it.sender.email == (destination as Destination.DM).user
+                    it.sender.email == (destination as Destination.DM).to.email
                 }
             }
         }

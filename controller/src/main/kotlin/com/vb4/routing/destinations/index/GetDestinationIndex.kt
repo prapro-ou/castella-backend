@@ -17,7 +17,7 @@ fun Route.getDestinationIndex(path: String) {
     val getDestinationsUseCase by inject<GetDestinationsUseCase>()
 
     get(path) {
-        getDestinationsUseCase(email = Email("sample0@example.com"))
+        getDestinationsUseCase(email = Email("sample1@example.com"))
             .mapBoth(
                 success = { destinations ->
                     val (dm, group) = destinations.divide()

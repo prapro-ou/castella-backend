@@ -1,6 +1,6 @@
 package destination
 
-import user.Email
+import avatar.Avatar
 
 sealed interface Destination {
 
@@ -8,14 +8,12 @@ sealed interface Destination {
 
     data class DM(
         override val id: DestinationId,
-        val user: Email,
-        val to: Email,
+        val to: Avatar,
     ) : Destination
 
     data class Group(
         override val id: DestinationId,
-        val user: Email,
-        val to: List<Email>,
+        val to: List<Avatar>,
     ) : Destination
 
     companion object {

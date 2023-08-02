@@ -1,11 +1,12 @@
 package message
 
+import avatar.Avatar
 import kotlinx.datetime.Instant
 import user.User
 
 open class Message(
     val id: MessageId,
-    val sender: User,
+    val sender: Avatar,
     val subject: Subject,
     val body: Body,
     val createdAt: CreatedAt,
@@ -14,7 +15,7 @@ open class Message(
 class Reply(
     id: MessageId,
     val inReplyTo: MessageId,
-    sender: User,
+    sender: Avatar,
     subject: Subject,
     body: Body,
     createdAt: CreatedAt,
