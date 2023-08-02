@@ -13,7 +13,7 @@ open class Message(
 
 class Reply(
     id: MessageId,
-    parent: MessageId,
+    inReplyTo: MessageId,
     sender: User,
     subject: Subject,
     body: Body,
