@@ -4,6 +4,7 @@ import GetDestinationsUseCase
 import com.vb4.result.consume
 import com.vb4.result.mapBoth
 import com.vb4.serializable.ExceptionSerializable
+import destination.Destination
 import destination.Destination.Companion.divide
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
@@ -21,7 +22,10 @@ fun Route.getDestinationIndex(path: String) {
             .mapBoth(
                 success = { destinations ->
                     val (dm, group) = destinations.divide()
-                    GetDestinationIndexResponse(dm = dm.map { it.id.value }, group = group.map { it.id.value })
+                    GetDestinationIndexResponse(
+                        dm = dm.map { DestinationSerializable.from(it) },
+                        group = group.map { DestinationSerializable.from(it) },
+                    )
                 },
                 failure = { ExceptionSerializable.from(it) },
             ).consume(
@@ -33,11 +37,19 @@ fun Route.getDestinationIndex(path: String) {
 
 @Serializable
 data class GetDestinationIndexResponse(
-    val dm: List<String>,
-    val group: List<String>,
+    val dm: List<DestinationSerializable>,
+    val group: List<DestinationSerializable>,
 )
 
 @Serializable
-data class GetDestinationIndexResponseDestination(
+data class DestinationSerializable(
     val id: String,
-)
+    val name: String,
+) {
+    companion object {
+        fun from(destination: Destination) = DestinationSerializable(
+            id = destination.id.value,
+            name = destination.name.value,
+        )
+    }
+}

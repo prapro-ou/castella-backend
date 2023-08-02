@@ -3,6 +3,7 @@ package repository.fake
 import avatar.Avatar
 import destination.Destination
 import destination.DestinationId
+import destination.DestinationName
 import kotlinx.datetime.Clock
 import message.Body
 import message.CreatedAt
@@ -17,18 +18,22 @@ import user.User
 internal val fakeDestinationData: List<Destination> = listOf(
     Destination.DM(
         id = DestinationId("DestinationId1"),
+        name = DestinationName("DestinationName1"),
         to = Avatar(Email("sample2@example.com")),
     ),
     Destination.DM(
         id = DestinationId("DestinationId2"),
+        name = DestinationName("DestinationName2"),
         to = Avatar(Email("sample3@example.com")),
     ),
     Destination.DM(
         id = DestinationId("DestinationId3"),
+        name = DestinationName("DestinationName3"),
         to = Avatar(Email("sample4@example.com")),
     ),
     Destination.DM(
         id = DestinationId("DestinationId4"),
+        name = DestinationName("DestinationName4"),
         to = Avatar(Email("sample5@example.com")),
     ),
 )
