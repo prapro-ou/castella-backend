@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 import user.Email
 
-fun Route.getDestinationIndex(path: String) {
+fun Route.destinationsIndexGet(path: String) {
     val getDestinationsUseCase by inject<GetDestinationsUseCase>()
 
     get(path) {

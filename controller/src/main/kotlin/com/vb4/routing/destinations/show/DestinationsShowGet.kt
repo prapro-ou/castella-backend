@@ -14,7 +14,7 @@ import io.ktor.server.routing.get
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
-fun Route.getDestinationShow(path: String, param: String) {
+fun Route.destinationsShowGet(path: String, param: String) {
     val getMessagesByDestinationUseCase by inject<GetMessagesByDestinationUseCase>()
 
     get(path) {
