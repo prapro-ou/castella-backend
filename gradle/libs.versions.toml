@@ -10,6 +10,7 @@ logback = "1.2.11"
 # ktor
 ktor-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
 ktor-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor"}
 ktor-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 
 # test
@@ -20,5 +21,5 @@ kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit"
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
-ktor = ["ktor-core", "ktor-netty", "ktor-logback"]
+ktor = ["ktor-core", "ktor-netty", "ktor-yaml", "ktor-logback"]
 test = ["ktor-server-tests", "kotlin-test-junit"]
