@@ -1,25 +1,31 @@
 [versions]
 # kotlin
 kotlin = "1.9.0"
+coroutine = "1.7.2"
+datetime = "0.4.0"
 
 # ktor
 ktor = "2.3.2"
 logback = "1.2.11"
 
 [libraries]
-# ktor
+# Kotlin
+kotlin-coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+kotlin-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
+
+# Ktor
 ktor-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
 ktor-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor"}
 ktor-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 
-# test
-ktor-server-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = "ktor" }
+# Test
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlin" }
+ktor-server-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = "ktor" }
 
 # Gradle
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
 ktor = ["ktor-core", "ktor-netty", "ktor-yaml", "ktor-logback"]
-test = ["ktor-server-tests", "kotlin-test-junit"]
+test = ["kotlin-test-junit", "ktor-server-tests"]
