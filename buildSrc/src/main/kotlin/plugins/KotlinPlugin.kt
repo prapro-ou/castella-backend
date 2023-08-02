@@ -3,8 +3,11 @@ package plugins
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainSpec
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 class KotlinPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -16,6 +19,11 @@ class KotlinPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", libs.findLibrary("kotlin.coroutine").get())
                 add("implementation", libs.findLibrary("kotlin.datetime").get())
+            }
+            extensions.configure(KotlinJvmProjectExtension::class.java) {
+                jvmToolchain {
+                    (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+                }
             }
         }
     }

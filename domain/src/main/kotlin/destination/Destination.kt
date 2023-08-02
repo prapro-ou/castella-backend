@@ -1,12 +1,12 @@
 package destination
 
-import user.Email
+import user.User
 
 sealed interface Destination {
     data class DM(
         val id: DestinationId,
-        val first: Email,
-        val second: Email,
+        val user: User,
+        val to: User,
     ) : Destination
 }
 
