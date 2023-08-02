@@ -13,7 +13,7 @@ open class Message(
 
 class Reply(
     id: MessageId,
-    inReplyTo: MessageId,
+    val inReplyTo: MessageId,
     sender: User,
     subject: Subject,
     body: Body,
