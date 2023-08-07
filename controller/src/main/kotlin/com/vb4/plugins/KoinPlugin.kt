@@ -1,8 +1,8 @@
 package com.vb4.plugins
 
 import GetDestinationsUseCase
-import GetMessagesByDestinationUseCase
 import GetMessageByIdUseCase
+import GetMessagesByDestinationUseCase
 import destination.DestinationRepository
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
