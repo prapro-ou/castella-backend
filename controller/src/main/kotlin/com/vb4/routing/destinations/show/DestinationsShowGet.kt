@@ -11,7 +11,11 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
+import kotlinx.datetime.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import message.CreatedAt
+import message.Message
 import org.koin.ktor.ext.inject
 
 fun Route.destinationsShowGet() {
@@ -21,7 +25,7 @@ fun Route.destinationsShowGet() {
         call.getParameter<String>("destinationId")
             .flatMap { id -> getMessagesByDestinationUseCase(DestinationId(id)) }
             .mapBoth(
-                success = { messages -> GetDestinationShowResponse(messages.map { it.id.value }) },
+                success = { messages -> GetDestinationShowResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -32,6 +36,32 @@ fun Route.destinationsShowGet() {
 }
 
 @Serializable
-data class GetDestinationShowResponse(
-    val messages: List<String>,
-)
+private data class GetDestinationShowResponse(
+    val messages: List<MessageSerializable>,
+) {
+    companion object {
+        fun from(messages: List<Message>) = GetDestinationShowResponse(
+            messages = messages.map { MessageSerializable.from(it) }
+        )
+    }
+}
+
+
+@Serializable
+private data class MessageSerializable(
+    val id: String,
+    val subject: String,
+    val body: String,
+    @SerialName("created_at") val createdAt: Instant,
+    @SerialName("reply_count") val replyCount: Int,
+) {
+    companion object {
+        fun from(message: Message) = MessageSerializable(
+            id = message.id.value,
+            subject = message.subject.value,
+            body = message.body.value,
+            createdAt = message.createdAt.value,
+            replyCount = message.replies.count(),
+        )
+    }
+}
