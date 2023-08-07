@@ -14,10 +14,10 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 import user.Email
 
-fun Route.destinationsIndexGet(path: String) {
+fun Route.destinationsIndexGet() {
     val getDestinationsUseCase by inject<GetDestinationsUseCase>()
 
-    get(path) {
+    get("") {
         getDestinationsUseCase(email = Email("sample1@example.com"))
             .mapBoth(
                 success = { destinations ->
