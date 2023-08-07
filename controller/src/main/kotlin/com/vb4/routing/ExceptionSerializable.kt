@@ -1,4 +1,4 @@
-package com.vb4.serializable
+package com.vb4.routing
 
 import DomainException
 import io.ktor.http.HttpStatusCode

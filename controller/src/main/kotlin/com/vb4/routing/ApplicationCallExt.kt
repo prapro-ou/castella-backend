@@ -1,4 +1,4 @@
-package com.vb4.ext
+package com.vb4.routing
 
 import DomainException
 import com.vb4.result.ApiResult

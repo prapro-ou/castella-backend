@@ -1,11 +1,11 @@
 package com.vb4.routing.destinations.messages.show
 
 import GetMessageByIdUseCase
-import com.vb4.ext.getParameter
+import com.vb4.routing.getParameter
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
-import com.vb4.serializable.ExceptionSerializable
+import com.vb4.routing.ExceptionSerializable
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

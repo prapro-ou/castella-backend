@@ -1,11 +1,11 @@
 package com.vb4.routing.destinations.show
 
 import GetMessagesByDestinationUseCase
-import com.vb4.ext.getParameter
+import com.vb4.routing.getParameter
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
-import com.vb4.serializable.ExceptionSerializable
+import com.vb4.routing.ExceptionSerializable
 import destination.DestinationId
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
@@ -33,5 +33,5 @@ fun Route.destinationsShowGet() {
 
 @Serializable
 data class GetDestinationShowResponse(
-    val mails: List<String>,
+    val messages: List<String>,
 )
