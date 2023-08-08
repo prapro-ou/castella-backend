@@ -11,6 +11,8 @@ class ExceptionSerializable(
     companion object {
         fun from(exception: DomainException): Pair<ExceptionSerializable, HttpStatusCode> =
             when (exception) {
+                is DomainException.NoSuchElementException ->
+                    ExceptionSerializable(exception.message) to HttpStatusCode.BadRequest
                 is DomainException.RequestValidationException ->
                     ExceptionSerializable(exception.message) to HttpStatusCode.BadRequest
                 is DomainException.SystemException ->

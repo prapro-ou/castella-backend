@@ -27,3 +27,11 @@ suspend inline fun <T> runCatchWithTransaction(
             ApiResult.Failure(DomainException.SystemException(exception.message.orEmpty(), exception))
     }
 }
+
+inline fun <T> runCatchDomainException(block: () -> T): ApiResult<T, DomainException> = try {
+    ApiResult.Success(block())
+} catch (e: CancellationException) {
+    throw e
+} catch (e: Exception) {
+    ApiResult.Failure(DomainException.SystemException(e.message.orEmpty(), e))
+}
