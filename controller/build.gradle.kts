@@ -14,5 +14,7 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.koin)
 
+    implementation(libs.bundles.database)
+
     testImplementation(libs.bundles.test)
 }
