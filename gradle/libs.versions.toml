@@ -79,7 +79,7 @@ ktor = [
 ]
 test = ["kotlin-test-junit", "ktor-server-tests"]
 koin = ["koin-core", "koin-ktor", "koin-logger"]
-database = ["exposed-core", "exposed-jdbc", "exposed-java-time", "flyway-core", "hikari"]
+database = ["exposed-core", "exposed-jdbc", "exposed-java-time", "flyway-core", "hikari", "h2"]
 
 [plugins]
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

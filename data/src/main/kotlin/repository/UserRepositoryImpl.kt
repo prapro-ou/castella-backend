@@ -28,9 +28,6 @@ class UserRepositoryImpl(
     override suspend fun getUser(email: Email): ApiResult<User, DomainException> =
         runCatchWithTransaction(database, dispatcher) {
             UsersTable
-                .innerJoin(DMsTable)
-                .innerJoin(DMsAvatarsTable)
-                .innerJoin(AvatarsTable)
                 .select { UsersTable.email eq email.value }
                 .toList()
                 .toUser()
