@@ -3,9 +3,9 @@ package repository.db.seeding
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import table.UsersTable
-import user.Email
-import user.User
+import com.vb4.table.UsersTable
+import com.vb4.user.Email
+import com.vb4.user.User
 
 object UsersTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {

@@ -1,12 +1,12 @@
 package repository.db.seeding
 
-import destination.Destination
-import destination.DestinationId
-import destination.DestinationName
+import com.vb4.destination.Destination
+import com.vb4.destination.DestinationId
+import com.vb4.destination.DestinationName
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import table.GroupsTable
+import com.vb4.table.GroupsTable
 
 object GroupsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {
@@ -19,7 +19,7 @@ object GroupsTableSeeder : DatabaseSeeder {
         }
     }
 
-    private val groupData: List<Destination> = List(5) {index ->
+    private val groupData: List<Destination> = List(5) { index ->
         Destination.Group(
             id = DestinationId("DestinationId$index"),
             name = DestinationName("DestinationName$index"),

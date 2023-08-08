@@ -1,14 +1,14 @@
 package repository.db.seeding
 
-import avatar.Avatar
-import destination.Destination
-import destination.DestinationId
-import destination.DestinationName
+import com.vb4.avatar.Avatar
+import com.vb4.destination.Destination
+import com.vb4.destination.DestinationId
+import com.vb4.destination.DestinationName
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import table.DMsTable
-import user.Email
+import com.vb4.table.DMsTable
+import com.vb4.user.Email
 
 object DMsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {
@@ -21,7 +21,7 @@ object DMsTableSeeder : DatabaseSeeder {
         }
     }
 
-    private val dmData: List<Destination> = List(5) {index ->
+    private val dmData: List<Destination> = List(5) { index ->
         Destination.DM(
             id = DestinationId("DestinationId$index"),
             name = DestinationName("DestinationName$index"),

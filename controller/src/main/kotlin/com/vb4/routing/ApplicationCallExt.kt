@@ -1,6 +1,6 @@
 package com.vb4.routing
 
-import DomainException
+import com.vb4.DomainException
 import com.vb4.result.ApiResult
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.plugins.CannotTransformContentToTypeException

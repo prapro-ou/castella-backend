@@ -1,6 +1,6 @@
 package com.vb4.routing
 
-import DomainException
+import com.vb4.DomainException
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 

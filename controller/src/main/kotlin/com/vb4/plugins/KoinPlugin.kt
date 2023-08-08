@@ -1,21 +1,20 @@
 package com.vb4.plugins
 
-import GetDestinationsUseCase
-import GetMessageByIdUseCase
-import GetMessagesByDestinationUseCase
+import com.vb4.GetDestinationsUseCase
+import com.vb4.GetMessageByIdUseCase
+import com.vb4.GetMessagesByDestinationUseCase
 import db.DevDB
-import destination.DestinationRepository
+import com.vb4.destination.DestinationRepository
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
-import message.MessageRepository
+import com.vb4.message.MessageRepository
 import org.jetbrains.exposed.sql.Database
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
-import repository.fake.FakeDestinationRepositoryImpl
-import repository.fake.FakeMessageRepositoryImpl
-import repository.fake.FakeUserRepositoryImpl
-import repository.repository.UserRepositoryImpl
-import user.UserRepository
+import com.vb4.fake.FakeDestinationRepositoryImpl
+import com.vb4.fake.FakeMessageRepositoryImpl
+import com.vb4.repository.UserRepositoryImpl
+import com.vb4.user.UserRepository
 
 fun Application.configureKoinPlugin() {
     val module = module {

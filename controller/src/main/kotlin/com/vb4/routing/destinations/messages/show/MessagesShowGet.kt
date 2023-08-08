@@ -1,6 +1,6 @@
 package com.vb4.routing.destinations.messages.show
 
-import GetMessageByIdUseCase
+import com.vb4.GetMessageByIdUseCase
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -13,9 +13,9 @@ import io.ktor.server.routing.get
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import message.Message
-import message.MessageId
-import message.Reply
+import com.vb4.message.Message
+import com.vb4.message.MessageId
+import com.vb4.message.Reply
 import org.koin.ktor.ext.inject
 
 fun Route.messagesShowGet() {

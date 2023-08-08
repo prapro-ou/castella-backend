@@ -1,0 +1,35 @@
+package com.vb4.fake
+
+import com.vb4.DomainException
+import com.vb4.result.ApiResult
+import com.vb4.destination.Destination
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import com.vb4.message.Message
+import com.vb4.message.MessageId
+import com.vb4.message.MessageRepository
+import repository.com.vb4.runCatchDomainException
+
+class FakeMessageRepositoryImpl(
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : MessageRepository {
+
+    /*** 本来はIMAPを使って取ってくるところ ***/
+
+    override suspend fun getMessagesByDestination(destination: Destination): ApiResult<List<Message>, DomainException> =
+        withContext(dispatcher) {
+            runCatchDomainException {
+                fakeMessageData.filter {
+                    it.sender.email == (destination as Destination.DM).to.email
+                }
+            }
+        }
+
+    override suspend fun getMessageById(messageId: MessageId): ApiResult<Message, DomainException> =
+        withContext(dispatcher) {
+            runCatchDomainException {
+                fakeMessageData.first { it.id == messageId }
+            }
+        }
+}
