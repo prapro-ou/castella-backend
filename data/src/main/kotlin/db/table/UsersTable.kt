@@ -1,6 +1,7 @@
 package db.table
 
-import com.vb4.destination.Destination
+import com.vb4.dm.DM
+import com.vb4.group.Group
 import com.vb4.user.Email
 import com.vb4.user.User
 import org.jetbrains.exposed.sql.ResultRow
@@ -12,7 +13,7 @@ object UsersTable : Table("users") {
     override val primaryKey: PrimaryKey = PrimaryKey(email)
 }
 
-internal fun ResultRow.toUser(dms: List<Destination.DM>, groups: List<Destination.Group>) = User(
+internal fun ResultRow.toUser(dms: List<DM>, groups: List<Group>) = User(
     email = Email(this[UsersTable.email]),
     dms = dms,
     groups = groups

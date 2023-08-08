@@ -2,9 +2,9 @@ package com.vb4.plugins
 
 import com.vb4.GetDestinationsUseCase
 import com.vb4.GetMessageByIdUseCase
-import com.vb4.GetMessagesByDestinationUseCase
+import com.vb4.GetMessagesByDMUseCase
 import db.DevDB
-import com.vb4.destination.DestinationRepository
+import com.vb4.dm.DMRepository
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import com.vb4.message.MessageRepository
@@ -20,11 +20,11 @@ fun Application.configureKoinPlugin() {
     val module = module {
         /*** UseCase ***/
         single<GetDestinationsUseCase> { GetDestinationsUseCase(get()) }
-        single<GetMessagesByDestinationUseCase> { GetMessagesByDestinationUseCase(get(), get()) }
+        single<GetMessagesByDMUseCase> { GetMessagesByDMUseCase(get(), get()) }
         single<GetMessageByIdUseCase> { GetMessageByIdUseCase(get()) }
 
         /*** Repository ***/
-        single<DestinationRepository> { DestinationRepositoryImpl(get()) }
+        single<DMRepository> { DestinationRepositoryImpl(get()) }
         single<MessageRepository> { FakeMessageRepositoryImpl() }
         single<UserRepository> { UserRepositoryImpl(get()) }
 

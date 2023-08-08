@@ -1,13 +1,10 @@
 package db.seeding
 
-import db.table.DMsAvatarsTable
 import db.table.GroupsAvatarsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import repository.db.seeding.DMsTableSeeder
 import repository.db.seeding.DatabaseSeeder
-import repository.db.seeding.GroupsTableSeeder
 
 object GroupsAvatarsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {

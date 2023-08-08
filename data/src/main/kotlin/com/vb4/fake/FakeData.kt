@@ -1,9 +1,9 @@
 package com.vb4.fake
 
 import com.vb4.avatar.Avatar
-import com.vb4.destination.Destination
-import com.vb4.destination.DestinationId
-import com.vb4.destination.DestinationName
+import com.vb4.dm.DM
+import com.vb4.dm.DMId
+import com.vb4.dm.DMName
 import kotlinx.datetime.Clock
 import com.vb4.message.Body
 import com.vb4.message.CreatedAt
@@ -15,25 +15,25 @@ import com.vb4.user.Email
 import com.vb4.user.User
 
 /*** DBに登録する情報 ***/
-internal val fakeDMData: List<Destination.DM> = listOf(
-    Destination.DM(
-        id = DestinationId("DestinationId1"),
-        name = DestinationName("DestinationName1"),
+internal val fakeDMData: List<DM> = listOf(
+    DM(
+        id = DMId("DestinationId1"),
+        name = DMName("DestinationName1"),
         to = Avatar(Email("sample2@example.com")),
     ),
-    Destination.DM(
-        id = DestinationId("DestinationId2"),
-        name = DestinationName("DestinationName2"),
+    DM(
+        id = DMId("DestinationId2"),
+        name = DMName("DestinationName2"),
         to = Avatar(Email("sample3@example.com")),
     ),
-    Destination.DM(
-        id = DestinationId("DestinationId3"),
-        name = DestinationName("DestinationName3"),
+    DM(
+        id = DMId("DestinationId3"),
+        name = DMName("DestinationName3"),
         to = Avatar(Email("sample4@example.com")),
     ),
-    Destination.DM(
-        id = DestinationId("DestinationId4"),
-        name = DestinationName("DestinationName4"),
+    DM(
+        id = DMId("DestinationId4"),
+        name = DMName("DestinationName4"),
         to = Avatar(Email("sample5@example.com")),
     ),
 )

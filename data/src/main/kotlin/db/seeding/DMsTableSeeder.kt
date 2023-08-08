@@ -1,14 +1,16 @@
-package repository.db.seeding
+package db.seeding
 
 import com.vb4.avatar.Avatar
-import com.vb4.destination.Destination
-import com.vb4.destination.DestinationId
-import com.vb4.destination.DestinationName
+import com.vb4.dm.DM
+import com.vb4.dm.DMId
+import com.vb4.dm.DMName
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
 import db.table.DMsTable
 import com.vb4.user.Email
+import repository.db.seeding.DatabaseSeeder
+import repository.db.seeding.UsersTableSeeder
 
 object DMsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {
@@ -21,10 +23,10 @@ object DMsTableSeeder : DatabaseSeeder {
         }
     }
 
-    val dmData: List<Destination> = List(5) { index ->
-        Destination.DM(
-            id = DestinationId("DestinationId$index"),
-            name = DestinationName("DestinationName$index"),
+    val dmData: List<DM> = List(5) { index ->
+        DM(
+            id = DMId("DMId$index"),
+            name = DMName("DMName$index"),
 
             // 使用しない
             to = Avatar(Email("")),

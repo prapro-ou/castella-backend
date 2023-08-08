@@ -4,7 +4,6 @@ import db.table.DMsAvatarsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import repository.db.seeding.DMsTableSeeder
 import repository.db.seeding.DatabaseSeeder
 
 object DMsAvatarsTableSeeder : DatabaseSeeder {

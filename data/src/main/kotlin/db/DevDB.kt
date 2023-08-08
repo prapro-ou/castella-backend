@@ -4,12 +4,12 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import db.seeding.AvatarsTableSeeder
 import db.seeding.DMsAvatarsTableSeeder
+import db.seeding.DMsTableSeeder
 import db.seeding.GroupsAvatarsTableSeeder
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import javax.sql.DataSource
-import repository.db.seeding.DMsTableSeeder
-import repository.db.seeding.GroupsTableSeeder
+import db.seeding.GroupsTableSeeder
 import repository.db.seeding.UsersTableSeeder
 
 val DevDB: Database by lazy {
