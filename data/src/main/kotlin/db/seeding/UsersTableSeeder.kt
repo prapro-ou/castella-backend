@@ -21,7 +21,8 @@ object UsersTableSeeder : DatabaseSeeder {
             email = Email("sample1@example.com"),
 
             // 使用しない
-            destinations = listOf(),
+            dms = listOf(),
+            groups = listOf(),
         )
     )
 

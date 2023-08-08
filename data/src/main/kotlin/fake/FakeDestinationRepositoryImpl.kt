@@ -17,7 +17,7 @@ class FakeDestinationRepositoryImpl(
         destinationId: DestinationId,
     ): ApiResult<Destination, DomainException> = withContext(dispatcher) {
         runCatchDomainException {
-            fakeDestinationData.first { (it as? Destination.DM)?.id == destinationId }
+            fakeDMData.first { (it as? Destination.DM)?.id == destinationId }
         }
     }
 }

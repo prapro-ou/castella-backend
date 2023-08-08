@@ -5,7 +5,8 @@ import destination.Destination
 // アプリケーションの利用者を指す
 data class User(
     val email: Email,
-    val destinations: List<Destination>,
+    val dms: List<Destination.DM>,
+    val groups: List<Destination.Group>,
 )
 
 @JvmInline

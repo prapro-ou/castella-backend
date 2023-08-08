@@ -15,7 +15,7 @@ import user.Email
 import user.User
 
 /*** DBに登録する情報 ***/
-internal val fakeDestinationData: List<Destination> = listOf(
+internal val fakeDMData: List<Destination.DM> = listOf(
     Destination.DM(
         id = DestinationId("DestinationId1"),
         name = DestinationName("DestinationName1"),
@@ -38,7 +38,7 @@ internal val fakeDestinationData: List<Destination> = listOf(
     ),
 )
 
-internal val fakeUserData: List<User> = listOf(User(Email("sample1@example.com"), fakeDestinationData))
+internal val fakeUserData: List<User> = listOf(User(Email("sample1@example.com"), fakeDMData, listOf()))
 
 /*** Emailを用いてネットから拾ってくる情報 ***/
 internal val fakeAvatar: List<Avatar> = listOf(

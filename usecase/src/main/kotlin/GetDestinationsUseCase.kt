@@ -11,8 +11,10 @@ class GetDestinationsUseCase(
     private val userRepository: UserRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {
-    suspend operator fun invoke(email: Email): ApiResult<List<Destination>, DomainException> =
+    suspend operator fun invoke(
+        email: Email,
+    ): ApiResult<Pair<List<Destination.DM>, List<Destination.Group>>, DomainException> =
         withContext(dispatcher) {
-            userRepository.getUser(email).map { it.destinations }
+            userRepository.getUser(email).map { user -> user.dms to user.groups }
         }
 }

@@ -5,7 +5,6 @@ import com.vb4.result.consume
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
 import destination.Destination
-import destination.Destination.Companion.divide
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -20,11 +19,7 @@ fun Route.destinationsIndexGet() {
     get("") {
         getDestinationsUseCase(email = Email("sample1@example.com"))
             .mapBoth(
-                success = { destinations ->
-                    destinations
-                        .divide()
-                        .let { (dm, group) -> GetDestinationIndexResponse.from(dm, group) }
-                },
+                success = { (dm, group) -> GetDestinationIndexResponse.from(dm, group) },
                 failure = { ExceptionSerializable.from(it) },
             ).consume(
                 success = { response -> call.respond(response) },

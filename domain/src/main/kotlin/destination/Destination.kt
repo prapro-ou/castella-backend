@@ -18,16 +18,6 @@ sealed interface Destination {
         override val name: DestinationName,
         val to: List<Avatar>,
     ) : Destination
-
-    companion object {
-        fun List<Destination>.divide(): Pair<List<DM>, List<Group>> =
-            this.fold(listOf<DM>() to listOf<Group>()) { acc, destination ->
-                when (destination) {
-                    is DM -> (acc.first + destination) to acc.second
-                    is Group -> acc.first to (acc.second + destination)
-                }
-            }
-    }
 }
 
 @JvmInline

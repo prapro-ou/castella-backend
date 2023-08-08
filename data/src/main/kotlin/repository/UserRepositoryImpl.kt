@@ -36,9 +36,10 @@ class UserRepositoryImpl(
         }
 }
 
-private fun ResultRow.toUser(dm: List<Destination.DM>, group: List<Destination.Group>) = User(
+private fun ResultRow.toUser(dms: List<Destination.DM>, groups: List<Destination.Group>) = User(
     email = Email(this[UsersTable.email]),
-    destinations = dm + group,
+    dms = dms,
+    groups = groups
 )
 
 private fun ResultRow.toDM() = Destination.DM(
