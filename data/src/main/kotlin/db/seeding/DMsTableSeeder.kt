@@ -21,7 +21,7 @@ object DMsTableSeeder : DatabaseSeeder {
         }
     }
 
-    private val dmData: List<Destination> = List(5) { index ->
+    val dmData: List<Destination> = List(5) { index ->
         Destination.DM(
             id = DestinationId("DestinationId$index"),
             name = DestinationName("DestinationName$index"),

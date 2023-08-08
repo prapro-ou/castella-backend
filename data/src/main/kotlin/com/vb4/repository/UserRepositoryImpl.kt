@@ -18,6 +18,9 @@ import db.table.UsersTable
 import com.vb4.user.Email
 import com.vb4.user.User
 import com.vb4.user.UserRepository
+import db.table.AvatarsTable
+import db.table.DMsAvatarsTable
+import db.table.GroupsAvatarsTable
 
 class UserRepositoryImpl(
     private val database: Database,
@@ -29,10 +32,20 @@ class UserRepositoryImpl(
                 .select { UsersTable.email eq email.value }
                 .first()
 
-            val dm = DMsTable.select { DMsTable.userEmail eq user[UsersTable.email] }.toList()
-            val group = GroupsTable.select { GroupsTable.userEmail eq user[UsersTable.email] }.toList()
+            val dms = DMsTable
+                .innerJoin(DMsAvatarsTable)
+                .innerJoin(AvatarsTable)
+                .select { DMsTable.userEmail eq user[UsersTable.email] }
+                .map { it.toDM() }
 
-            user.toUser(dm.map { it.toDM() }, group.map { it.toGroup() })
+            val groups = GroupsTable
+                .innerJoin(GroupsAvatarsTable)
+                .innerJoin(AvatarsTable)
+                .select { GroupsTable.userEmail eq user[UsersTable.email] }
+                .groupBy(keySelector = { it[GroupsTable.id] })
+                .map { (_, value) -> value.toGroup() }
+
+            user.toUser(dms, groups)
         }
 }
 
@@ -45,11 +58,13 @@ private fun ResultRow.toUser(dms: List<Destination.DM>, groups: List<Destination
 private fun ResultRow.toDM() = Destination.DM(
     id = DestinationId(this[DMsTable.id]),
     name = DestinationName(this[DMsTable.name]),
-    to = Avatar(Email("")),
+    to = Avatar(Email(this[AvatarsTable.email])),
 )
 
-private fun ResultRow.toGroup() = Destination.Group(
-    id = DestinationId(this[GroupsTable.id]),
-    name = DestinationName(this[GroupsTable.name]),
-    to = listOf(),
+private fun List<ResultRow>.toGroup() = Destination.Group(
+    id = DestinationId(this.first()[GroupsTable.id]),
+    name = DestinationName(this.first()[GroupsTable.name]),
+    to = this.map { it.toAvatar() },
 )
+
+private fun ResultRow.toAvatar() = Avatar(Email(this[AvatarsTable.email]))

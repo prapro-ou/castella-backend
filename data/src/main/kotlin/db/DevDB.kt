@@ -2,6 +2,9 @@ package db
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import db.seeding.AvatarsTableSeeder
+import db.seeding.DMsAvatarsTableSeeder
+import db.seeding.GroupsAvatarsTableSeeder
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import javax.sql.DataSource
@@ -38,7 +41,14 @@ private fun DataSource.migrate() {
     flyway.migrate()
 }
 
-fun Database.seeding() = listOf(UsersTableSeeder, DMsTableSeeder, GroupsTableSeeder)
+fun Database.seeding() = listOf(
+    UsersTableSeeder,
+    DMsTableSeeder,
+    GroupsTableSeeder,
+    AvatarsTableSeeder,
+    DMsAvatarsTableSeeder,
+    GroupsAvatarsTableSeeder,
+)
     .forEach { it.seeding(database = this) }
 
 private const val MAXIMUM_POOL_SIZE = 3

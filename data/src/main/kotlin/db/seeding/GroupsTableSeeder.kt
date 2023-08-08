@@ -19,7 +19,7 @@ object GroupsTableSeeder : DatabaseSeeder {
         }
     }
 
-    private val groupData: List<Destination> = List(5) { index ->
+    val groupData: List<Destination> = List(5) { index ->
         Destination.Group(
             id = DestinationId("DestinationId$index"),
             name = DestinationName("DestinationName$index"),
