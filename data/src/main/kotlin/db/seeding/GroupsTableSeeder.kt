@@ -6,7 +6,7 @@ import com.vb4.destination.DestinationName
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.vb4.table.GroupsTable
+import db.table.GroupsTable
 
 object GroupsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {

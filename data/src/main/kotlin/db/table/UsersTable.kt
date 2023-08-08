@@ -1,8 +1,8 @@
-package com.vb4.table
+package db.table
 
 import org.jetbrains.exposed.sql.Table
 
-object AvatarsTable : Table("avatars") {
+object UsersTable : Table("users") {
     val email = varchar("email", 256)
 
     override val primaryKey: PrimaryKey = PrimaryKey(email)

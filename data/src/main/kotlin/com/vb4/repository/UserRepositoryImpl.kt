@@ -12,9 +12,9 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import repository.com.vb4.runCatchWithTransaction
-import com.vb4.table.DMsTable
-import com.vb4.table.GroupsTable
-import com.vb4.table.UsersTable
+import db.table.DMsTable
+import db.table.GroupsTable
+import db.table.UsersTable
 import com.vb4.user.Email
 import com.vb4.user.User
 import com.vb4.user.UserRepository

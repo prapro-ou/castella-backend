@@ -1,4 +1,4 @@
-package com.vb4.table
+package db.table
 
 import org.jetbrains.exposed.sql.Table
 

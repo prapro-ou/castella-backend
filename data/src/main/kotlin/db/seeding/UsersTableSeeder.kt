@@ -3,7 +3,7 @@ package repository.db.seeding
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.vb4.table.UsersTable
+import db.table.UsersTable
 import com.vb4.user.Email
 import com.vb4.user.User
 

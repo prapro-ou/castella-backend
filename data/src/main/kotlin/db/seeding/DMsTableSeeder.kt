@@ -7,7 +7,7 @@ import com.vb4.destination.DestinationName
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.vb4.table.DMsTable
+import db.table.DMsTable
 import com.vb4.user.Email
 
 object DMsTableSeeder : DatabaseSeeder {
