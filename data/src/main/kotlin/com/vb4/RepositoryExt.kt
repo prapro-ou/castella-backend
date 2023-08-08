@@ -21,8 +21,10 @@ suspend inline fun <T> runCatchWithTransaction(
     when (exception) {
         is NoSuchElementException ->
             ApiResult.Failure(
-                DomainException.NoSuchElementException(exception.message ?: ""),
+                DomainException.NoSuchElementException(exception.message.orEmpty()),
             )
+        is DomainException ->
+            ApiResult.Failure(exception)
         else ->
             ApiResult.Failure(DomainException.SystemException(exception.message.orEmpty(), exception))
     }

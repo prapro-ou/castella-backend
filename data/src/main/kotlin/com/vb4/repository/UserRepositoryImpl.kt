@@ -21,6 +21,9 @@ import com.vb4.user.UserRepository
 import db.table.AvatarsTable
 import db.table.DMsAvatarsTable
 import db.table.GroupsAvatarsTable
+import db.table.toDM
+import db.table.toGroup
+import db.table.toUser
 
 class UserRepositoryImpl(
     private val database: Database,
@@ -48,23 +51,3 @@ class UserRepositoryImpl(
             user.toUser(dms, groups)
         }
 }
-
-private fun ResultRow.toUser(dms: List<Destination.DM>, groups: List<Destination.Group>) = User(
-    email = Email(this[UsersTable.email]),
-    dms = dms,
-    groups = groups
-)
-
-private fun ResultRow.toDM() = Destination.DM(
-    id = DestinationId(this[DMsTable.id]),
-    name = DestinationName(this[DMsTable.name]),
-    to = Avatar(Email(this[AvatarsTable.email])),
-)
-
-private fun List<ResultRow>.toGroup() = Destination.Group(
-    id = DestinationId(this.first()[GroupsTable.id]),
-    name = DestinationName(this.first()[GroupsTable.name]),
-    to = this.map { it.toAvatar() },
-)
-
-private fun ResultRow.toAvatar() = Avatar(Email(this[AvatarsTable.email]))

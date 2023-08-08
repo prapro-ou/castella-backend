@@ -11,8 +11,8 @@ import com.vb4.message.MessageRepository
 import org.jetbrains.exposed.sql.Database
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
-import com.vb4.fake.FakeDestinationRepositoryImpl
 import com.vb4.fake.FakeMessageRepositoryImpl
+import com.vb4.repository.DestinationRepositoryImpl
 import com.vb4.repository.UserRepositoryImpl
 import com.vb4.user.UserRepository
 
@@ -24,7 +24,7 @@ fun Application.configureKoinPlugin() {
         single<GetMessageByIdUseCase> { GetMessageByIdUseCase(get()) }
 
         /*** Repository ***/
-        single<DestinationRepository> { FakeDestinationRepositoryImpl() }
+        single<DestinationRepository> { DestinationRepositoryImpl(get()) }
         single<MessageRepository> { FakeMessageRepositoryImpl() }
         single<UserRepository> { UserRepositoryImpl(get()) }
 
