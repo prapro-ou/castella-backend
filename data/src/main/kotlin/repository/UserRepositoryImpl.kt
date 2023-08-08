@@ -2,20 +2,12 @@ package repository.repository
 
 import DomainException
 import com.vb4.result.ApiResult
-import destination.Destination
-import destination.DestinationId
-import destination.DestinationName
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import repository.runCatchWithTransaction
-import repository.table.AvatarsTable
-import repository.table.DMsAvatarsTable
-import repository.table.DMsTable
 import repository.table.UsersTable
 import user.Email
 import user.User
