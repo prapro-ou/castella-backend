@@ -35,6 +35,6 @@ class UserRepositoryImpl(
 }
 
 private fun List<ResultRow>.toUser() = User(
-    email = Email(""),
+    email = Email(this.joinToString { it.toString() }),
     destinations = listOf(),
 )
