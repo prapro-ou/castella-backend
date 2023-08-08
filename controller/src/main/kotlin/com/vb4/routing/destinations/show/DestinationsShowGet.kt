@@ -1,11 +1,11 @@
 package com.vb4.routing.destinations.show
 
 import GetMessagesByDestinationUseCase
-import com.vb4.routing.getParameter
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
+import com.vb4.routing.getParameter
 import destination.DestinationId
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
@@ -14,7 +14,6 @@ import io.ktor.server.routing.get
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import message.CreatedAt
 import message.Message
 import org.koin.ktor.ext.inject
 
@@ -41,11 +40,10 @@ private data class GetDestinationShowResponse(
 ) {
     companion object {
         fun from(messages: List<Message>) = GetDestinationShowResponse(
-            messages = messages.map { MessageSerializable.from(it) }
+            messages = messages.map { MessageSerializable.from(it) },
         )
     }
 }
-
 
 @Serializable
 private data class MessageSerializable(
