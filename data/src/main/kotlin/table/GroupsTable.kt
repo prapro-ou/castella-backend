@@ -1,4 +1,4 @@
-package repository.table
+package table
 
 import org.jetbrains.exposed.sql.Table
 
