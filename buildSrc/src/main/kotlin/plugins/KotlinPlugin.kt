@@ -22,7 +22,7 @@ class KotlinPlugin : Plugin<Project> {
             }
             extensions.configure(KotlinJvmProjectExtension::class.java) {
                 jvmToolchain {
-                    (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+                    languageVersion.set(JavaLanguageVersion.of(11))
                 }
             }
         }

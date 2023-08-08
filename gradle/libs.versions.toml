@@ -14,6 +14,12 @@ logback = "1.2.11"
 # Koin
 koin = "3.4.3"
 
+# database
+exposed = "0.42.0"
+flyway = "9.21.1"
+hikari = "5.0.1"
+h2 = "2.2.220"
+
 # JavaMail
 java-mail = "1.6.2"
 
@@ -38,6 +44,20 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
 koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
 
+# Exposed
+exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
+exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
+exposed-java-time = { group = "org.jetbrains.exposed", name = "exposed-java-time", version.ref = "exposed" }
+
+# Flyway
+flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
+
+# Hikari
+hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
+
+# H2
+h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
+
 # JavaMail
 java-mail = { group = "com.sun.mail", name = "javax.mail", version.ref = "java-mail" }
 
@@ -59,6 +79,7 @@ ktor = [
 ]
 test = ["kotlin-test-junit", "ktor-server-tests"]
 koin = ["koin-core", "koin-ktor", "koin-logger"]
+database = ["exposed-core", "exposed-jdbc", "exposed-java-time", "flyway-core", "hikari"]
 
 [plugins]
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
