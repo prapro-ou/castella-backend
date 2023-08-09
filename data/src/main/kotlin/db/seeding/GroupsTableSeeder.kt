@@ -4,10 +4,10 @@ import com.vb4.Email
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupName
+import db.table.GroupsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import db.table.GroupsTable
 import repository.db.seeding.DatabaseSeeder
 
 object GroupsTableSeeder : DatabaseSeeder {

@@ -1,12 +1,13 @@
 package com.vb4.routing.dms.show
 
 import com.vb4.GetMessagesByDMIdUseCase
+import com.vb4.dm.DMId
+import com.vb4.message.Message
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
 import com.vb4.routing.getParameter
-import com.vb4.dm.DMId
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -14,7 +15,6 @@ import io.ktor.server.routing.get
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import com.vb4.message.Message
 import org.koin.ktor.ext.inject
 
 fun Route.dmsShowGet() {

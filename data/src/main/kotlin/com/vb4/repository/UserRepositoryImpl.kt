@@ -1,24 +1,24 @@
 package com.vb4.repository
 
 import com.vb4.DomainException
+import com.vb4.Email
 import com.vb4.result.ApiResult
+import com.vb4.user.User
+import com.vb4.user.UserRepository
+import db.table.AvatarsTable
+import db.table.DMsAvatarsTable
+import db.table.DMsTable
+import db.table.GroupsAvatarsTable
+import db.table.GroupsTable
+import db.table.UsersTable
+import db.table.toDM
+import db.table.toGroup
+import db.table.toUser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
 import repository.com.vb4.runCatchWithTransaction
-import db.table.DMsTable
-import db.table.GroupsTable
-import db.table.UsersTable
-import com.vb4.Email
-import com.vb4.user.User
-import com.vb4.user.UserRepository
-import db.table.AvatarsTable
-import db.table.DMsAvatarsTable
-import db.table.GroupsAvatarsTable
-import db.table.toDM
-import db.table.toGroup
-import db.table.toUser
 
 class UserRepositoryImpl(
     private val database: Database,

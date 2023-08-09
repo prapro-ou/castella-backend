@@ -13,16 +13,16 @@ import com.vb4.message.MessageRepository
 import com.vb4.message.Reply
 import com.vb4.message.Subject
 import com.vb4.result.ApiResult
-import javax.mail.Folder
-import javax.mail.Session
-import javax.mail.search.FromStringTerm
-import javax.mail.search.OrTerm
-import javax.mail.search.RecipientStringTerm
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.toKotlinInstant
 import repository.com.vb4.runCatchDomainException
+import javax.mail.Folder
+import javax.mail.Session
+import javax.mail.search.FromStringTerm
+import javax.mail.search.OrTerm
+import javax.mail.search.RecipientStringTerm
 
 class MessageRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -45,13 +45,13 @@ class MessageRepositoryImpl(
                     .search(
                         OrTerm(
                             FromStringTerm(dm.to.email.value),
-                            RecipientStringTerm(javax.mail.Message.RecipientType.TO, dm.to.email.value)
-                        )
+                            RecipientStringTerm(javax.mail.Message.RecipientType.TO, dm.to.email.value),
+                        ),
                     )
                     .toList()
                 messages.map { it.toDomainMessage(listOf()) }
             }
-    }
+        }
 
     override suspend fun getMessagesByGroup(group: Group): ApiResult<List<Message>, DomainException> {
         TODO("Not yet implemented")

@@ -2,14 +2,14 @@ package com.vb4.fake
 
 import com.vb4.DomainException
 import com.vb4.dm.DM
-import com.vb4.result.ApiResult
 import com.vb4.group.Group
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import com.vb4.message.Message
 import com.vb4.message.MessageId
 import com.vb4.message.MessageRepository
+import com.vb4.result.ApiResult
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import repository.com.vb4.runCatchDomainException
 
 class FakeMessageRepositoryImpl(
@@ -33,7 +33,6 @@ class FakeMessageRepositoryImpl(
                 listOf()
             }
         }
-
 
     override suspend fun getMessageById(messageId: MessageId): ApiResult<Message, DomainException> =
         withContext(dispatcher) {

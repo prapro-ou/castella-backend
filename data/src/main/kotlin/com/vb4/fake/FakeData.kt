@@ -1,18 +1,18 @@
 package com.vb4.fake
 
+import com.vb4.Email
 import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
 import com.vb4.dm.DMName
-import kotlinx.datetime.Clock
 import com.vb4.message.Body
 import com.vb4.message.CreatedAt
 import com.vb4.message.Message
 import com.vb4.message.MessageId
 import com.vb4.message.Reply
 import com.vb4.message.Subject
-import com.vb4.Email
 import com.vb4.user.User
+import kotlinx.datetime.Clock
 
 /*** DBに登録する情報 ***/
 internal val fakeDMData: List<DM> = listOf(

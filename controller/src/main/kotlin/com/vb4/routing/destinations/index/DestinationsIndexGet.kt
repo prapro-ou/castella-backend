@@ -1,18 +1,18 @@
 package com.vb4.routing.destinations.index
 
+import com.vb4.Email
 import com.vb4.GetDestinationsUseCase
 import com.vb4.dm.DM
+import com.vb4.group.Group
 import com.vb4.result.consume
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
-import com.vb4.group.Group
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
-import com.vb4.Email
 
 fun Route.destinationsIndexGet() {
     val getDestinationsUseCase by inject<GetDestinationsUseCase>()

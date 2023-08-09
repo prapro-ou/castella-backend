@@ -13,6 +13,5 @@ object DMMessagesTable : Table("dm_messages") {
     val body = text("body")
     val createdAt = time("created_at")
 
-
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }

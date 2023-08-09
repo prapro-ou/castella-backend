@@ -1,14 +1,14 @@
 package db.seeding
 
+import com.vb4.Email
 import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
 import com.vb4.dm.DMName
+import db.table.DMsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import db.table.DMsTable
-import com.vb4.Email
 import repository.db.seeding.DatabaseSeeder
 
 object DMsTableSeeder : DatabaseSeeder {
@@ -35,6 +35,6 @@ object DMsTableSeeder : DatabaseSeeder {
         id = DMId("example"),
         name = DMName("中銀"),
         userEmail = Email("inputUserEmail"),
-        to = Avatar(Email("inputToEmail"))
+        to = Avatar(Email("inputToEmail")),
     )
 }

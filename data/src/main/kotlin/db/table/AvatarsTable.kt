@@ -1,7 +1,7 @@
 package db.table
 
-import com.vb4.avatar.Avatar
 import com.vb4.Email
+import com.vb4.avatar.Avatar
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 

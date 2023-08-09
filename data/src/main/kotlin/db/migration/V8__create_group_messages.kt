@@ -1,6 +1,5 @@
 package db.migration
 
-import db.table.DMMessagesTable
 import db.table.GroupMessagesTable
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context

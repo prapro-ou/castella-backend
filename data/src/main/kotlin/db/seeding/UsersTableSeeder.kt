@@ -1,11 +1,11 @@
 package db.seeding
 
+import com.vb4.Email
+import com.vb4.user.User
+import db.table.UsersTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
-import db.table.UsersTable
-import com.vb4.Email
-import com.vb4.user.User
 import repository.db.seeding.DatabaseSeeder
 
 object UsersTableSeeder : DatabaseSeeder {
@@ -33,5 +33,4 @@ object UsersTableSeeder : DatabaseSeeder {
             groups = listOf(),
         ),
     )
-
 }
