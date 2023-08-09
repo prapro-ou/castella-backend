@@ -57,7 +57,7 @@ private data class MessageSerializable(
         fun from(message: Message) = listOf(
             MessageSerializable(
                 id = message.id.value,
-                email = message.sender.email.value,
+                email = message.from.email.value,
                 body = message.body.value,
                 createdAt = message.createdAt.value,
             ),

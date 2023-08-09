@@ -66,7 +66,7 @@ class MessageRepositoryImpl(
         subject = Subject(subject.orEmpty()),
         body = Body(content.toString()),
         createdAt = CreatedAt(sentDate.toInstant().toKotlinInstant()),
-        sender = Avatar(Email(getRecipients(javax.mail.Message.RecipientType.TO)?.getOrNull(0)?.toString() ?: "")),
+        from = Avatar(Email(getRecipients(javax.mail.Message.RecipientType.TO)?.getOrNull(0)?.toString() ?: "")),
         replies = replies,
     )
 }

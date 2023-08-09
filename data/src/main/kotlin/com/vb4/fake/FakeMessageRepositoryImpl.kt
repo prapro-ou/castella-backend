@@ -22,7 +22,7 @@ class FakeMessageRepositoryImpl(
         withContext(dispatcher) {
             runCatchDomainException {
                 fakeMessageData.filter {
-                    it.sender.email == dm.to.email
+                    it.from.email == dm.to.email
                 }
             }
         }
