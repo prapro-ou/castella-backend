@@ -34,6 +34,8 @@ inline fun <T> runCatchDomainException(block: () -> T): ApiResult<T, DomainExcep
     ApiResult.Success(block())
 } catch (e: CancellationException) {
     throw e
+} catch (e: DomainException) {
+    ApiResult.Failure(e)
 } catch (e: Exception) {
     ApiResult.Failure(DomainException.SystemException(e.message.orEmpty(), e))
 }
