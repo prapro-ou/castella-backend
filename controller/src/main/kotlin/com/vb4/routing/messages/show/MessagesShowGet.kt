@@ -65,7 +65,7 @@ private data class MessageSerializable(
 
         fun from(reply: Reply) = MessageSerializable(
             id = reply.id.value,
-            email = reply.sender.email.value,
+            email = reply.from.email.value,
             body = reply.body.value,
             createdAt = reply.createdAt.value,
         )

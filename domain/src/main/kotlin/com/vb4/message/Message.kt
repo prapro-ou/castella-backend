@@ -14,7 +14,7 @@ data class Message(
 
 data class Reply(
     val id: MessageId,
-    val sender: Avatar,
+    val from: Avatar,
     val subject: Subject,
     val body: Body,
     val createdAt: CreatedAt,
