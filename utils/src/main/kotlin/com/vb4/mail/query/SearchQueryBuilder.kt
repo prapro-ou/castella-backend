@@ -3,7 +3,6 @@ package com.vb4.mail.query
 import com.vb4.mail.query.term.ReplyToStringTerm
 import java.text.SimpleDateFormat
 import javax.mail.Message
-import javax.mail.search.AddressStringTerm
 import javax.mail.search.AndTerm
 import javax.mail.search.FromStringTerm
 import javax.mail.search.HeaderTerm
@@ -20,15 +19,15 @@ import kotlinx.datetime.toLocalDateTime
 class SearchQueryBuilder {
     private val query = mutableListOf<SearchTerm>()
 
-    fun from(email: String) = query.add(FromStringTerm(email))
+    fun from(pattern: String) = query.add(FromStringTerm(pattern))
 
-    fun to(email: String) = query.add(RecipientStringTerm(Message.RecipientType.TO, email))
+    fun to(pattern: String) = query.add(RecipientStringTerm(Message.RecipientType.TO, pattern))
 
-    fun cc(email: String) = query.add(RecipientStringTerm(Message.RecipientType.CC, email))
+    fun cc(pattern: String) = query.add(RecipientStringTerm(Message.RecipientType.CC, pattern))
 
-    fun bcc(email: String) = query.add(RecipientStringTerm(Message.RecipientType.BCC, email))
+    fun bcc(pattern: String) = query.add(RecipientStringTerm(Message.RecipientType.BCC, pattern))
 
-    fun replyTo(email: String) = query.add(ReplyToStringTerm(email))
+    fun replyTo(pattern: String) = query.add(ReplyToStringTerm(pattern))
 
     fun sentDate(comparison: Int, date: Instant, timeZone: TimeZone = TimeZone.UTC) {
         sentDate(comparison, date.toLocalDateTime(timeZone))

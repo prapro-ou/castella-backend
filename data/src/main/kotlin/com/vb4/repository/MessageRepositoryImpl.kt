@@ -7,6 +7,7 @@ import com.vb4.dm.DM
 import com.vb4.group.Group
 import com.vb4.mail.Imap
 import com.vb4.mail.Mail
+import com.vb4.mail.Mail.Companion.groupingOriginalToReply
 import com.vb4.message.Body
 import com.vb4.message.CreatedAt
 import com.vb4.message.Message
@@ -18,24 +19,33 @@ import com.vb4.result.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import repository.com.vb4.runCatchDomainException
+import com.vb4.runCatchDomainException
 
 class MessageRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MessageRepository {
 
-    private val imap = Imap.Gmail("user", "pass")
+    private val imap = Imap.Gmail("inputUserEmail", "")
 
     override suspend fun getMessagesByDM(dm: DM): ApiResult<List<Message>, DomainException> =
         withContext(dispatcher) {
             runCatchDomainException {
-                val messages = imap.search {
+                imap.search {
                     or {
-                        from(email = dm.to.email.value)
-                        to(email = dm.to.email.value)
+                        and {
+                            from(pattern = dm.to.email.value)
+                            to(pattern = dm.userEmail.value)
+                        }
+                        and {
+                            from(pattern = dm.userEmail.value)
+                            to(pattern = dm.to.email.value)
+                        }
                     }
                 }
-                messages.map { it.toMessage(listOf()) }
+                    .groupingOriginalToReply()
+                    .map { (original, replies) ->
+                        original.toMessage(replies = replies.map { it.toReply() })
+                    }
             }
         }
 
@@ -49,7 +59,7 @@ class MessageRepositoryImpl(
         runCatchDomainException {
             val message = imap.getMessageById(messageId.value)
                 ?: throw DomainException.NoSuchElementException("")
-            val replies = imap.search {inReplyTo(messageId.value) }.map { it.toReply() }
+            val replies = imap.search { inReplyTo(messageId.value) }.map { it.toReply() }
             message.toMessage(replies)
         }
     }

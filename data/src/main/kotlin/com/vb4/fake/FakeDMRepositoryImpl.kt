@@ -8,7 +8,7 @@ import com.vb4.result.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import repository.com.vb4.runCatchDomainException
+import com.vb4.runCatchDomainException
 
 class FakeDMRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,

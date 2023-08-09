@@ -1,6 +1,5 @@
-package repository.com.vb4
+package com.vb4
 
-import com.vb4.DomainException
 import com.vb4.result.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

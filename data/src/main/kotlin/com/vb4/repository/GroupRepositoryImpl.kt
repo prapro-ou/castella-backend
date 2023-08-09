@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
-import repository.com.vb4.runCatchWithTransaction
+import com.vb4.runCatchWithTransaction
 
 class GroupRepositoryImpl(
     private val database: Database,

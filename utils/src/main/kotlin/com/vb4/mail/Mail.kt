@@ -7,7 +7,10 @@ import kotlinx.datetime.toKotlinInstant
 class Mail private constructor(private val message: Message) {
 
     val id: String by lazy {
-        message.getHeader("Message-ID").firstOrNull().orEmpty()
+        message
+            .getHeader("Message-ID")
+            ?.firstOrNull()
+            .orEmpty()
     }
     val from: String by lazy {
         message
@@ -35,7 +38,7 @@ class Mail private constructor(private val message: Message) {
     val inReplyTo: String by lazy {
         message
             .getHeader("In-Reply-To")
-            .firstOrNull()
+            ?.firstOrNull()
             .orEmpty()
     }
     val subject: String by lazy { message.subject.orEmpty() }
@@ -44,5 +47,13 @@ class Mail private constructor(private val message: Message) {
 
     companion object {
         fun from(message: Message) = Mail(message)
+
+        fun List<Mail>.groupingOriginalToReply(): List<Pair<Mail, List<Mail>>> {
+            val mails = this.groupBy { it.inReplyTo }
+            return (mails[""] ?: emptyList())
+                .fold(emptyList()) { acc, original ->
+                    acc + (original to (mails[original.id] ?: emptyList()))
+                }
+        }
     }
 }

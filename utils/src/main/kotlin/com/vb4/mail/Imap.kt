@@ -15,13 +15,14 @@ sealed interface Imap {
                 .getStore("imaps")
                 .apply { connect("imap.gmail.com", 993, user, password) }
                 .getFolder("INBOX")
+                .apply { open(Folder.READ_ONLY) }
         }
     }
 
     fun search(block: SearchQueryBuilder.() -> Unit) : List<Mail> = SearchQueryBuilder()
         .apply(block)
         .build()
-        .let { folder.search(it) }
+        .let { term -> folder.search(term) }
         .map { Mail.from(it) }
 
     fun hasNewMessage() = folder.hasNewMessages()

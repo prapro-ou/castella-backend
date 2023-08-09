@@ -35,6 +35,6 @@ object DMsTableSeeder : DatabaseSeeder {
         id = DMId("example"),
         name = DMName("中銀"),
         userEmail = Email("inputUserEmail"),
-        to = Avatar(Email("inputToEmail")),
+        to = Avatar(Email("notifications@github.com")),
     )
 }
