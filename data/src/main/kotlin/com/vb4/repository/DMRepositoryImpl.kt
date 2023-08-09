@@ -8,17 +8,14 @@ import com.vb4.result.ApiResult
 import db.table.AvatarsTable
 import db.table.DMsAvatarsTable
 import db.table.DMsTable
-import db.table.GroupsAvatarsTable
-import db.table.GroupsTable
 import db.table.toDM
-import db.table.toGroup
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
 import repository.com.vb4.runCatchWithTransaction
 
-class DestinationRepositoryImpl(
+class DMRepositoryImpl(
     private val database: Database,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMRepository {
