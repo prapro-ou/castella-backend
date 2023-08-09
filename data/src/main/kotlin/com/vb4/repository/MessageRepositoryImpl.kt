@@ -15,7 +15,6 @@ import com.vb4.message.Subject
 import com.vb4.result.ApiResult
 import javax.mail.Folder
 import javax.mail.Session
-import javax.mail.UIDFolder
 import javax.mail.search.FromStringTerm
 import javax.mail.search.OrTerm
 import javax.mail.search.RecipientStringTerm
@@ -34,7 +33,7 @@ class MessageRepositoryImpl(
             .getInstance(System.getProperties(), null)
             .getStore("imaps")
             .apply {
-                connect("imap.gmail.com", 993, "inputUserEmail", "inputPassword")
+                connect("imap.gmail.com", 993, "inputUserEmail", "inputUserPassword")
             }
             .getFolder("INBOX")
             .apply { open(Folder.READ_ONLY) }
@@ -63,7 +62,7 @@ class MessageRepositoryImpl(
     }
 
     private fun javax.mail.Message.toDomainMessage(replies: List<Reply>) = Message(
-        id = MessageId((folder as UIDFolder).getUID(this).toString()),
+        id = MessageId(getHeader("Message-ID").getOrNull(0).orEmpty()),
         subject = Subject(subject.orEmpty()),
         body = Body(content.toString()),
         createdAt = CreatedAt(sentDate.toInstant().toKotlinInstant()),
