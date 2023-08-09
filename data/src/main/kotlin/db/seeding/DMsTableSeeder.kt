@@ -10,7 +10,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import db.table.DMsTable
 import com.vb4.Email
 import repository.db.seeding.DatabaseSeeder
-import repository.db.seeding.UsersTableSeeder
 
 object DMsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {
@@ -32,5 +31,10 @@ object DMsTableSeeder : DatabaseSeeder {
             // 使用しない
             to = Avatar(Email("")),
         )
-    }
+    } + DM(
+        id = DMId("example"),
+        name = DMName("中銀"),
+        userEmail = Email("inputUserEmail"),
+        to = Avatar(Email("inputToEmail"))
+    )
 }

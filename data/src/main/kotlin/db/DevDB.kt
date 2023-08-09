@@ -10,7 +10,7 @@ import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import javax.sql.DataSource
 import db.seeding.GroupsTableSeeder
-import repository.db.seeding.UsersTableSeeder
+import db.seeding.UsersTableSeeder
 
 val DevDB: Database by lazy {
     val pool = hikari()

@@ -18,7 +18,7 @@ fun Route.destinationsIndexGet() {
     val getDestinationsUseCase by inject<GetDestinationsUseCase>()
 
     get("") {
-        getDestinationsUseCase(email = Email("sample1@example.com"))
+        getDestinationsUseCase(email = Email("inputUserEmail"))
             .mapBoth(
                 success = { (dm, group) -> GetDestinationIndexResponse.from(dm, group) },
                 failure = { ExceptionSerializable.from(it) },

@@ -17,6 +17,7 @@ import com.vb4.fake.FakeMessageRepositoryImpl
 import com.vb4.group.GroupRepository
 import com.vb4.repository.DMRepositoryImpl
 import com.vb4.repository.GroupRepositoryImpl
+import com.vb4.repository.MessageRepositoryImpl
 import com.vb4.repository.UserRepositoryImpl
 import com.vb4.user.UserRepository
 
@@ -31,7 +32,7 @@ fun Application.configureKoinPlugin() {
         /*** Repository ***/
         single<DMRepository> { DMRepositoryImpl(get()) }
         single<GroupRepository> { GroupRepositoryImpl(get()) }
-        single<MessageRepository> { FakeMessageRepositoryImpl() }
+        single<MessageRepository> { MessageRepositoryImpl() }
         single<UserRepository> { UserRepositoryImpl(get()) }
 
         single<Database> { DevDB }

@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
 import db.table.GroupsTable
 import repository.db.seeding.DatabaseSeeder
-import repository.db.seeding.UsersTableSeeder
 
 object GroupsTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {

@@ -1,4 +1,4 @@
-package repository.db.seeding
+package db.seeding
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import db.table.UsersTable
 import com.vb4.Email
 import com.vb4.user.User
+import repository.db.seeding.DatabaseSeeder
 
 object UsersTableSeeder : DatabaseSeeder {
     override fun seeding(database: Database) {
@@ -23,7 +24,14 @@ object UsersTableSeeder : DatabaseSeeder {
             // 使用しない
             dms = listOf(),
             groups = listOf(),
-        )
+        ),
+        User(
+            email = Email("inputUserEmail"),
+
+            // 使用しない
+            dms = listOf(),
+            groups = listOf(),
+        ),
     )
 
 }
