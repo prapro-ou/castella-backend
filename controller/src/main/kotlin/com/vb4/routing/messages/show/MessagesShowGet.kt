@@ -1,4 +1,4 @@
-package com.vb4.routing.destinations.messages.show
+package com.vb4.routing.messages.show
 
 import com.vb4.GetMessageByIdUseCase
 import com.vb4.result.consume

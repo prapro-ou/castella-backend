@@ -1,4 +1,4 @@
-package com.vb4.routing.destinations.show
+package com.vb4.routing.dms.show
 
 import com.vb4.GetMessagesByDMUseCase
 import com.vb4.result.consume
@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 import com.vb4.message.Message
 import org.koin.ktor.ext.inject
 
-fun Route.destinationsShowGet() {
+fun Route.dmsShowGet() {
     val getMessagesByDestinationUseCase by inject<GetMessagesByDMUseCase>()
 
     get("{destinationId}") {
