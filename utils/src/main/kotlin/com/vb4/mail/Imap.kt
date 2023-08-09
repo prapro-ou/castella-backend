@@ -18,13 +18,13 @@ sealed interface Imap {
         }
     }
 
-    fun search(block: SearchQueryBuilder.() -> Unit):List<Message> = SearchQueryBuilder()
+    fun search(block: SearchQueryBuilder.() -> Unit) : List<Mail> = SearchQueryBuilder()
         .apply(block)
         .build()
         .let { folder.search(it) }
-        .toList()
+        .map { Mail.from(it) }
 
     fun hasNewMessage() = folder.hasNewMessages()
 
-    fun getMessageById(messageId: String): Message? = search { messageId(messageId) }.firstOrNull()
+    fun getMessageById(messageId: String): Mail? = search { messageId(messageId) }.firstOrNull()
 }
