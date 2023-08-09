@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import repository.com.vb4.runCatchDomainException
-import com.vb4.user.Email
+import com.vb4.Email
 import com.vb4.user.User
 import com.vb4.user.UserRepository
 

@@ -11,7 +11,7 @@ import com.vb4.message.Message
 import com.vb4.message.MessageId
 import com.vb4.message.Reply
 import com.vb4.message.Subject
-import com.vb4.user.Email
+import com.vb4.Email
 import com.vb4.user.User
 
 /*** DBに登録する情報 ***/
@@ -19,21 +19,25 @@ internal val fakeDMData: List<DM> = listOf(
     DM(
         id = DMId("DestinationId1"),
         name = DMName("DestinationName1"),
+        userEmail = Email("sample1@example.com"),
         to = Avatar(Email("sample2@example.com")),
     ),
     DM(
         id = DMId("DestinationId2"),
         name = DMName("DestinationName2"),
+        userEmail = Email("sample1@example.com"),
         to = Avatar(Email("sample3@example.com")),
     ),
     DM(
         id = DMId("DestinationId3"),
         name = DMName("DestinationName3"),
+        userEmail = Email("sample1@example.com"),
         to = Avatar(Email("sample4@example.com")),
     ),
     DM(
         id = DMId("DestinationId4"),
         name = DMName("DestinationName4"),
+        userEmail = Email("sample1@example.com"),
         to = Avatar(Email("sample5@example.com")),
     ),
 )

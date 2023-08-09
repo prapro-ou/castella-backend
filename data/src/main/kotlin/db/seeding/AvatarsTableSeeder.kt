@@ -1,7 +1,7 @@
 package db.seeding
 
 import com.vb4.avatar.Avatar
-import com.vb4.user.Email
+import com.vb4.Email
 import db.table.AvatarsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert

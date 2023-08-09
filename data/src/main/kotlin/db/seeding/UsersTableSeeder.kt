@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
 import db.table.UsersTable
-import com.vb4.user.Email
+import com.vb4.Email
 import com.vb4.user.User
 
 object UsersTableSeeder : DatabaseSeeder {

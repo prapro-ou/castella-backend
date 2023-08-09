@@ -1,5 +1,6 @@
 package db.seeding
 
+import com.vb4.Email
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupName
@@ -27,6 +28,7 @@ object GroupsTableSeeder : DatabaseSeeder {
             name = GroupName("GroupName$index"),
 
             // 使用しない
+            userEmail = Email("sample1@example.com"),
             to = listOf(),
         )
     }

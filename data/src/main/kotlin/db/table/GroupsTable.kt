@@ -1,5 +1,6 @@
 package db.table
 
+import com.vb4.Email
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupName
@@ -17,5 +18,6 @@ object GroupsTable : Table("groups") {
 internal fun List<ResultRow>.toGroup() = Group(
     id = GroupId(this.first()[GroupsTable.id]),
     name = GroupName(this.first()[GroupsTable.name]),
+    userEmail = Email(this.first()[GroupsTable.userEmail]),
     to = this.map { it.toAvatar() },
 )

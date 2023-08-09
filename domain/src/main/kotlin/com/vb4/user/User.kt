@@ -1,5 +1,6 @@
 package com.vb4.user
 
+import com.vb4.Email
 import com.vb4.dm.DM
 import com.vb4.group.Group
 
@@ -9,6 +10,3 @@ data class User(
     val dms: List<DM>,
     val groups: List<Group>,
 )
-
-@JvmInline
-value class Email(val value: String)

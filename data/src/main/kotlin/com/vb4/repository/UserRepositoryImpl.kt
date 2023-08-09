@@ -10,7 +10,7 @@ import repository.com.vb4.runCatchWithTransaction
 import db.table.DMsTable
 import db.table.GroupsTable
 import db.table.UsersTable
-import com.vb4.user.Email
+import com.vb4.Email
 import com.vb4.user.User
 import com.vb4.user.UserRepository
 import db.table.AvatarsTable

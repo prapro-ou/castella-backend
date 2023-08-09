@@ -1,6 +1,7 @@
 package com.vb4.user
 
 import com.vb4.DomainException
+import com.vb4.Email
 import com.vb4.result.ApiResult
 
 interface UserRepository {

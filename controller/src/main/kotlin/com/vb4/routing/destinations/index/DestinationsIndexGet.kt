@@ -12,7 +12,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
-import com.vb4.user.Email
+import com.vb4.Email
 
 fun Route.destinationsIndexGet() {
     val getDestinationsUseCase by inject<GetDestinationsUseCase>()

@@ -7,7 +7,7 @@ import com.vb4.group.Group
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.vb4.user.Email
+import com.vb4.Email
 import com.vb4.user.UserRepository
 
 class GetDestinationsUseCase(

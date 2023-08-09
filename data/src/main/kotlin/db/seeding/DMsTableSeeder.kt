@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.transactions.transaction
 import db.table.DMsTable
-import com.vb4.user.Email
+import com.vb4.Email
 import repository.db.seeding.DatabaseSeeder
 import repository.db.seeding.UsersTableSeeder
 
@@ -18,7 +18,7 @@ object DMsTableSeeder : DatabaseSeeder {
             DMsTable.batchInsert(dmData) {
                 this[DMsTable.id] = it.id.value
                 this[DMsTable.name] = it.name.value
-                this[DMsTable.userEmail] = UsersTableSeeder.userData.first().email.value
+                this[DMsTable.userEmail] = it.userEmail.value
             }
         }
     }
@@ -27,6 +27,7 @@ object DMsTableSeeder : DatabaseSeeder {
         DM(
             id = DMId("DMId$index"),
             name = DMName("DMName$index"),
+            userEmail = Email("sample1@example.com"),
 
             // 使用しない
             to = Avatar(Email("")),
