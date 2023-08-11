@@ -1,11 +1,13 @@
 package com.vb4.mail.query
 
+import com.vb4.mail.query.term.NothingTerm
 import com.vb4.mail.query.term.ReplyToStringTerm
 import java.text.SimpleDateFormat
 import javax.mail.Message
 import javax.mail.search.AndTerm
 import javax.mail.search.FromStringTerm
 import javax.mail.search.HeaderTerm
+import javax.mail.search.MessageIDTerm
 import javax.mail.search.OrTerm
 import javax.mail.search.RecipientStringTerm
 import javax.mail.search.SearchException
@@ -64,7 +66,7 @@ class SearchQueryBuilder {
     }
 
     fun messageId(id: String) {
-        header("Message-Id", id)
+        query.add(MessageIDTerm(id))
     }
 
     fun inReplyTo(id: String) {
@@ -80,7 +82,7 @@ class SearchQueryBuilder {
     }
 
     internal fun build(): SearchTerm = when (query.size) {
-        0 -> throw SearchException("There is no query.")
+        0 -> NothingTerm
         1 -> query.first()
         else -> query.reduce { left, right -> AndTerm(left, right) }
     }

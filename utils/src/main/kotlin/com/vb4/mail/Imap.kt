@@ -1,6 +1,7 @@
 package com.vb4.mail
 
 import com.vb4.mail.query.SearchQueryBuilder
+import javax.mail.FetchProfile
 import javax.mail.Folder
 import javax.mail.Message
 import javax.mail.Session
@@ -23,9 +24,17 @@ sealed interface Imap {
         .apply(block)
         .build()
         .let { term -> folder.search(term) }
+        .also { messages -> folder.fetch(messages, fetchProfile) }
         .map { Mail.from(it) }
 
-    fun hasNewMessage() = folder.hasNewMessages()
-
     fun getMessageById(messageId: String): Mail? = search { messageId(messageId) }.firstOrNull()
+}
+
+private val fetchProfile = FetchProfile().apply {
+    add(FetchProfile.Item.ENVELOPE)
+    add(FetchProfile.Item.CONTENT_INFO)
+    add(FetchProfile.Item.FLAGS)
+    add(FetchProfile.Item.SIZE)
+    add("Message-ID")
+    add("In-Reply-To")
 }
