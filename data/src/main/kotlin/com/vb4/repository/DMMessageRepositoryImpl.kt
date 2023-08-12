@@ -41,10 +41,12 @@ class DMMessageRepositoryImpl(
         dm: DM,
         messageId: DMMessageId,
     ): ApiResult<DMMessage, DomainException> = runCatchWithContext(dispatcher) {
-        val message = imap.getMessageById(messageId.value)
-            ?: throw DomainException.NoSuchElementException("")
-        val replies = imap.search { inReplyTo(messageId.value) }.map { it.toDMReply() }
-        message.toDMMessage(replies)
+        imap.search { dm(dm.userEmail.value, dm.to.email.value) }
+            .groupingOriginalToReply()
+            .first { (original, _) -> original.id == messageId.value }
+            .let { (original, replies) ->
+                original.toDMMessage(replies = replies.map { it.toDMReply() })
+            }
     }
 
     override suspend fun insertDMMessage(
