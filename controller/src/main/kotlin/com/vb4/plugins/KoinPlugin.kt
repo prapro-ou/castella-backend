@@ -1,5 +1,6 @@
 package com.vb4.plugins
 
+import com.vb4.GetDMMessageByIdUseCase
 import com.vb4.GetDestinationsUseCase
 import com.vb4.GetMessageByIdUseCase
 import com.vb4.GetMessagesByDMIdUseCase
@@ -27,12 +28,14 @@ fun Application.configureKoinPlugin() {
         single<GetMessagesByDMIdUseCase> { GetMessagesByDMIdUseCase(get(), get()) }
         single<GetMessagesByGroupIdUseCase> { GetMessagesByGroupIdUseCase(get(), get()) }
         single<GetMessageByIdUseCase> { GetMessageByIdUseCase(get()) }
+        single<GetDMMessageByIdUseCase> { GetDMMessageByIdUseCase(get()) }
 
         /*** Repository ***/
-        single<DMRepository> { DMRepositoryImpl(get()) }
+        single<DMRepository> { DMRepositoryImpl(get(), get()) }
         single<GroupRepository> { GroupRepositoryImpl(get()) }
-        single<MessageRepository> { MessageRepositoryImpl(Imap.Gmail("", "")) }
+        single<MessageRepository> { MessageRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get()) }
+        single<Imap> { Imap.Gmail("", "") }
 
         single<Database> { DevDB }
     }

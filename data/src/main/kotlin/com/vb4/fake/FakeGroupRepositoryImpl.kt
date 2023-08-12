@@ -3,6 +3,8 @@ package com.vb4.fake
 import com.vb4.DomainException
 import com.vb4.group.Group
 import com.vb4.group.GroupId
+import com.vb4.group.GroupMessage
+import com.vb4.group.GroupMessageId
 import com.vb4.group.GroupRepository
 import com.vb4.result.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,4 +21,15 @@ class FakeGroupRepositoryImpl(
                 throw DomainException.NoSuchElementException("")
             }
         }
+
+    override suspend fun getGroupMessages(groupId: GroupId): ApiResult<List<GroupMessage>, DomainException> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getGroupMessage(
+        groupId: GroupId,
+        messageId: GroupMessageId
+    ): ApiResult<GroupMessage, DomainException> {
+        TODO("Not yet implemented")
+    }
 }
