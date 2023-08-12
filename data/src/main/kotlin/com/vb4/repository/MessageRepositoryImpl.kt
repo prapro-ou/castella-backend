@@ -23,10 +23,9 @@ import com.vb4.runCatchDomainException
 import com.vb4.runCatchWithContext
 
 class MessageRepositoryImpl(
+    private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : MessageRepository {
-
-    private val imap = Imap.Gmail("inputUserEmail", "")
 
     override suspend fun getMessagesByDM(dm: DM): ApiResult<List<Message>, DomainException> =
         runCatchWithContext(dispatcher) {
