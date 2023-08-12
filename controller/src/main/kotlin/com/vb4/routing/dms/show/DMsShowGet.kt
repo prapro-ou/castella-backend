@@ -36,17 +36,17 @@ fun Route.dmsShowGet() {
 
 @Serializable
 private data class GetDMsShowResponse(
-    val messages: List<MessageSerializable>,
+    val messages: List<DMMessageSerializable>,
 ) {
     companion object {
         fun from(messages: List<DMMessage>) = GetDMsShowResponse(
-            messages = messages.map { MessageSerializable.from(it) },
+            messages = messages.map { DMMessageSerializable.from(it) },
         )
     }
 }
 
 @Serializable
-private data class MessageSerializable(
+private data class DMMessageSerializable(
     val id: String,
     val subject: String,
     val body: String,
@@ -54,7 +54,7 @@ private data class MessageSerializable(
     @SerialName("reply_count") val replyCount: Int,
 ) {
     companion object {
-        fun from(message: DMMessage) = MessageSerializable(
+        fun from(message: DMMessage) = DMMessageSerializable(
             id = message.id.value,
             subject = message.subject.value,
             body = message.body.value,

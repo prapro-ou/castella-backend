@@ -26,7 +26,7 @@ fun Route.dmsShowMessagesShowGet() {
         call.getTwoParameter<String, String>("dmId", "messageId")
             .flatMap { (dmId, messageId) -> getMessageByIdUseCase(DMId(dmId), DMMessageId(messageId)) }
             .mapBoth(
-                success = { messages -> MessagesShowGetResponse.from(messages) },
+                success = { messages -> DMsMessagesShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -37,18 +37,18 @@ fun Route.dmsShowMessagesShowGet() {
 }
 
 @Serializable
-private data class MessagesShowGetResponse(
-    val messages: List<MessageSerializable>,
+private data class DMsMessagesShowGetResponse(
+    val messages: List<DMMessageSerializable>,
 ) {
     companion object {
-        fun from(message: DMMessage) = MessagesShowGetResponse(
-            messages = MessageSerializable.from(message),
+        fun from(message: DMMessage) = DMsMessagesShowGetResponse(
+            messages = DMMessageSerializable.from(message),
         )
     }
 }
 
 @Serializable
-private data class MessageSerializable(
+private data class DMMessageSerializable(
     val id: String,
     val email: String,
     val body: String,
@@ -56,7 +56,7 @@ private data class MessageSerializable(
 ) {
     companion object {
         fun from(message: DMMessage) = listOf(
-            MessageSerializable(
+            DMMessageSerializable(
                 id = message.id.value,
                 email = message.from.email.value,
                 body = message.body.value,
@@ -64,7 +64,7 @@ private data class MessageSerializable(
             ),
         ) + message.replies.map { reply -> from(reply = reply) }
 
-        fun from(reply: DMReply) = MessageSerializable(
+        fun from(reply: DMReply) = DMMessageSerializable(
             id = reply.id.value,
             email = reply.from.email.value,
             body = reply.body.value,

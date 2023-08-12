@@ -26,7 +26,7 @@ fun Route.groupsMessagesShowGet() {
         call.getTwoParameter<String, String>("groupId", "messageId")
             .flatMap { (groupId, messageId) -> getMessageByIdUseCase(GroupId(groupId), GroupMessageId(messageId)) }
             .mapBoth(
-                success = { messages -> MessagesShowGetResponse.from(messages) },
+                success = { messages -> GroupsMessagesShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -37,18 +37,18 @@ fun Route.groupsMessagesShowGet() {
 }
 
 @Serializable
-private data class MessagesShowGetResponse(
-    val messages: List<MessageSerializable>,
+private data class GroupsMessagesShowGetResponse(
+    val messages: List<GroupMessageSerializable>,
 ) {
     companion object {
-        fun from(message: GroupMessage) = MessagesShowGetResponse(
-            messages = MessageSerializable.from(message),
+        fun from(message: GroupMessage) = GroupsMessagesShowGetResponse(
+            messages = GroupMessageSerializable.from(message),
         )
     }
 }
 
 @Serializable
-private data class MessageSerializable(
+private data class GroupMessageSerializable(
     val id: String,
     val email: String,
     val body: String,
@@ -56,7 +56,7 @@ private data class MessageSerializable(
 ) {
     companion object {
         fun from(message: GroupMessage) = listOf(
-            MessageSerializable(
+            GroupMessageSerializable(
                 id = message.id.value,
                 email = message.from.email.value,
                 body = message.body.value,
@@ -64,7 +64,7 @@ private data class MessageSerializable(
             ),
         ) + message.replies.map { reply -> from(reply = reply) }
 
-        fun from(reply: GroupReply) = MessageSerializable(
+        fun from(reply: GroupReply) = GroupMessageSerializable(
             id = reply.id.value,
             email = reply.from.email.value,
             body = reply.body.value,

@@ -36,17 +36,17 @@ fun Route.groupsShowGet() {
 
 @Serializable
 private data class GetGroupsShowResponse(
-    val messages: List<MessageSerializable>,
+    val messages: List<GroupMessageSerializable>,
 ) {
     companion object {
         fun from(messages: List<GroupMessage>) = GetGroupsShowResponse(
-            messages = messages.map { MessageSerializable.from(it) },
+            messages = messages.map { GroupMessageSerializable.from(it) },
         )
     }
 }
 
 @Serializable
-private data class MessageSerializable(
+private data class GroupMessageSerializable(
     val id: String,
     val subject: String,
     val body: String,
@@ -54,7 +54,7 @@ private data class MessageSerializable(
     @SerialName("reply_count") val replyCount: Int,
 ) {
     companion object {
-        fun from(message: GroupMessage) = MessageSerializable(
+        fun from(message: GroupMessage) = GroupMessageSerializable(
             id = message.id.value,
             subject = message.subject.value,
             body = message.body.value,
