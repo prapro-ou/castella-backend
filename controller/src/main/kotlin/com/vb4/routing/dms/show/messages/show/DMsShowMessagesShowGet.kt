@@ -1,6 +1,6 @@
 package com.vb4.routing.dms.show.messages.show
 
-import com.vb4.GetDMMessageByIdUseCase
+import com.vb4.dm.GetDMMessageByIdUseCase
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId

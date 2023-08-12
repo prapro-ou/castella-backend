@@ -1,6 +1,6 @@
 package com.vb4.routing.dms.show
 
-import com.vb4.GetMessagesByDMIdUseCase
+import com.vb4.dm.GetDMMessagesByDMIdUseCase
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.result.consume
@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
 fun Route.dmsShowGet() {
-    val getMessagesByDMIdUseCase by inject<GetMessagesByDMIdUseCase>()
+    val getMessagesByDMIdUseCase by inject<GetDMMessagesByDMIdUseCase>()
 
     get("{dmId}") {
         call.getParameter<String>("dmId")

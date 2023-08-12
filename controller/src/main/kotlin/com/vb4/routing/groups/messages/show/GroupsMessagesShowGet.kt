@@ -1,6 +1,6 @@
 package com.vb4.routing.groups.messages.show
 
-import com.vb4.GetGroupMessageByIdUseCase
+import com.vb4.group.GetGroupMessageByIdUseCase
 import com.vb4.group.GroupId
 import com.vb4.group.GroupMessage
 import com.vb4.group.GroupMessageId

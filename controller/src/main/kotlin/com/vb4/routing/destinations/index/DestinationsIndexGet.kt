@@ -1,7 +1,7 @@
 package com.vb4.routing.destinations.index
 
 import com.vb4.Email
-import com.vb4.GetDestinationsUseCase
+import com.vb4.destination.GetDestinationsUseCase
 import com.vb4.dm.DM
 import com.vb4.group.Group
 import com.vb4.result.consume

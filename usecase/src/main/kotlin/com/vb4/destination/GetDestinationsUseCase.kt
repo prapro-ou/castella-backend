@@ -1,5 +1,6 @@
-package com.vb4
+package com.vb4.destination
 
+import com.vb4.DomainException
 import com.vb4.dm.DM
 import com.vb4.result.ApiResult
 import com.vb4.result.map
