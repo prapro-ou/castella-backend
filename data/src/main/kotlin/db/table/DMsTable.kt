@@ -16,9 +16,9 @@ object DMsTable : Table("dms") {
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
 
-internal fun ResultRow.toDM() = DM(
+internal fun ResultRow.toDM() = DM.reconstruct(
     id = DMId(this[DMsTable.id]),
     name = DMName(this[DMsTable.name]),
     userEmail = Email(this[DMsTable.userEmail]),
-    to = Avatar(Email(this[AvatarsTable.email])),
+    to = Avatar.reconstruct(Email(this[AvatarsTable.email])),
 )

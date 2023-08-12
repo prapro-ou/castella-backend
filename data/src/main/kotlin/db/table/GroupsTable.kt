@@ -15,7 +15,7 @@ object GroupsTable : Table("groups") {
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
 
-internal fun List<ResultRow>.toGroup() = Group(
+internal fun List<ResultRow>.toGroup() = Group.reconstruct(
     id = GroupId(this.first()[GroupsTable.id]),
     name = GroupName(this.first()[GroupsTable.name]),
     userEmail = Email(this.first()[GroupsTable.userEmail]),

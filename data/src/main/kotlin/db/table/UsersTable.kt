@@ -13,6 +13,6 @@ object UsersTable : Table("users") {
     override val primaryKey: PrimaryKey = PrimaryKey(email)
 }
 
-internal fun ResultRow.toUser() = User(
+internal fun ResultRow.toUser() = User.reconstruct(
     email = Email(this[UsersTable.email]),
 )

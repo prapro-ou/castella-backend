@@ -11,4 +11,4 @@ object AvatarsTable : Table("avatars") {
     override val primaryKey: PrimaryKey = PrimaryKey(email)
 }
 
-internal fun ResultRow.toAvatar() = Avatar(Email(this[AvatarsTable.email]))
+internal fun ResultRow.toAvatar() = Avatar.reconstruct(Email(this[AvatarsTable.email]))

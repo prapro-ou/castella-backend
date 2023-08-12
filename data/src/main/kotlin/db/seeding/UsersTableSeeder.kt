@@ -18,7 +18,7 @@ object UsersTableSeeder : DatabaseSeeder {
     }
 
     internal val userData = listOf(
-        User(email = Email("sample1@example.com"),),
-        User(email = Email("inputUserEmail"),),
+        User.reconstruct(email = Email("sample1@example.com"),),
+        User.reconstruct(email = Email("inputUserEmail"),),
     )
 }

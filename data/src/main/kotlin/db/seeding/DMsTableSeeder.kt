@@ -23,18 +23,18 @@ object DMsTableSeeder : DatabaseSeeder {
     }
 
     val dmData: List<DM> = List(5) { index ->
-        DM(
+        DM.reconstruct(
             id = DMId("DMId$index"),
             name = DMName("DMName$index"),
             userEmail = Email("sample1@example.com"),
 
             // 使用しない
-            to = Avatar(Email("")),
+            to = Avatar.reconstruct(Email("")),
         )
-    } + DM(
+    } + DM.reconstruct(
         id = DMId("example"),
         name = DMName("中銀"),
         userEmail = Email("inputUserEmail"),
-        to = Avatar(Email("notifications@github.com")),
+        to = Avatar.reconstruct(Email("notifications@github.com")),
     )
 }

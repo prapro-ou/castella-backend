@@ -42,20 +42,20 @@ class DMMessageRepositoryImpl(
         message.toDMMessage(replies)
     }
 
-    private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage(
+    private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(
         id = DMMessageId(id),
         subject = DMSubject(subject),
         body = DMBody(body),
         createdAt = DMCreatedAt(createdAt),
-        from = Avatar(Email(from)),
+        from = Avatar.reconstruct(Email(from)),
         replies = replies,
     )
 
-    private fun ImapMail.toDMReply() = DMReply(
+    private fun ImapMail.toDMReply() = DMReply.reconstruct(
         id = DMMessageId(id),
         subject = DMSubject(subject),
         body = DMBody(body),
         createdAt = DMCreatedAt(createdAt),
-        from = Avatar(Email(from)),
+        from = Avatar.reconstruct(Email(from)),
     )
 }

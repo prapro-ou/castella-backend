@@ -22,7 +22,7 @@ object GroupsTableSeeder : DatabaseSeeder {
     }
 
     val groupData: List<Group> = List(5) { index ->
-        Group(
+        Group.reconstruct(
             id = GroupId("GroupId$index"),
             name = GroupName("GroupName$index"),
 

@@ -18,6 +18,6 @@ object AvatarsTableSeeder : DatabaseSeeder {
     }
 
     val avatarsData: List<Avatar> = List(5) { index ->
-        Avatar(Email("sample$index@example.com"))
-    } + Avatar(Email("notifications@github.com"))
+        Avatar.reconstruct(Email("sample$index@example.com"))
+    } + Avatar.reconstruct(Email("notifications@github.com"))
 }
