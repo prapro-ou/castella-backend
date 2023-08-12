@@ -24,7 +24,7 @@ fun Route.groupsShowGet() {
         call.getParameter<String>("groupId")
             .flatMap { id -> getGroupMessagesByGroupIdUseCase(GroupId(id)) }
             .mapBoth(
-                success = { messages -> GetGroupsShowResponse.from(messages) },
+                success = { messages -> GroupsShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -35,11 +35,11 @@ fun Route.groupsShowGet() {
 }
 
 @Serializable
-private data class GetGroupsShowResponse(
+private data class GroupsShowGetResponse(
     val messages: List<GroupMessageSerializable>,
 ) {
     companion object {
-        fun from(messages: List<GroupMessage>) = GetGroupsShowResponse(
+        fun from(messages: List<GroupMessage>) = GroupsShowGetResponse(
             messages = messages.map { GroupMessageSerializable.from(it) },
         )
     }

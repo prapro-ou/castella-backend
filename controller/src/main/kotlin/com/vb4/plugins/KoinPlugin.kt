@@ -1,5 +1,6 @@
 package com.vb4.plugins
 
+import com.vb4.dm.CreateDMMessageUseCase
 import com.vb4.dm.DMMessageRepository
 import com.vb4.dm.GetDMMessageByIdUseCase
 import com.vb4.user.GetUserDestinationsUseCase
@@ -8,6 +9,7 @@ import com.vb4.group.GetGroupMessagesByGroupIdUseCase
 import com.vb4.dm.DMRepository
 import com.vb4.group.GroupRepository
 import com.vb4.mail.imap.Imap
+import com.vb4.mail.smtp.Smtp
 import com.vb4.repository.DMMessageRepositoryImpl
 import com.vb4.repository.DMRepositoryImpl
 import com.vb4.repository.GroupRepositoryImpl
@@ -27,13 +29,15 @@ fun Application.configureKoinPlugin() {
         single<GetDMMessagesByDMIdUseCase> { GetDMMessagesByDMIdUseCase(get(), get()) }
         single<GetGroupMessagesByGroupIdUseCase> { GetGroupMessagesByGroupIdUseCase(get(), get()) }
         single<GetDMMessageByIdUseCase> { GetDMMessageByIdUseCase(get(), get()) }
+        single<CreateDMMessageUseCase> { CreateDMMessageUseCase(get(), get()) }
 
         /*** Repository ***/
         single<DMRepository> { DMRepositoryImpl(get()) }
         single<GroupRepository> { GroupRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get()) }
-        single<DMMessageRepository> { DMMessageRepositoryImpl(get()) }
+        single<DMMessageRepository> { DMMessageRepositoryImpl(get(), get()) }
         single<Imap> { Imap.Gmail("inputUserEmail", "") }
+        single<Smtp> { Smtp.Gmail("inputUserEmail", "") }
 
         single<Database> { DevDB }
     }

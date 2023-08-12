@@ -24,7 +24,7 @@ fun Route.dmsShowGet() {
         call.getParameter<String>("dmId")
             .flatMap { id -> getDMMessagesByDMIdUseCase(DMId(id)) }
             .mapBoth(
-                success = { messages -> GetDMsShowResponse.from(messages) },
+                success = { messages -> DMsShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -35,11 +35,11 @@ fun Route.dmsShowGet() {
 }
 
 @Serializable
-private data class GetDMsShowResponse(
+private data class DMsShowGetResponse(
     val messages: List<DMMessageSerializable>,
 ) {
     companion object {
-        fun from(messages: List<DMMessage>) = GetDMsShowResponse(
+        fun from(messages: List<DMMessage>) = DMsShowGetResponse(
             messages = messages.map { DMMessageSerializable.from(it) },
         )
     }

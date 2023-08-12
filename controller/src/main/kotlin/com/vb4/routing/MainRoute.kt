@@ -2,6 +2,7 @@ package com.vb4.routing
 
 import com.vb4.routing.destinations.index.destinationsIndexGet
 import com.vb4.routing.dms.show.dmsShowGet
+import com.vb4.routing.dms.show.dmsShowPost
 import com.vb4.routing.groups.show.groupsShowGet
 import com.vb4.routing.dms.show.messages.show.dmsShowMessagesShowGet
 import com.vb4.routing.groups.messages.show.groupsMessagesShowGet
@@ -18,6 +19,7 @@ fun Application.mainRoute() {
         route("destinations") { destinationsIndexGet() }
         route("dms") {
             dmsShowGet()
+            dmsShowPost()
             dmsShowMessagesShowGet()
         }
         route("groups") {
