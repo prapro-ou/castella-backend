@@ -25,7 +25,7 @@ fun Application.configureKoinPlugin() {
         /*** UseCase ***/
         single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get(), get()) }
         single<GetDMMessagesByDMIdUseCase> { GetDMMessagesByDMIdUseCase(get(), get()) }
-        single<GetGroupMessagesByGroupIdUseCase> { GetGroupMessagesByGroupIdUseCase(get()) }
+        single<GetGroupMessagesByGroupIdUseCase> { GetGroupMessagesByGroupIdUseCase(get(), get()) }
         single<GetDMMessageByIdUseCase> { GetDMMessageByIdUseCase(get(), get()) }
 
         /*** Repository ***/

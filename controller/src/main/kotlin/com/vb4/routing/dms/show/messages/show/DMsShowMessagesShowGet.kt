@@ -20,11 +20,11 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
 fun Route.dmsShowMessagesShowGet() {
-    val getMessageByIdUseCase by inject<GetDMMessageByIdUseCase>()
+    val getDmMessageByIdUseCase by inject<GetDMMessageByIdUseCase>()
 
     get("{dmId}/{messageId}") {
         call.getTwoParameter<String, String>("dmId", "messageId")
-            .flatMap { (dmId, messageId) -> getMessageByIdUseCase(DMId(dmId), DMMessageId(messageId)) }
+            .flatMap { (dmId, messageId) -> getDmMessageByIdUseCase(DMId(dmId), DMMessageId(messageId)) }
             .mapBoth(
                 success = { messages -> DMsMessagesShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },

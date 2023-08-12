@@ -18,11 +18,11 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
 fun Route.groupsShowGet() {
-    val getMessagesByGroupIdUseCase by inject<GetGroupMessagesByGroupIdUseCase>()
+    val getGroupMessagesByGroupIdUseCase by inject<GetGroupMessagesByGroupIdUseCase>()
 
     get("{groupId}") {
         call.getParameter<String>("groupId")
-            .flatMap { id -> getMessagesByGroupIdUseCase(GroupId(id)) }
+            .flatMap { id -> getGroupMessagesByGroupIdUseCase(GroupId(id)) }
             .mapBoth(
                 success = { messages -> GetGroupsShowResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
