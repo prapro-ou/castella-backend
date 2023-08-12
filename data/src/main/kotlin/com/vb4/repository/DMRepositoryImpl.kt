@@ -12,9 +12,12 @@ import db.table.AvatarsTable
 import db.table.DMsAvatarsTable
 import db.table.DMsTable
 import db.table.toDM
+import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
 
 class DMRepositoryImpl(
@@ -44,4 +47,24 @@ class DMRepositoryImpl(
                 .toDM()
         }
     }
+
+    override suspend fun insertDM(dm: DM): ApiResult<Unit, DomainException> =
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                DMsTable
+                    .insert {
+                        it[id] = dm.id.value
+                        it[name] = dm.name.value
+                        it[userEmail] = dm.userEmail.value
+                    }
+                AvatarsTable
+                    .insertIgnore { it[email] = dm.to.email.value }
+                DMsAvatarsTable
+                    .insert {
+                        it[id] = UUID.randomUUID().toString()
+                        it[dmId] = dm.id.value
+                        it[avatarEmail] = dm.to.email.value
+                    }
+            }
+        }
 }

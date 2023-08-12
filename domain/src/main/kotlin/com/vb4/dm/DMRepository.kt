@@ -5,7 +5,7 @@ import com.vb4.Email
 import com.vb4.result.ApiResult
 
 interface DMRepository {
-
     suspend fun getDMsByUserEmail(userEmail: Email): ApiResult<List<DM>, DomainException>
     suspend fun getDM(dmId: DMId): ApiResult<DM, DomainException>
+    suspend fun insertDM(dm: DM): ApiResult<Unit, DomainException>
 }
