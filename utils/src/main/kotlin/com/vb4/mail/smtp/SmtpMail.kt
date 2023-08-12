@@ -3,6 +3,7 @@ package com.vb4.mail.smtp
 import javax.mail.internet.InternetAddress
 
 data class SmtpMail(
+    val id: String,
     val from: InternetAddress,
     val to: InternetAddress,
     val cc: List<InternetAddress>? = null,
