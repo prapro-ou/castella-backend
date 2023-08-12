@@ -49,18 +49,7 @@ class DMRepositoryImpl(
 
     override suspend fun getDMMessages(dm: DM): ApiResult<List<DMMessage>, DomainException> =
         runCatchWithContext(dispatcher) {
-            imap.search {
-                or {
-                    and {
-                        from(pattern = dm.to.email.value)
-                        to(pattern = dm.userEmail.value)
-                    }
-                    and {
-                        from(pattern = dm.userEmail.value)
-                        to(pattern = dm.to.email.value)
-                    }
-                }
-            }
+            imap.search { dm(dm.userEmail.value, dm.to.email.value) }
                 .groupingOriginalToReply()
                 .map { (original, replies) ->
                     original.toDMMessage(replies = replies.map { it.toDMReply() })

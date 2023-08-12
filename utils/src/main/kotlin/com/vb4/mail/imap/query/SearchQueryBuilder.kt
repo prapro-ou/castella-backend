@@ -28,6 +28,18 @@ class SearchQueryBuilder {
 
     fun bcc(pattern: String) = query.add(RecipientStringTerm(Message.RecipientType.BCC, pattern))
 
+    fun dm(user: String, to: String) =
+        or {
+            and {
+                from(user)
+                to(to)
+            }
+            and {
+                to(user)
+                from(to)
+            }
+        }
+
     fun replyTo(pattern: String) = query.add(ReplyToStringTerm(pattern))
 
     fun sentDate(comparison: Int, date: Instant, timeZone: TimeZone = TimeZone.UTC) {
