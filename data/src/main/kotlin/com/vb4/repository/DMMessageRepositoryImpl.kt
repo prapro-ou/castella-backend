@@ -47,10 +47,20 @@ class DMMessageRepositoryImpl(
         message.toDMMessage(replies)
     }
 
-    override suspend fun insertDMMessage(dm: DM, message: DMMessage) =
-        runCatchWithContext(dispatcher) {
-            smtp.send(SmtpMail.from(dm, message))
-        }
+    override suspend fun insertDMMessage(
+        dm: DM,
+        message: DMMessage,
+    ): ApiResult<Unit, DomainException> = runCatchWithContext(dispatcher) {
+        smtp.send(SmtpMail.from(dm, message))
+    }
+
+    override suspend fun insertDMReply(
+        dm: DM,
+        reply: DMReply,
+    ): ApiResult<Unit, DomainException> = runCatchWithContext(dispatcher) {
+        smtp.send(SmtpMail.from(dm, reply))
+    }
+
 }
 
 private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(
@@ -76,4 +86,13 @@ private fun SmtpMail.Companion.from(dm: DM, message: DMMessage) = SmtpMail(
     to = InternetAddress(dm.to.email.value),
     subject = message.subject.value,
     body = message.body.value,
+)
+
+private fun SmtpMail.Companion.from(dm: DM, reply: DMReply) = SmtpMail(
+    id = reply.id.value,
+    from = InternetAddress(dm.userEmail.value),
+    to = InternetAddress(dm.to.email.value),
+    inReplyTo = dm.to.email.value,
+    subject = reply.subject.value,
+    body = reply.body.value,
 )

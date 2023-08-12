@@ -56,12 +56,12 @@ class DMReply private constructor(
     companion object {
         fun create(
             from: Avatar,
-            subject: DMSubject,
             body: DMBody,
+            parent: DMMessage,
         ) = DMReply(
             id = DMMessageId(generateId()),
             from = from,
-            subject = subject,
+            subject = DMSubject("Re: ${parent.subject.value}"),
             body = body,
             createdAt = DMCreatedAt(Clock.System.now())
         )
