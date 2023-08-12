@@ -18,19 +18,7 @@ object UsersTableSeeder : DatabaseSeeder {
     }
 
     internal val userData = listOf(
-        User(
-            email = Email("sample1@example.com"),
-
-            // 使用しない
-            dms = listOf(),
-            groups = listOf(),
-        ),
-        User(
-            email = Email("inputUserEmail"),
-
-            // 使用しない
-            dms = listOf(),
-            groups = listOf(),
-        ),
+        User(email = Email("sample1@example.com"),),
+        User(email = Email("inputUserEmail"),),
     )
 }
