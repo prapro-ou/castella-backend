@@ -1,9 +1,8 @@
-package com.vb4.mail
+package com.vb4.mail.imap
 
-import com.vb4.mail.query.SearchQueryBuilder
+import com.vb4.mail.imap.query.SearchQueryBuilder
 import javax.mail.FetchProfile
 import javax.mail.Folder
-import javax.mail.Message
 import javax.mail.Session
 
 sealed interface Imap {
@@ -20,14 +19,14 @@ sealed interface Imap {
         }
     }
 
-    fun search(block: SearchQueryBuilder.() -> Unit) : List<Mail> = SearchQueryBuilder()
+    fun search(block: SearchQueryBuilder.() -> Unit) : List<ImapMail> = SearchQueryBuilder()
         .apply(block)
         .build()
         .let { term -> folder.search(term) }
         .also { messages -> folder.fetch(messages, fetchProfile) }
-        .map { Mail.from(it) }
+        .map { ImapMail.from(it) }
 
-    fun getMessageById(messageId: String): Mail? = search { messageId(messageId) }.firstOrNull()
+    fun getMessageById(messageId: String): ImapMail? = search { messageId(messageId) }.firstOrNull()
 }
 
 private val fetchProfile = FetchProfile().apply {

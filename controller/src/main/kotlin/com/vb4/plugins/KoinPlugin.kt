@@ -6,7 +6,7 @@ import com.vb4.GetMessagesByDMIdUseCase
 import com.vb4.GetMessagesByGroupIdUseCase
 import com.vb4.dm.DMRepository
 import com.vb4.group.GroupRepository
-import com.vb4.mail.Imap
+import com.vb4.mail.imap.Imap
 import com.vb4.message.MessageRepository
 import com.vb4.repository.DMRepositoryImpl
 import com.vb4.repository.GroupRepositoryImpl

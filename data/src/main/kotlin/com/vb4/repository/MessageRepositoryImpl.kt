@@ -5,9 +5,9 @@ import com.vb4.Email
 import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.group.Group
-import com.vb4.mail.Imap
-import com.vb4.mail.Mail
-import com.vb4.mail.Mail.Companion.groupingOriginalToReply
+import com.vb4.mail.imap.Imap
+import com.vb4.mail.imap.ImapMail
+import com.vb4.mail.imap.ImapMail.Companion.groupingOriginalToReply
 import com.vb4.message.Body
 import com.vb4.message.CreatedAt
 import com.vb4.message.Message
@@ -18,8 +18,6 @@ import com.vb4.message.Subject
 import com.vb4.result.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import com.vb4.runCatchDomainException
 import com.vb4.runCatchWithContext
 
 class MessageRepositoryImpl(
@@ -60,7 +58,7 @@ class MessageRepositoryImpl(
         message.toMessage(replies)
     }
 
-    private fun Mail.toMessage(replies: List<Reply>) = Message(
+    private fun ImapMail.toMessage(replies: List<Reply>) = Message(
         id = MessageId(id),
         subject = Subject(subject),
         body = Body(body),
@@ -69,7 +67,7 @@ class MessageRepositoryImpl(
         replies = replies,
     )
 
-    private fun Mail.toReply() = Reply(
+    private fun ImapMail.toReply() = Reply(
         id = MessageId(id),
         subject = Subject(subject),
         body = Body(body),

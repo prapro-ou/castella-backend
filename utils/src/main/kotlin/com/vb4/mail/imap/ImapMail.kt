@@ -1,10 +1,10 @@
-package com.vb4.mail
+package com.vb4.mail.imap
 
 import javax.mail.Message
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant
 
-class Mail private constructor(private val message: Message) {
+class ImapMail private constructor(private val message: Message) {
 
     val id: String by lazy {
         message
@@ -46,9 +46,9 @@ class Mail private constructor(private val message: Message) {
     val createdAt: Instant by lazy { message.sentDate.toInstant().toKotlinInstant() }
 
     companion object {
-        fun from(message: Message) = Mail(message)
+        fun from(message: Message) = ImapMail(message)
 
-        fun List<Mail>.groupingOriginalToReply(): List<Pair<Mail, List<Mail>>> {
+        fun List<ImapMail>.groupingOriginalToReply(): List<Pair<ImapMail, List<ImapMail>>> {
             val mails = this.groupBy { it.inReplyTo }
             return (mails[""] ?: emptyList())
                 .fold(emptyList()) { acc, original ->

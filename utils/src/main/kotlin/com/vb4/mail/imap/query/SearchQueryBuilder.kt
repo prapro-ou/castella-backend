@@ -1,7 +1,7 @@
-package com.vb4.mail.query
+package com.vb4.mail.imap.query
 
-import com.vb4.mail.query.term.NothingTerm
-import com.vb4.mail.query.term.ReplyToStringTerm
+import com.vb4.mail.imap.query.term.NothingTerm
+import com.vb4.mail.imap.query.term.ReplyToStringTerm
 import java.text.SimpleDateFormat
 import javax.mail.Message
 import javax.mail.search.AndTerm
@@ -10,7 +10,6 @@ import javax.mail.search.HeaderTerm
 import javax.mail.search.MessageIDTerm
 import javax.mail.search.OrTerm
 import javax.mail.search.RecipientStringTerm
-import javax.mail.search.SearchException
 import javax.mail.search.SearchTerm
 import javax.mail.search.SentDateTerm
 import kotlinx.datetime.Instant
