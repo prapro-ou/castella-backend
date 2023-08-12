@@ -9,12 +9,12 @@ import kotlinx.coroutines.withContext
 
 class GetDMMessagesByDMIdUseCase(
     private val dmRepository: DMRepository,
+    private val dmMessageRepository: DMMessageRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {
     suspend operator fun invoke(dmId: DMId): ApiResult<List<DMMessage>, DomainException> =
         withContext(dispatcher) {
-            dmRepository
-                .getDM(dmId)
-                .flatMap { dm -> dmRepository.getDMMessages(dm) }
+            dmRepository.getDM(dmId)
+                .flatMap { dm -> dmMessageRepository.getDMMessages(dm) }
         }
 }
