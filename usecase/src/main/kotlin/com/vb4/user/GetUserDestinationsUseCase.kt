@@ -1,4 +1,4 @@
-package com.vb4.destination
+package com.vb4.user
 
 import com.vb4.DomainException
 import com.vb4.dm.DM
@@ -9,9 +9,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.vb4.Email
-import com.vb4.user.UserRepository
 
-class GetDestinationsUseCase(
+class GetUserDestinationsUseCase(
     private val userRepository: UserRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {

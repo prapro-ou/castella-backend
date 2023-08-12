@@ -1,7 +1,7 @@
 package com.vb4.routing.destinations.index
 
 import com.vb4.Email
-import com.vb4.destination.GetDestinationsUseCase
+import com.vb4.user.GetUserDestinationsUseCase
 import com.vb4.dm.DM
 import com.vb4.group.Group
 import com.vb4.result.consume
@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
 fun Route.destinationsIndexGet() {
-    val getDestinationsUseCase by inject<GetDestinationsUseCase>()
+    val getDestinationsUseCase by inject<GetUserDestinationsUseCase>()
 
     get("") {
         getDestinationsUseCase(email = Email("inputUserEmail"))

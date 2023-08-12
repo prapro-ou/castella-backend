@@ -1,7 +1,7 @@
 package com.vb4.plugins
 
 import com.vb4.dm.GetDMMessageByIdUseCase
-import com.vb4.destination.GetDestinationsUseCase
+import com.vb4.user.GetUserDestinationsUseCase
 import com.vb4.dm.GetDMMessagesByDMIdUseCase
 import com.vb4.group.GetGroupMessagesByGroupIdUseCase
 import com.vb4.dm.DMRepository
@@ -21,7 +21,7 @@ import org.koin.ktor.plugin.Koin
 fun Application.configureKoinPlugin() {
     val module = module {
         /*** UseCase ***/
-        single<GetDestinationsUseCase> { GetDestinationsUseCase(get()) }
+        single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get()) }
         single<GetDMMessagesByDMIdUseCase> { GetDMMessagesByDMIdUseCase(get()) }
         single<GetGroupMessagesByGroupIdUseCase> { GetGroupMessagesByGroupIdUseCase(get()) }
         single<GetDMMessageByIdUseCase> { GetDMMessageByIdUseCase(get()) }
