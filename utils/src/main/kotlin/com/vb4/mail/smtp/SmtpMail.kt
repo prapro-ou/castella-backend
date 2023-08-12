@@ -1,10 +1,12 @@
 package com.vb4.mail.smtp
 
+import javax.mail.internet.InternetAddress
+
 data class SmtpMail(
-    val from: String,
-    val to: String,
-    val cc: List<String>? = null,
-    val bcc: List<String>? = null,
+    val from: InternetAddress,
+    val to: InternetAddress,
+    val cc: List<InternetAddress>? = null,
+    val bcc: List<InternetAddress>? = null,
     val inReplyTo: String? = null,
     val subject: String,
     val body: String,

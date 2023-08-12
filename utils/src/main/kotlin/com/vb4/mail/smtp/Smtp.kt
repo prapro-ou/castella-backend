@@ -29,10 +29,10 @@ sealed interface Smtp {
 
     fun send(mail: SmtpMail) {
         MimeMessage(session).apply {
-            setFrom(InternetAddress(mail.from, ""))
-            setRecipient(Message.RecipientType.TO, InternetAddress(mail.to))
-            mail.cc?.let { cc -> setRecipients(Message.RecipientType.CC, cc.toString()) }
-            mail.bcc?.let { bcc -> setRecipients(Message.RecipientType.BCC, bcc.toString()) }
+            setFrom(mail.from)
+            setRecipient(Message.RecipientType.TO, mail.to)
+            mail.cc?.let { cc -> setRecipients(Message.RecipientType.CC, cc.toTypedArray()) }
+            mail.bcc?.let { bcc -> setRecipients(Message.RecipientType.BCC, bcc.toTypedArray()) }
             subject = mail.subject
             setText(mail.body)
             setHeader("In-Reply-To", mail.inReplyTo)
