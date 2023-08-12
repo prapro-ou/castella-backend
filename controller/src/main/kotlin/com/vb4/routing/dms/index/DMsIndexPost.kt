@@ -21,11 +21,11 @@ fun Route.dMsIndexPost() {
 
     post("") {
         call.getRequest<DMsIndexPostRequest>()
-            .flatMap { request ->
+            .flatMap { (name, to) ->
                 createDMUseCase(
-                    name = DMName(request.name),
+                    name = DMName(name),
                     userEmail = Email(""),
-                    to = Avatar.reconstruct(Email(request.to))
+                    to = Avatar.reconstruct(Email(to))
                 )
             }
             .mapBoth(

@@ -1,16 +1,16 @@
-package com.vb4.routing.dms.show
+package com.vb4.routing.dms.show.messages.show
 
-import com.vb4.dm.CreateDMMessageUseCase
+import com.vb4.dm.CreateDMReplyUseCase
 import com.vb4.dm.DMBody
 import com.vb4.dm.DMId
-import com.vb4.dm.DMSubject
+import com.vb4.dm.DMMessageId
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.map
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
-import com.vb4.routing.getParameter
 import com.vb4.routing.getRequest
+import com.vb4.routing.getTwoParameter
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -18,23 +18,23 @@ import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
-fun Route.dmsShowPost() {
-    val createDMMessageUseCase by inject<CreateDMMessageUseCase>()
+fun Route.dMsShowMessagesShowPost() {
+    val createDMReplyUseCase by inject<CreateDMReplyUseCase>()
 
-    post("{dmId}") {
-        call.getParameter<String>("dmId")
-            .flatMap { dmId ->
-                call.getRequest<DMsShowPostRequest>()
-                    .map { (subject, body) ->
-                        createDMMessageUseCase(
+    post("{dmId}/{messageId}") {
+        call.getTwoParameter<String, String>("dmId", "messageId")
+            .flatMap { (dmId, messageId) ->
+                call.getRequest<DMsShowMessagesShowPostRequest>()
+                    .map { (body) ->
+                        createDMReplyUseCase(
                             dmId = DMId(dmId),
-                            subject = DMSubject(subject),
+                            dmMessageId = DMMessageId(messageId),
                             body = DMBody(body),
                         )
                     }
             }
             .mapBoth(
-                success = { DMsShowPostResponse(isSuccess = true) },
+                success = { DMsShowMessagesShowPostResponse(isSuccess = true) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -45,7 +45,9 @@ fun Route.dmsShowPost() {
 }
 
 @Serializable
-private data class DMsShowPostRequest(val subject: String, val body: String)
+private data class DMsShowMessagesShowPostRequest(
+    val body: String
+)
 
 @Serializable
-private data class DMsShowPostResponse(val isSuccess: Boolean)
+private data class DMsShowMessagesShowPostResponse(val isSuccess: Boolean)
