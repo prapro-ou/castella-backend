@@ -6,6 +6,7 @@ import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMBody
 import com.vb4.dm.DMCreatedAt
+import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
 import com.vb4.dm.DMMessageRepository
@@ -14,13 +15,17 @@ import com.vb4.dm.DMSubject
 import com.vb4.mail.imap.Imap
 import com.vb4.mail.imap.ImapMail
 import com.vb4.mail.imap.ImapMail.Companion.groupingOriginalToReply
+import com.vb4.mail.smtp.Smtp
+import com.vb4.mail.smtp.SmtpMail
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
+import javax.mail.internet.InternetAddress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 class DMMessageRepositoryImpl(
     private val imap: Imap,
+    private val smtp: Smtp,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMMessageRepository {
     override suspend fun getDMMessages(dm: DM): ApiResult<List<DMMessage>, DomainException> =
@@ -42,20 +47,33 @@ class DMMessageRepositoryImpl(
         message.toDMMessage(replies)
     }
 
-    private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(
-        id = DMMessageId(id),
-        subject = DMSubject(subject),
-        body = DMBody(body),
-        createdAt = DMCreatedAt(createdAt),
-        from = Avatar.reconstruct(Email(from)),
-        replies = replies,
-    )
-
-    private fun ImapMail.toDMReply() = DMReply.reconstruct(
-        id = DMMessageId(id),
-        subject = DMSubject(subject),
-        body = DMBody(body),
-        createdAt = DMCreatedAt(createdAt),
-        from = Avatar.reconstruct(Email(from)),
-    )
+    override suspend fun insertDMMessage(dm: DM, message: DMMessage) =
+        runCatchWithContext(dispatcher) {
+            smtp.send(SmtpMail.from(dm, message))
+        }
 }
+
+private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(
+    id = DMMessageId(id),
+    subject = DMSubject(subject),
+    body = DMBody(body),
+    createdAt = DMCreatedAt(createdAt),
+    from = Avatar.reconstruct(Email(from)),
+    replies = replies,
+)
+
+private fun ImapMail.toDMReply() = DMReply.reconstruct(
+    id = DMMessageId(id),
+    subject = DMSubject(subject),
+    body = DMBody(body),
+    createdAt = DMCreatedAt(createdAt),
+    from = Avatar.reconstruct(Email(from)),
+)
+
+private fun SmtpMail.Companion.from(dm: DM, message: DMMessage) = SmtpMail(
+    id = message.id.value,
+    from = InternetAddress(dm.userEmail.value),
+    to = InternetAddress(dm.to.email.value),
+    subject = message.subject.value,
+    body = message.body.value,
+)

@@ -11,4 +11,6 @@ data class SmtpMail(
     val inReplyTo: String? = null,
     val subject: String,
     val body: String,
-)
+) {
+    companion object
+}
