@@ -5,6 +5,8 @@ import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupRepository
 import com.vb4.result.ApiResult
+import com.vb4.runCatchWithContext
+import com.vb4.suspendTransaction
 import db.table.AvatarsTable
 import db.table.GroupsAvatarsTable
 import db.table.GroupsTable
@@ -13,19 +15,21 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.select
-import com.vb4.runCatchWithTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class GroupRepositoryImpl(
     private val database: Database,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GroupRepository {
     override suspend fun getGroup(groupId: GroupId): ApiResult<Group, DomainException> =
-        runCatchWithTransaction(database, dispatcher) {
-            GroupsTable
-                .innerJoin(GroupsAvatarsTable)
-                .innerJoin(AvatarsTable)
-                .select { GroupsTable.id eq groupId.value }
-                .toList()
-                .toGroup()
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                GroupsTable
+                    .innerJoin(GroupsAvatarsTable)
+                    .innerJoin(AvatarsTable)
+                    .select { GroupsTable.id eq groupId.value }
+                    .toList()
+                    .toGroup()
+            }
         }
 }

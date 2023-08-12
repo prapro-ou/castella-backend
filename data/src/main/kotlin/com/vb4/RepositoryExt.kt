@@ -5,36 +5,43 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.coroutines.cancellation.CancellationException
-
-suspend inline fun <T> runCatchWithTransaction(
-    database: Database,
-    dispatcher: CoroutineDispatcher,
-    noinline block: Transaction.() -> T,
-): ApiResult<T, DomainException> = try {
-    withContext(dispatcher) {
-        transaction(database, block)
-    }.let { ApiResult.Success(it) }
-} catch (exception: Exception) {
-    when (exception) {
-        is NoSuchElementException ->
-            ApiResult.Failure(
-                DomainException.NoSuchElementException(exception.message.orEmpty()),
-            )
-        is DomainException ->
-            ApiResult.Failure(exception)
-        else ->
-            ApiResult.Failure(DomainException.SystemException(exception.message.orEmpty(), exception))
-    }
-}
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
+import org.jetbrains.exposed.sql.transactions.transactionManager
 
 inline fun <T> runCatchDomainException(block: () -> T): ApiResult<T, DomainException> = try {
     ApiResult.Success(block())
 } catch (e: CancellationException) {
     throw e
+} catch (e: NoSuchElementException) {
+    ApiResult.Failure(DomainException.NoSuchElementException(e.message.orEmpty()))
 } catch (e: DomainException) {
     ApiResult.Failure(e)
 } catch (e: Exception) {
     ApiResult.Failure(DomainException.SystemException(e.message.orEmpty(), e))
+}
+
+suspend fun <T> runCatchWithContext(
+    dispatcher: CoroutineDispatcher,
+    block: suspend CoroutineScope.() -> T,
+): ApiResult<T, DomainException> = withContext(dispatcher) { runCatchDomainException { block() } }
+
+
+suspend fun <T> suspendTransaction(
+    db: Database,
+    statement: suspend Transaction.() -> T
+) = suspendTransactionAsync(db, statement).await()
+
+suspend fun <T> suspendTransactionAsync(
+    db: Database,
+    statement: suspend Transaction.() -> T
+) = coroutineScope {
+    suspendedTransactionAsync(
+        context = coroutineContext,
+        db = db,
+        transactionIsolation = db.transactionManager.defaultIsolationLevel,
+        statement = statement,
+    )
 }

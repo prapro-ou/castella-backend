@@ -20,6 +20,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.vb4.runCatchDomainException
+import com.vb4.runCatchWithContext
 
 class MessageRepositoryImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -28,25 +29,23 @@ class MessageRepositoryImpl(
     private val imap = Imap.Gmail("inputUserEmail", "")
 
     override suspend fun getMessagesByDM(dm: DM): ApiResult<List<Message>, DomainException> =
-        withContext(dispatcher) {
-            runCatchDomainException {
-                imap.search {
-                    or {
-                        and {
-                            from(pattern = dm.to.email.value)
-                            to(pattern = dm.userEmail.value)
-                        }
-                        and {
-                            from(pattern = dm.userEmail.value)
-                            to(pattern = dm.to.email.value)
-                        }
+        runCatchWithContext(dispatcher) {
+            imap.search {
+                or {
+                    and {
+                        from(pattern = dm.to.email.value)
+                        to(pattern = dm.userEmail.value)
+                    }
+                    and {
+                        from(pattern = dm.userEmail.value)
+                        to(pattern = dm.to.email.value)
                     }
                 }
-                    .groupingOriginalToReply()
-                    .map { (original, replies) ->
-                        original.toMessage(replies = replies.map { it.toReply() })
-                    }
             }
+                .groupingOriginalToReply()
+                .map { (original, replies) ->
+                    original.toMessage(replies = replies.map { it.toReply() })
+                }
         }
 
     override suspend fun getMessagesByGroup(group: Group): ApiResult<List<Message>, DomainException> {
@@ -55,13 +54,11 @@ class MessageRepositoryImpl(
 
     override suspend fun getMessageById(
         messageId: MessageId,
-    ): ApiResult<Message, DomainException> = withContext(dispatcher) {
-        runCatchDomainException {
-            val message = imap.getMessageById(messageId.value)
-                ?: throw DomainException.NoSuchElementException("")
-            val replies = imap.search { inReplyTo(messageId.value) }.map { it.toReply() }
-            message.toMessage(replies)
-        }
+    ): ApiResult<Message, DomainException> = runCatchWithContext(dispatcher) {
+        val message = imap.getMessageById(messageId.value)
+            ?: throw DomainException.NoSuchElementException("")
+        val replies = imap.search { inReplyTo(messageId.value) }.map { it.toReply() }
+        message.toMessage(replies)
     }
 
     private fun Mail.toMessage(replies: List<Reply>) = Message(
