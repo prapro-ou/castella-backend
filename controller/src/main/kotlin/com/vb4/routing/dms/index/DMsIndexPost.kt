@@ -40,10 +40,10 @@ fun Route.dMsIndexPost() {
 }
 
 @Serializable
-data class DMsIndexPostRequest(
+private data class DMsIndexPostRequest(
     val name: String,
     val to: String,
 )
 
 @Serializable
-data class DMsIndexPostResponse(val isSuccess: Boolean)
+private data class DMsIndexPostResponse(val isSuccess: Boolean)

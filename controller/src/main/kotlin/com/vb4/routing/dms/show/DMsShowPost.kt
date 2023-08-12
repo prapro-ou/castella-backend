@@ -46,7 +46,7 @@ fun Route.dmsShowPost() {
 }
 
 @Serializable
-data class DMsShowPostRequest(val subject: String, val body: String)
+private data class DMsShowPostRequest(val subject: String, val body: String)
 
 @Serializable
-data class DMsShowPostResponse(val isSuccess: Boolean)
+private data class DMsShowPostResponse(val isSuccess: Boolean)
