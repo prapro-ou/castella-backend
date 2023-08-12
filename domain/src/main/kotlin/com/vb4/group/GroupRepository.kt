@@ -1,9 +1,6 @@
 package com.vb4.group
 
 import com.vb4.DomainException
-import com.vb4.dm.DMId
-import com.vb4.dm.DMMessage
-import com.vb4.message.MessageId
 import com.vb4.result.ApiResult
 
 interface GroupRepository {

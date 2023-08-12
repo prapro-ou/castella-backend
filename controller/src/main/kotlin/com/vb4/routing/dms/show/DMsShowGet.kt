@@ -2,7 +2,7 @@ package com.vb4.routing.dms.show
 
 import com.vb4.GetMessagesByDMIdUseCase
 import com.vb4.dm.DMId
-import com.vb4.message.Message
+import com.vb4.dm.DMMessage
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -39,7 +39,7 @@ private data class GetDMsShowResponse(
     val messages: List<MessageSerializable>,
 ) {
     companion object {
-        fun from(messages: List<Message>) = GetDMsShowResponse(
+        fun from(messages: List<DMMessage>) = GetDMsShowResponse(
             messages = messages.map { MessageSerializable.from(it) },
         )
     }
@@ -54,7 +54,7 @@ private data class MessageSerializable(
     @SerialName("reply_count") val replyCount: Int,
 ) {
     companion object {
-        fun from(message: Message) = MessageSerializable(
+        fun from(message: DMMessage) = MessageSerializable(
             id = message.id.value,
             subject = message.subject.value,
             body = message.body.value,

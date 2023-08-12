@@ -1,14 +1,15 @@
 package com.vb4.routing.groups.messages.show
 
-import com.vb4.GetMessageByIdUseCase
-import com.vb4.message.Message
-import com.vb4.message.MessageId
-import com.vb4.message.Reply
+import com.vb4.GetGroupMessageByIdUseCase
+import com.vb4.group.GroupId
+import com.vb4.group.GroupMessage
+import com.vb4.group.GroupMessageId
+import com.vb4.group.GroupReply
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
-import com.vb4.routing.getParameter
+import com.vb4.routing.getTwoParameter
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -19,11 +20,11 @@ import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
 fun Route.groupsMessagesShowGet() {
-    val getMessageByIdUseCase by inject<GetMessageByIdUseCase>()
+    val getMessageByIdUseCase by inject<GetGroupMessageByIdUseCase>()
 
-    get("{messageId}") {
-        call.getParameter<String>("messageId")
-            .flatMap { messageId -> getMessageByIdUseCase(MessageId(messageId)) }
+    get("{groupId}/{messageId}") {
+        call.getTwoParameter<String, String>("groupId", "messageId")
+            .flatMap { (groupId, messageId) -> getMessageByIdUseCase(GroupId(groupId), GroupMessageId(messageId)) }
             .mapBoth(
                 success = { messages -> MessagesShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
@@ -40,7 +41,7 @@ private data class MessagesShowGetResponse(
     val messages: List<MessageSerializable>,
 ) {
     companion object {
-        fun from(message: Message) = MessagesShowGetResponse(
+        fun from(message: GroupMessage) = MessagesShowGetResponse(
             messages = MessageSerializable.from(message),
         )
     }
@@ -54,7 +55,7 @@ private data class MessageSerializable(
     @SerialName("created_at") val createdAt: Instant,
 ) {
     companion object {
-        fun from(message: Message) = listOf(
+        fun from(message: GroupMessage) = listOf(
             MessageSerializable(
                 id = message.id.value,
                 email = message.from.email.value,
@@ -63,7 +64,7 @@ private data class MessageSerializable(
             ),
         ) + message.replies.map { reply -> from(reply = reply) }
 
-        fun from(reply: Reply) = MessageSerializable(
+        fun from(reply: GroupReply) = MessageSerializable(
             id = reply.id.value,
             email = reply.from.email.value,
             body = reply.body.value,

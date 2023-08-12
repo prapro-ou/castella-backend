@@ -1,19 +1,14 @@
 package com.vb4.routing.dms.show.messages.show
 
 import com.vb4.GetDMMessageByIdUseCase
-import com.vb4.GetMessageByIdUseCase
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
 import com.vb4.dm.DMReply
-import com.vb4.message.Message
-import com.vb4.message.MessageId
-import com.vb4.message.Reply
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
-import com.vb4.routing.getParameter
 import com.vb4.routing.getTwoParameter
 import io.ktor.server.application.call
 import io.ktor.server.response.respond

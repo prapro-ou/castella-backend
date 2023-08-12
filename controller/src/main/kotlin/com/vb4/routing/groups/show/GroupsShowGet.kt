@@ -2,7 +2,7 @@ package com.vb4.routing.groups.show
 
 import com.vb4.GetMessagesByGroupIdUseCase
 import com.vb4.group.GroupId
-import com.vb4.message.Message
+import com.vb4.group.GroupMessage
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -39,7 +39,7 @@ private data class GetGroupsShowResponse(
     val messages: List<MessageSerializable>,
 ) {
     companion object {
-        fun from(messages: List<Message>) = GetGroupsShowResponse(
+        fun from(messages: List<GroupMessage>) = GetGroupsShowResponse(
             messages = messages.map { MessageSerializable.from(it) },
         )
     }
@@ -54,7 +54,7 @@ private data class MessageSerializable(
     @SerialName("reply_count") val replyCount: Int,
 ) {
     companion object {
-        fun from(message: Message) = MessageSerializable(
+        fun from(message: GroupMessage) = MessageSerializable(
             id = message.id.value,
             subject = message.subject.value,
             body = message.body.value,

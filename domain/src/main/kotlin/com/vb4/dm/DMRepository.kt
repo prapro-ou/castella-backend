@@ -1,7 +1,6 @@
 package com.vb4.dm
 
 import com.vb4.DomainException
-import com.vb4.message.MessageId
 import com.vb4.result.ApiResult
 
 interface DMRepository {
