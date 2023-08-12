@@ -21,7 +21,7 @@ import org.koin.ktor.plugin.Koin
 fun Application.configureKoinPlugin() {
     val module = module {
         /*** UseCase ***/
-        single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get()) }
+        single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get(), get()) }
         single<GetDMMessagesByDMIdUseCase> { GetDMMessagesByDMIdUseCase(get()) }
         single<GetGroupMessagesByGroupIdUseCase> { GetGroupMessagesByGroupIdUseCase(get()) }
         single<GetDMMessageByIdUseCase> { GetDMMessageByIdUseCase(get()) }

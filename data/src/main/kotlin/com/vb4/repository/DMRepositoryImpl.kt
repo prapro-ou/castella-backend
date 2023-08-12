@@ -19,9 +19,11 @@ import com.vb4.result.ApiResult
 import com.vb4.result.flatMap
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
+import com.vb4.suspendTransactionAsync
 import db.table.AvatarsTable
 import db.table.DMsAvatarsTable
 import db.table.DMsTable
+import db.table.UsersTable
 import db.table.toDM
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,17 @@ class DMRepositoryImpl(
     private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMRepository {
+    override suspend fun getDMsByUserEmail(userEmail: Email): ApiResult<List<DM>, DomainException> =
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                DMsTable
+                    .innerJoin(DMsAvatarsTable)
+                    .innerJoin(AvatarsTable)
+                    .select { DMsTable.userEmail eq userEmail.value }
+                    .map { it.toDM() }
+            }
+        }
+
     override suspend fun getDM(
         dmId: DMId,
     ): ApiResult<DM, DomainException> = runCatchWithContext(dispatcher) {

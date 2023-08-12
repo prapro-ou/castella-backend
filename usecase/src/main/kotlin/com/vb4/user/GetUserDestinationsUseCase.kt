@@ -9,15 +9,24 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.vb4.Email
+import com.vb4.dm.DMRepository
+import com.vb4.group.GroupRepository
+import com.vb4.result.flatMap
+import kotlinx.coroutines.async
 
 class GetUserDestinationsUseCase(
-    private val userRepository: UserRepository,
+    private val dmRepository: DMRepository,
+    private val groupRepository: GroupRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) {
     suspend operator fun invoke(
         email: Email,
     ): ApiResult<Pair<List<DM>, List<Group>>, DomainException> =
         withContext(dispatcher) {
-            userRepository.getUser(email).map { user -> user.dms to user.groups }
+            val dms = async { dmRepository.getDMsByUserEmail(email) }
+            val groups = async { groupRepository.getGroupsByUserEmail(email) }
+            dms.await().flatMap { dm: List<DM> ->
+                groups.await().map { group: List<Group> -> dm to group }
+            }
         }
 }

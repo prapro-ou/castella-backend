@@ -1,6 +1,7 @@
 package com.vb4.repository
 
 import com.vb4.DomainException
+import com.vb4.Email
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupMessage
@@ -9,9 +10,11 @@ import com.vb4.group.GroupRepository
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
+import com.vb4.suspendTransactionAsync
 import db.table.AvatarsTable
 import db.table.GroupsAvatarsTable
 import db.table.GroupsTable
+import db.table.UsersTable
 import db.table.toGroup
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +26,18 @@ class GroupRepositoryImpl(
     private val database: Database,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GroupRepository {
+    override suspend fun getGroupsByUserEmail(userEmail: Email): ApiResult<List<Group>, DomainException> =
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                GroupsTable
+                    .innerJoin(GroupsAvatarsTable)
+                    .innerJoin(AvatarsTable)
+                    .select { GroupsTable.userEmail eq userEmail.value }
+                    .groupBy(keySelector = { it[GroupsTable.id] })
+                    .map { (_, value) -> value.toGroup() }
+            }
+        }
+
     override suspend fun getGroup(groupId: GroupId): ApiResult<Group, DomainException> =
         runCatchWithContext(dispatcher) {
             suspendTransaction(database) {
