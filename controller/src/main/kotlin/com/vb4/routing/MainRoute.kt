@@ -1,6 +1,6 @@
 package com.vb4.routing
 
-import com.vb4.plugins.JWT_AUTH
+import com.vb4.plugins.auth.JWT_AUTH
 import com.vb4.routing.destinations.index.destinationsIndexGet
 import com.vb4.routing.dms.index.dMsIndexPost
 import com.vb4.routing.dms.show.dmsShowGet

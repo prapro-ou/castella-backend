@@ -1,4 +1,4 @@
-package com.vb4.plugins
+package com.vb4.plugins.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -11,17 +11,13 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.Principal
-import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.response.respond
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toJavaInstant
 import org.koin.ktor.ext.inject
 
-private val secret = "secret"
-private val audience = "audience"
-private val issuer = "issuer"
-private val castellaRealm = "Castella"
+const val JWT_AUTH = "jwt-auth"
 
 fun Application.configureAuthenticationPlugin() {
     install(Authentication) {
@@ -37,10 +33,9 @@ fun Application.configureAuthenticationPlugin() {
                 val getUserUseCase by inject<GetUserUseCase>()
 
                 credential.payload
-                    .getClaim("email")
-                    .asString()
+                    .email
                     ?.let { email ->
-                        getUserUseCase(Email(email))
+                        getUserUseCase(email)
                             .mapBoth(
                                 success = { user -> AuthUserPrincipal(user.email, user.password) },
                                 failure = { null }
@@ -55,10 +50,10 @@ fun Application.configureAuthenticationPlugin() {
     }
 }
 
-fun createJWT(email: String): String = JWT.create()
+fun createJWT(email: Email): String = JWT.create()
     .withAudience(audience)
     .withIssuer(issuer)
-    .withClaim("email", email)
+    .withEmail(email)
     .withExpiresAt(Clock.System.now().toJavaInstant().plusMillis(60000))
     .sign(Algorithm.HMAC256(secret))
 
@@ -66,5 +61,3 @@ data class AuthUserPrincipal(
     val email: Email,
     val password: MailPassword,
 ) : Principal
-
-const val JWT_AUTH = "jwt-auth"

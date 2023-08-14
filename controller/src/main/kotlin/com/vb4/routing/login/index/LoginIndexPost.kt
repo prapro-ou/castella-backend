@@ -1,7 +1,7 @@
 package com.vb4.routing.login.index
 
 import com.vb4.Email
-import com.vb4.plugins.createJWT
+import com.vb4.plugins.auth.createJWT
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -31,7 +31,7 @@ fun Route.loginIndexPost() {
                 )
             }
             .mapBoth(
-                success = { user -> LoginIndexPostResponse(token = createJWT(user.email.value)) },
+                success = { user -> LoginIndexPostResponse(token = createJWT(user.email)) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
