@@ -38,6 +38,8 @@ ktor-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref =
 ktor-serialization = { group = "io.ktor", name="ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-content-negotiation = { group = "io.ktor", name="ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+ktor-auth = { group = "io.ktor", name="ktor-server-auth", version.ref = "ktor" }
+ktor-auth-jwt = { group = "io.ktor", name="ktor-server-auth-jwt", version.ref = "ktor" }
 
 # Koin
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
@@ -76,6 +78,8 @@ ktor = [
     "ktor-serialization",
     "ktor-content-negotiation",
     "ktor-logback",
+    "ktor-auth",
+    "ktor-auth-jwt",
 ]
 test = ["kotlin-test-junit", "ktor-server-tests"]
 koin = ["koin-core", "koin-ktor", "koin-logger"]
