@@ -9,5 +9,5 @@ interface UserRepository {
 
     suspend fun authUser(user: User.BeforeAuthUser): ApiResult<User.AuthUser, DomainException>
 
-    suspend fun insertUser(user: User.RegisterUser): ApiResult<User.AuthUser, DomainException>
+    suspend fun insertUser(user: User.RegisterUser): ApiResult<Unit, DomainException>
 }

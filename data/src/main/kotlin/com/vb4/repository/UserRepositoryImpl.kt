@@ -12,6 +12,7 @@ import db.table.toAuthUser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 
 class UserRepositoryImpl(
@@ -40,5 +41,18 @@ class UserRepositoryImpl(
             if (dbUser[UsersTable.loginPassword] == user.password.value)
                 dbUser.toAuthUser()
             else throw DomainException.AuthException("Auth failed.")
+        }
+
+    override suspend fun insertUser(
+        user: User.RegisterUser,
+    ): ApiResult<Unit, DomainException> =
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                UsersTable.insert {
+                    it[email] = user.email.value
+                    it[loginPassword] = user.loginPassword.value
+                    it[mailPassword] = user.mailPassword.value
+                }
+            }
         }
 }
