@@ -17,7 +17,7 @@ import org.koin.ktor.ext.inject
 fun Route.destinationsIndexGet() {
     val getDestinationsUseCase by inject<GetUserDestinationsUseCase>()
 
-    get("") {
+    get {
         getDestinationsUseCase(email = Email("inputUserEmail"))
             .mapBoth(
                 success = { (dm, group) -> GetDestinationIndexResponse.from(dm, group) },

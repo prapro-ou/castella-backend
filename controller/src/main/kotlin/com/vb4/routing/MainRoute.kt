@@ -21,7 +21,7 @@ import io.ktor.server.routing.routing
 
 fun Application.mainRoute() {
     routing {
-        get("") { call.respond("Success") }
+        get { call.respond("Success") }
         route("login") {
             loginIndexPost()
         }
