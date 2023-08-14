@@ -32,8 +32,8 @@ fun Route.registerIndexPost() {
 @Serializable
 private data class RegisterIndexPostRequest(
     val email: String,
-    val loginPassword: String,
-    val mailPassword: String,
+    @SerialName("login_password") val loginPassword: String,
+    @SerialName("mail_password") val mailPassword: String,
 )
 
 @Serializable
