@@ -4,6 +4,10 @@ sealed class DomainException(
     override val message: String,
     override val cause: Throwable? = null,
 ) : Exception() {
+    class AuthException(
+        override val message: String,
+    ) : DomainException(message)
+
     // DBに指定されたカラムがない時の例外
     class NoSuchElementException(
         override val message: String,

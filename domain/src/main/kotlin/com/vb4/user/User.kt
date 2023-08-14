@@ -16,7 +16,14 @@ class User private constructor(
 
 sealed interface TempUser {
     class BeforeAuthUser(val email: Email, val password: LoginPassword) : TempUser
-    class AuthUser(val email: Email, val password: MailPassword) : TempUser
+    class AuthUser private constructor(val email: Email, val password: MailPassword) : TempUser {
+        companion object {
+            fun reconstruct(email: Email, password: MailPassword) = AuthUser(
+                email = email,
+                password = password,
+            )
+        }
+    }
 }
 
 @JvmInline

@@ -13,12 +13,14 @@ object UsersTableSeeder : DatabaseSeeder {
         transaction(database) {
             UsersTable.batchInsert(userData) {
                 this[UsersTable.email] = it.email.value
+                this[UsersTable.loginPassword] = "password"
+                this[UsersTable.mailPassword] = "password"
             }
         }
     }
 
     internal val userData = listOf(
-        User.reconstruct(email = Email("sample1@example.com"),),
+        User.reconstruct(email = Email("sample1@example.com")),
         User.reconstruct(email = Email("inputUserEmail"),),
     )
 }
