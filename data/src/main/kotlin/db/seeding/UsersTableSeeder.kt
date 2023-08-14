@@ -1,6 +1,7 @@
 package db.seeding
 
 import com.vb4.Email
+import com.vb4.user.MailPassword
 import com.vb4.user.User
 import db.table.UsersTable
 import org.jetbrains.exposed.sql.Database
@@ -20,7 +21,9 @@ object UsersTableSeeder : DatabaseSeeder {
     }
 
     internal val userData = listOf(
-        User.reconstruct(email = Email("sample1@example.com")),
-        User.reconstruct(email = Email("inputUserEmail"),),
+        User.AuthUser.reconstruct(
+            email = Email("sample1@example.com"),
+            password = MailPassword(""),
+        ),
     )
 }

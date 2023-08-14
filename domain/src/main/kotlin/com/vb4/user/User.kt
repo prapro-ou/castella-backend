@@ -1,22 +1,11 @@
 package com.vb4.user
 
 import com.vb4.Email
-import com.vb4.avatar.Avatar
-import com.vb4.dm.DM
-import com.vb4.group.Group
 
 // アプリケーションの利用者を指す
-class User private constructor(
-    val email: Email,
-) {
-    companion object {
-        fun reconstruct(email: Email) = User(email)
-    }
-}
-
-sealed interface TempUser {
-    class BeforeAuthUser(val email: Email, val password: LoginPassword) : TempUser
-    class AuthUser private constructor(val email: Email, val password: MailPassword) : TempUser {
+sealed interface User {
+    class BeforeAuthUser(val email: Email, val password: LoginPassword) : User
+    class AuthUser private constructor(val email: Email, val password: MailPassword) : User {
         companion object {
             fun reconstruct(email: Email, password: MailPassword) = AuthUser(
                 email = email,

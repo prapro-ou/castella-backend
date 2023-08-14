@@ -5,7 +5,7 @@ import com.vb4.Email
 import com.vb4.result.ApiResult
 
 interface UserRepository {
-    suspend fun getUser(email: Email): ApiResult<User, DomainException>
+    suspend fun getUser(email: Email): ApiResult<User.AuthUser, DomainException>
 
-    suspend fun authUser(user: TempUser.BeforeAuthUser): ApiResult<TempUser.AuthUser, DomainException>
+    suspend fun authUser(user: User.BeforeAuthUser): ApiResult<User.AuthUser, DomainException>
 }
