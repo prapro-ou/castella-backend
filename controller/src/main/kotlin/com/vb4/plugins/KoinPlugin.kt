@@ -19,6 +19,7 @@ import com.vb4.repository.GroupRepositoryImpl
 import com.vb4.repository.UserRepositoryImpl
 import com.vb4.user.AuthUserUseCase
 import com.vb4.user.GetUserUseCase
+import com.vb4.user.RegisterUserUseCase
 import com.vb4.user.UserRepository
 import db.DevDB
 import io.ktor.server.application.Application
@@ -33,6 +34,7 @@ fun Application.configureKoinPlugin() {
         // User
         single<AuthUserUseCase> { AuthUserUseCase(get()) }
         single<GetUserUseCase> { GetUserUseCase(get()) }
+        single<RegisterUserUseCase> { RegisterUserUseCase(get()) }
 
         // Destination
         single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get(), get()) }

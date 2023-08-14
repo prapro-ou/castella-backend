@@ -10,6 +10,7 @@ import com.vb4.routing.groups.show.groupsShowGet
 import com.vb4.routing.dms.show.messages.show.dmsShowMessagesShowGet
 import com.vb4.routing.groups.messages.show.groupsMessagesShowGet
 import com.vb4.routing.login.index.loginIndexPost
+import com.vb4.routing.register.index.registerIndexPost
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
@@ -23,6 +24,9 @@ fun Application.mainRoute() {
         get("") { call.respond("Success") }
         route("login") {
             loginIndexPost()
+        }
+        route("register") {
+            registerIndexPost()
         }
         authenticate(JWT_AUTH) {
             route("destinations") {

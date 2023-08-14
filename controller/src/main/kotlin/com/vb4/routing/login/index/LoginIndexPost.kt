@@ -42,12 +42,12 @@ fun Route.loginIndexPost() {
 }
 
 @Serializable
-data class LoginIndexPostRequest(
+private data class LoginIndexPostRequest(
     val email: String,
     val password: String,
 )
 
 @Serializable
-data class LoginIndexPostResponse(
+private data class LoginIndexPostResponse(
     val token: String,
 )

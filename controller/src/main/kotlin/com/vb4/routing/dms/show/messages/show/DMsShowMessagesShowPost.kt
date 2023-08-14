@@ -15,6 +15,7 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
@@ -50,4 +51,4 @@ private data class DMsShowMessagesShowPostRequest(
 )
 
 @Serializable
-private data class DMsShowMessagesShowPostResponse(val isSuccess: Boolean)
+private data class DMsShowMessagesShowPostResponse(@SerialName("is_success") val isSuccess: Boolean)

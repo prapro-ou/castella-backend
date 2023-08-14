@@ -13,6 +13,7 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
@@ -46,4 +47,4 @@ private data class DMsIndexPostRequest(
 )
 
 @Serializable
-private data class DMsIndexPostResponse(val isSuccess: Boolean)
+private data class DMsIndexPostResponse(@SerialName("is_success") val isSuccess: Boolean)
