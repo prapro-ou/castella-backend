@@ -6,6 +6,7 @@ import com.vb4.Email
 import com.vb4.result.mapBoth
 import com.vb4.user.GetUserUseCase
 import com.vb4.user.MailPassword
+import com.vb4.user.User
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -60,4 +61,9 @@ fun createJWT(email: Email): String = JWT.create()
 data class AuthUserPrincipal(
     val email: Email,
     val password: MailPassword,
-) : Principal
+) : Principal {
+    fun toDomain() = User.AuthUser.reconstruct(
+        email = email,
+        password = password,
+    )
+}
