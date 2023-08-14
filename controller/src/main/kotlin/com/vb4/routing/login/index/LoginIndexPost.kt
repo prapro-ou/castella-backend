@@ -24,7 +24,7 @@ fun Route.loginIndexPost() {
         call.getRequest<LoginIndexPostRequest>()
             .flatMap { (email, password) ->
                 authUserUseCase(
-                    user = User.BeforeAuthUser(
+                    user = User.BeforeAuthUser.reconstruct(
                         email = Email(email),
                         password = LoginPassword(password),
                     )
