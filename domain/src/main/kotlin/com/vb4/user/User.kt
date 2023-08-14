@@ -13,3 +13,14 @@ class User private constructor(
         fun reconstruct(email: Email) = User(email)
     }
 }
+
+sealed interface TempUser {
+    class BeforeAuthUser(val email: Email, val password: LoginPassword) : TempUser
+    class AuthUser(val email: Email, val password: MailPassword) : TempUser
+}
+
+@JvmInline
+value class LoginPassword(val value: String)
+
+@JvmInline
+value class MailPassword(val value: String)
