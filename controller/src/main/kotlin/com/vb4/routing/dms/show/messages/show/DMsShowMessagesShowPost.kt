@@ -47,7 +47,7 @@ fun Route.dMsShowMessagesShowPost() {
 
 @Serializable
 private data class DMsShowMessagesShowPostRequest(
-    val body: String
+    val body: String,
 )
 
 @Serializable

@@ -5,7 +5,7 @@ import javax.mail.search.AddressStringTerm
 
 data class ReplyToStringTerm(private val pattern: String) : AddressStringTerm(pattern) {
     override fun match(msg: Message): Boolean {
-        msg.replyTo.forEach { if(super.match(it)) return true }
+        msg.replyTo.forEach { if (super.match(it)) return true }
         return false
     }
 }

@@ -1,7 +1,7 @@
 package com.vb4.dm
 
-import com.vb4.avatar.Avatar
 import com.vb4.Email
+import com.vb4.avatar.Avatar
 import com.vb4.generateId
 
 class DM private constructor(

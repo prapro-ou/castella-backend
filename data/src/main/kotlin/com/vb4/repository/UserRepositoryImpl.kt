@@ -38,9 +38,11 @@ class UserRepositoryImpl(
                     .select { UsersTable.email eq user.email.value }
                     .first()
             }
-            if (dbUser[UsersTable.loginPassword] == user.password.value)
+            if (dbUser[UsersTable.loginPassword] == user.password.value) {
                 dbUser.toAuthUser()
-            else throw DomainException.AuthException("Auth failed.")
+            } else {
+                throw DomainException.AuthException("Auth failed.")
+            }
         }
 
     override suspend fun insertUser(

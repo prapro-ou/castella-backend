@@ -2,14 +2,14 @@ package com.vb4
 
 import com.vb4.result.ApiResult
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Transaction
-import kotlin.coroutines.cancellation.CancellationException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
 import org.jetbrains.exposed.sql.transactions.transactionManager
+import kotlin.coroutines.cancellation.CancellationException
 
 inline fun <T> runCatchDomainException(block: () -> T): ApiResult<T, DomainException> = try {
     ApiResult.Success(block())
@@ -28,15 +28,14 @@ suspend fun <T> runCatchWithContext(
     block: suspend CoroutineScope.() -> T,
 ): ApiResult<T, DomainException> = withContext(dispatcher) { runCatchDomainException { block() } }
 
-
 suspend fun <T> suspendTransaction(
     db: Database,
-    statement: suspend Transaction.() -> T
+    statement: suspend Transaction.() -> T,
 ) = suspendTransactionAsync(db, statement).await()
 
 suspend fun <T> suspendTransactionAsync(
     db: Database,
-    statement: suspend Transaction.() -> T
+    statement: suspend Transaction.() -> T,
 ) = coroutineScope {
     suspendedTransactionAsync(
         context = coroutineContext,

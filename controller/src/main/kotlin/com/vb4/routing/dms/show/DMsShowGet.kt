@@ -1,8 +1,8 @@
 package com.vb4.routing.dms.show
 
-import com.vb4.dm.GetDMMessagesByDMIdUseCase
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
+import com.vb4.dm.GetDMMessagesByDMIdUseCase
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth

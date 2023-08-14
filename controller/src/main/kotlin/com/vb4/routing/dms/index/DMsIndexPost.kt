@@ -26,7 +26,7 @@ fun Route.dMsIndexPost() {
                 createDMUseCase(
                     name = DMName(name),
                     userEmail = Email(""),
-                    to = Avatar.reconstruct(Email(to))
+                    to = Avatar.reconstruct(Email(to)),
                 )
             }
             .mapBoth(

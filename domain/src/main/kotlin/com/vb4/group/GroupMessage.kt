@@ -1,12 +1,6 @@
 package com.vb4.group
 
 import com.vb4.avatar.Avatar
-import com.vb4.dm.DMBody
-import com.vb4.dm.DMCreatedAt
-import com.vb4.dm.DMMessage
-import com.vb4.dm.DMMessageId
-import com.vb4.dm.DMReply
-import com.vb4.dm.DMSubject
 import com.vb4.generateId
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -30,7 +24,7 @@ class GroupMessage private constructor(
             subject = subject,
             body = body,
             replies = listOf(),
-            createdAt = GroupCreatedAt(Clock.System.now())
+            createdAt = GroupCreatedAt(Clock.System.now()),
         )
 
         fun reconstruct(
@@ -68,7 +62,7 @@ class GroupReply private constructor(
             from = from,
             subject = subject,
             body = body,
-            createdAt = GroupCreatedAt(Clock.System.now())
+            createdAt = GroupCreatedAt(Clock.System.now()),
         )
 
         fun reconstruct(

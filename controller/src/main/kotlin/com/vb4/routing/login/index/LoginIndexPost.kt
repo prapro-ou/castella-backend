@@ -27,7 +27,7 @@ fun Route.loginIndexPost() {
                     user = User.BeforeAuthUser.reconstruct(
                         email = Email(email),
                         password = LoginPassword(password),
-                    )
+                    ),
                 )
             }
             .mapBoth(

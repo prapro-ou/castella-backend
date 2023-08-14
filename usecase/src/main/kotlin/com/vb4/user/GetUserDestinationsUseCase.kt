@@ -1,18 +1,18 @@
 package com.vb4.user
 
 import com.vb4.DomainException
+import com.vb4.Email
 import com.vb4.dm.DM
-import com.vb4.result.ApiResult
-import com.vb4.result.map
+import com.vb4.dm.DMRepository
 import com.vb4.group.Group
+import com.vb4.group.GroupRepository
+import com.vb4.result.ApiResult
+import com.vb4.result.flatMap
+import com.vb4.result.map
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import com.vb4.Email
-import com.vb4.dm.DMRepository
-import com.vb4.group.GroupRepository
-import com.vb4.result.flatMap
 import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 class GetUserDestinationsUseCase(
     private val dmRepository: DMRepository,

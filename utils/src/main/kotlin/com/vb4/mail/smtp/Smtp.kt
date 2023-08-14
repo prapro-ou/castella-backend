@@ -16,11 +16,14 @@ sealed interface Smtp {
                 setProperty("mail.smtp.auth", "true")
                 setProperty("mail.smtp.starttls.enable", "true")
             }
-            Session.getInstance(props, object : Authenticator() {
-                override fun getPasswordAuthentication(): PasswordAuthentication {
-                    return PasswordAuthentication(user, password)
-                }
-            })
+            Session.getInstance(
+                props,
+                object : Authenticator() {
+                    override fun getPasswordAuthentication(): PasswordAuthentication {
+                        return PasswordAuthentication(user, password)
+                    }
+                },
+            )
         }
     }
 

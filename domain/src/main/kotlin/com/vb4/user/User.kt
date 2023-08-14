@@ -22,7 +22,7 @@ sealed interface User {
         companion object {
             fun reconstruct(email: Email, password: LoginPassword) = BeforeAuthUser(
                 email = email,
-                password = password
+                password = password,
             )
         }
     }

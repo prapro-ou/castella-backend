@@ -6,7 +6,6 @@ import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMBody
 import com.vb4.dm.DMCreatedAt
-import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
 import com.vb4.dm.DMMessageRepository
@@ -19,9 +18,9 @@ import com.vb4.mail.smtp.Smtp
 import com.vb4.mail.smtp.SmtpMail
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
-import javax.mail.internet.InternetAddress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import javax.mail.internet.InternetAddress
 
 class DMMessageRepositoryImpl(
     private val imap: Imap,
@@ -62,7 +61,6 @@ class DMMessageRepositoryImpl(
     ): ApiResult<Unit, DomainException> = runCatchWithContext(dispatcher) {
         smtp.send(SmtpMail.from(dm, reply))
     }
-
 }
 
 private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(

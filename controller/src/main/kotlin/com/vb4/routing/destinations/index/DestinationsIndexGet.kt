@@ -1,12 +1,12 @@
 package com.vb4.routing.destinations.index
 
 import com.vb4.Email
-import com.vb4.user.GetUserDestinationsUseCase
 import com.vb4.dm.DM
 import com.vb4.group.Group
 import com.vb4.result.consume
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
+import com.vb4.user.GetUserDestinationsUseCase
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

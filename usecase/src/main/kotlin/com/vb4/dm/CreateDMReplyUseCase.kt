@@ -16,7 +16,7 @@ class CreateDMReplyUseCase(
         dmId: DMId,
         dmMessageId: DMMessageId,
         body: DMBody,
-    ) = withContext(dispatcher){
+    ) = withContext(dispatcher) {
         dmRepository
             .getDM(dmId)
             .flatMap { dm ->

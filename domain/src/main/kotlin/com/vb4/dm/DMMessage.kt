@@ -2,7 +2,6 @@ package com.vb4.dm
 
 import com.vb4.avatar.Avatar
 import com.vb4.generateId
-import java.util.UUID
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
@@ -25,7 +24,7 @@ class DMMessage private constructor(
             subject = subject,
             body = body,
             replies = listOf(),
-            createdAt = DMCreatedAt(Clock.System.now())
+            createdAt = DMCreatedAt(Clock.System.now()),
         )
 
         fun reconstruct(
@@ -63,7 +62,7 @@ class DMReply private constructor(
             from = from,
             subject = DMSubject("Re: ${parent.subject.value}"),
             body = body,
-            createdAt = DMCreatedAt(Clock.System.now())
+            createdAt = DMCreatedAt(Clock.System.now()),
         )
 
         fun reconstruct(

@@ -2,6 +2,10 @@ package com.vb4.mail.imap.query
 
 import com.vb4.mail.imap.query.term.NothingTerm
 import com.vb4.mail.imap.query.term.ReplyToStringTerm
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import javax.mail.Message
 import javax.mail.search.AndTerm
@@ -12,10 +16,6 @@ import javax.mail.search.OrTerm
 import javax.mail.search.RecipientStringTerm
 import javax.mail.search.SearchTerm
 import javax.mail.search.SentDateTerm
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class SearchQueryBuilder {
     private val query = mutableListOf<SearchTerm>()
@@ -57,10 +57,11 @@ class SearchQueryBuilder {
         when (imap.query.size) {
             0 -> return
             1 -> query.add(imap.query.first())
-            else -> imap
-                .query
-                .reduce { left, right -> OrTerm(left, right) }
-                .also { query.add(it) }
+            else ->
+                imap
+                    .query
+                    .reduce { left, right -> OrTerm(left, right) }
+                    .also { query.add(it) }
         }
     }
 
@@ -69,10 +70,11 @@ class SearchQueryBuilder {
         when (imap.query.size) {
             0 -> return
             1 -> query.add(imap.query.first())
-            else -> imap
-                .query
-                .reduce { left, right -> AndTerm(left, right) }
-                .also { query.add(it) }
+            else ->
+                imap
+                    .query
+                    .reduce { left, right -> AndTerm(left, right) }
+                    .also { query.add(it) }
         }
     }
 

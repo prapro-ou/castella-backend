@@ -19,7 +19,7 @@ sealed interface Imap {
         }
     }
 
-    fun search(block: SearchQueryBuilder.() -> Unit) : List<ImapMail> = SearchQueryBuilder()
+    fun search(block: SearchQueryBuilder.() -> Unit): List<ImapMail> = SearchQueryBuilder()
         .apply(block)
         .build()
         .let { term -> folder.search(term) }

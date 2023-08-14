@@ -20,7 +20,7 @@ class GroupMessageRepositoryImpl(
 
     override suspend fun getGroupMessage(
         group: Group,
-        messageId: GroupMessageId
+        messageId: GroupMessageId,
     ): ApiResult<GroupMessage, DomainException> {
         TODO("Not yet implemented")
     }

@@ -1,8 +1,8 @@
 package com.vb4.mail.imap
 
-import javax.mail.Message
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant
+import javax.mail.Message
 
 class ImapMail private constructor(private val message: Message) {
 

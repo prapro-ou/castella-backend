@@ -15,7 +15,7 @@ class CreateDMMessageUseCase(
         dmId: DMId,
         subject: DMSubject,
         body: DMBody,
-    ) = withContext(dispatcher){
+    ) = withContext(dispatcher) {
         dmRepository
             .getDM(dmId)
             .map { dm ->

@@ -6,11 +6,14 @@ import javax.mail.internet.MimeMessage
 
 class MimeMessageWithMessageId(
     session: Session,
-    private val messageId: String? = null
+    private val messageId: String? = null,
 ) : MimeMessage(session) {
     override fun updateMessageID() {
-        if (messageId == null) super.updateMessageID()
-        else setHeader("Message-ID", "<$messageId>")
+        if (messageId == null) {
+            super.updateMessageID()
+        } else {
+            setHeader("Message-ID", "<$messageId>")
+        }
     }
 
     companion object {

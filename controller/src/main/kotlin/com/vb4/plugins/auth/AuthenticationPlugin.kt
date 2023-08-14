@@ -8,13 +8,11 @@ import com.vb4.result.mapBoth
 import com.vb4.user.GetUserUseCase
 import com.vb4.user.MailPassword
 import com.vb4.user.User
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.Principal
 import io.ktor.server.auth.jwt.jwt
-import io.ktor.server.response.respond
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toJavaInstant
 import org.koin.ktor.ext.inject
@@ -29,7 +27,7 @@ fun Application.configureAuthenticationPlugin() {
                 JWT.require(Algorithm.HMAC256(secret))
                     .withAudience(audience)
                     .withIssuer(issuer)
-                    .build()
+                    .build(),
             )
             validate { credential ->
                 val getUserUseCase by inject<GetUserUseCase>()
@@ -40,7 +38,7 @@ fun Application.configureAuthenticationPlugin() {
                         getUserUseCase(email)
                             .mapBoth(
                                 success = { user -> AuthUserPrincipal.from(user) },
-                                failure = { null }
+                                failure = { null },
                             )
                     }
                 null

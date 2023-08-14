@@ -17,6 +17,6 @@ class RegisterUserUseCase(
             email = email,
             loginPassword = loginPassword,
             mailPassword = mailPassword,
-        )
+        ),
     )
 }
