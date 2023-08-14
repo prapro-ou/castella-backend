@@ -17,6 +17,8 @@ import com.vb4.repository.DMMessageRepositoryImpl
 import com.vb4.repository.DMRepositoryImpl
 import com.vb4.repository.GroupRepositoryImpl
 import com.vb4.repository.UserRepositoryImpl
+import com.vb4.user.AuthUserUseCase
+import com.vb4.user.GetUserUseCase
 import com.vb4.user.UserRepository
 import db.DevDB
 import io.ktor.server.application.Application
@@ -28,6 +30,10 @@ import org.koin.ktor.plugin.Koin
 fun Application.configureKoinPlugin() {
     val module = module {
         /*** UseCase ***/
+        // User
+        single<AuthUserUseCase> { AuthUserUseCase(get()) }
+        single<GetUserUseCase> { GetUserUseCase(get()) }
+
         // Destination
         single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get(), get()) }
 
@@ -48,6 +54,8 @@ fun Application.configureKoinPlugin() {
         single<GroupRepository> { GroupRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get()) }
         single<DMMessageRepository> { DMMessageRepositoryImpl(get(), get()) }
+
+        /*** Mail Server ***/
         single<Imap> { Imap.Gmail("inputUserEmail", "") }
         single<Smtp> { Smtp.Gmail("inputUserEmail", "") }
 
