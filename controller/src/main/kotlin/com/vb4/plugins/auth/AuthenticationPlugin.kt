@@ -2,6 +2,7 @@ package com.vb4.plugins.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.vb4.DomainException
 import com.vb4.Email
 import com.vb4.result.mapBoth
 import com.vb4.user.GetUserUseCase
@@ -38,14 +39,14 @@ fun Application.configureAuthenticationPlugin() {
                     ?.let { email ->
                         getUserUseCase(email)
                             .mapBoth(
-                                success = { user -> AuthUserPrincipal(user.email, user.password) },
+                                success = { user -> AuthUserPrincipal.from(user) },
                                 failure = { null }
                             )
                     }
                 null
             }
             challenge { _, _ ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                throw DomainException.AuthException("Token is not valid or has expired")
             }
         }
     }
@@ -66,4 +67,11 @@ data class AuthUserPrincipal(
         email = email,
         password = password,
     )
+
+    companion object {
+        fun from(user: User.AuthUser) = AuthUserPrincipal(
+            email = user.email,
+            password = user.password,
+        )
+    }
 }
