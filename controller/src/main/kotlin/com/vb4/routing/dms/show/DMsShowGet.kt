@@ -3,6 +3,7 @@ package com.vb4.routing.dms.show
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.GetDMMessagesByDMIdUseCase
+import com.vb4.plugins.auth.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -15,12 +16,14 @@ import io.ktor.server.routing.get
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.dmsShowGet() {
-    val getDMMessagesByDMIdUseCase by inject<GetDMMessagesByDMIdUseCase>()
 
     get("{dmId}") {
+        val getDMMessagesByDMIdUseCase by this@dmsShowGet
+            .inject<GetDMMessagesByDMIdUseCase> { parametersOf(call.authUser) }
         call.getParameter<String>("dmId")
             .flatMap { id -> getDMMessagesByDMIdUseCase(DMId(id)) }
             .mapBoth(

@@ -22,7 +22,7 @@ val DevDB: Database by lazy {
 private fun hikari(): HikariDataSource {
     val config = HikariConfig().apply {
         driverClassName = "org.h2.Driver"
-        jdbcUrl = "jdbc:h2:mem:dev_db;DB_CLOSE_DELAY=-1"
+        jdbcUrl = "jdbc:h2:mem:dev_db;MODE=MYSQL;DB_CLOSE_DELAY=-1"
         username = ""
         password = ""
         maximumPoolSize = MAXIMUM_POOL_SIZE

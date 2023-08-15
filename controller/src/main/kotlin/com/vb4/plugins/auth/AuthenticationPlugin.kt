@@ -11,11 +11,16 @@ import com.vb4.user.GetUserUseCase
 import com.vb4.user.MailPassword
 import com.vb4.user.User
 import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.Principal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.auth.principal
 import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.util.pipeline.PipelineContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toJavaInstant
 import org.koin.ktor.ext.inject
@@ -75,3 +80,8 @@ data class AuthUserPrincipal(
         )
     }
 }
+
+val ApplicationCall.authUser get() =
+    principal<AuthUserPrincipal>()
+        ?.toDomain()
+        ?: throw DomainException.AuthException("Could not find AuthUser.")

@@ -3,6 +3,7 @@ package com.vb4.routing
 import com.vb4.DomainException
 import com.vb4.result.ApiResult
 import io.ktor.server.application.ApplicationCall
+import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.CannotTransformContentToTypeException
 import io.ktor.server.request.receive
 
@@ -33,5 +34,7 @@ suspend inline fun <reified T : Any> ApplicationCall.getRequest(
     try {
         ApiResult.Success(this.receive())
     } catch (e: CannotTransformContentToTypeException) {
+        ApiResult.Failure(DomainException.RequestValidationException(errorMessage))
+    } catch (e: BadRequestException) {
         ApiResult.Failure(DomainException.RequestValidationException(errorMessage))
     }

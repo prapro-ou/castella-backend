@@ -9,17 +9,20 @@ import com.vb4.dm.GetDMMessageByIdUseCase
 import com.vb4.dm.GetDMMessagesByDMIdUseCase
 import com.vb4.group.GetGroupMessageByIdUseCase
 import com.vb4.group.GetGroupMessagesByGroupIdUseCase
+import com.vb4.group.GroupMessageRepository
 import com.vb4.group.GroupRepository
 import com.vb4.mail.imap.Imap
 import com.vb4.mail.smtp.Smtp
 import com.vb4.repository.DMMessageRepositoryImpl
 import com.vb4.repository.DMRepositoryImpl
+import com.vb4.repository.GroupMessageRepositoryImpl
 import com.vb4.repository.GroupRepositoryImpl
 import com.vb4.repository.UserRepositoryImpl
 import com.vb4.user.AuthUserUseCase
 import com.vb4.user.GetUserDestinationsUseCase
 import com.vb4.user.GetUserUseCase
 import com.vb4.user.RegisterUserUseCase
+import com.vb4.user.User
 import com.vb4.user.UserRepository
 import db.DevDB
 import io.ktor.server.application.Application
@@ -32,37 +35,81 @@ fun Application.configureKoinPlugin() {
     val module = module {
         /*** UseCase ***/
         // User
-        single<AuthUserUseCase> { AuthUserUseCase(get()) }
-        single<GetUserUseCase> { GetUserUseCase(get()) }
-        single<RegisterUserUseCase> { RegisterUserUseCase(get()) }
+        single<AuthUserUseCase> { AuthUserUseCase(userRepository = get()) }
+        single<GetUserUseCase> { GetUserUseCase(userRepository = get()) }
+        single<RegisterUserUseCase> { RegisterUserUseCase(userRepository = get()) }
 
         // Destination
-        single<GetUserDestinationsUseCase> { GetUserDestinationsUseCase(get(), get()) }
+        single<GetUserDestinationsUseCase> {
+            GetUserDestinationsUseCase(dmRepository = get(), groupRepository = get())
+        }
 
         // DM
-        single<GetDMMessagesByDMIdUseCase> { GetDMMessagesByDMIdUseCase(get(), get()) }
-        single<CreateDMUseCase> { CreateDMUseCase(get()) }
+        single<GetDMMessagesByDMIdUseCase> { (authUser: User.AuthUser) ->
+            GetDMMessagesByDMIdUseCase(
+                dmRepository = get(),
+                dmMessageRepository = getDMMessageRepository(authUser),
+            )
+        }
+        single<CreateDMUseCase> { CreateDMUseCase(dmRepository = get()) }
 
-        single<GetDMMessageByIdUseCase> { GetDMMessageByIdUseCase(get(), get()) }
-        single<CreateDMMessageUseCase> { CreateDMMessageUseCase(get(), get()) }
-        single<CreateDMReplyUseCase> { CreateDMReplyUseCase(get(), get()) }
+        single<GetDMMessageByIdUseCase> { (authUser: User.AuthUser) ->
+            GetDMMessageByIdUseCase(
+                dmRepository = get(),
+                dmMessageRepository = getDMMessageRepository(authUser),
+            )
+        }
+        single<CreateDMMessageUseCase> { (authUser: User.AuthUser) ->
+            CreateDMMessageUseCase(
+                dmRepository = get(),
+                dmMessageRepository = getDMMessageRepository(authUser),
+            )
+        }
+        single<CreateDMReplyUseCase> { (authUser: User.AuthUser) ->
+            CreateDMReplyUseCase(
+                dmRepository = get(),
+                dmMessageRepository = getDMMessageRepository(authUser),
+            )
+        }
 
         // Group
-        single<GetGroupMessagesByGroupIdUseCase> { GetGroupMessagesByGroupIdUseCase(get(), get()) }
-        single<GetGroupMessageByIdUseCase> { GetGroupMessageByIdUseCase(get(), get()) }
+        single<GetGroupMessagesByGroupIdUseCase> { (authUser: User.AuthUser) ->
+            GetGroupMessagesByGroupIdUseCase(
+                groupRepository = get(),
+                groupMessageRepository = getGroupMessageRepository(authUser),
+            )
+        }
+        single<GetGroupMessageByIdUseCase> { (authUser: User.AuthUser) ->
+            GetGroupMessageByIdUseCase(
+                groupRepository = get(),
+                groupMessageRepository = getGroupMessageRepository(authUser),
+            )
+        }
 
         /*** Repository ***/
-        single<DMRepository> { DMRepositoryImpl(get()) }
-        single<GroupRepository> { GroupRepositoryImpl(get()) }
-        single<UserRepository> { UserRepositoryImpl(get()) }
-        single<DMMessageRepository> { DMMessageRepositoryImpl(get(), get()) }
-
-        /*** Mail Server ***/
-        single<Imap> { Imap.Gmail("inputUserEmail", "") }
-        single<Smtp> { Smtp.Gmail("inputUserEmail", "") }
+        single<DMRepository> { DMRepositoryImpl(database = get()) }
+        single<GroupRepository> { GroupRepositoryImpl(database = get()) }
+        single<UserRepository> { UserRepositoryImpl(database = get()) }
 
         single<Database> { DevDB }
     }
 
     install(Koin) { modules(module) }
 }
+
+
+
+private fun getDMMessageRepository(
+    authUser: User.AuthUser,
+): DMMessageRepository =
+    DMMessageRepositoryImpl(
+        Imap.Gmail(authUser.email.value, authUser.password.value),
+        Smtp.Gmail(authUser.email.value, authUser.password.value)
+    )
+
+private fun getGroupMessageRepository(
+    authUser: User.AuthUser,
+): GroupMessageRepository =
+    GroupMessageRepositoryImpl(
+        Imap.Gmail(authUser.email.value, authUser.password.value),
+    )

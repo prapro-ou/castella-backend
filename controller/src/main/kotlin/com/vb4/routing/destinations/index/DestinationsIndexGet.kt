@@ -1,8 +1,8 @@
 package com.vb4.routing.destinations.index
 
-import com.vb4.Email
 import com.vb4.dm.DM
 import com.vb4.group.Group
+import com.vb4.plugins.auth.authUser
 import com.vb4.result.consume
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
@@ -18,9 +18,9 @@ fun Route.destinationsIndexGet() {
     val getDestinationsUseCase by inject<GetUserDestinationsUseCase>()
 
     get {
-        getDestinationsUseCase(email = Email("inputUserEmail"))
+        getDestinationsUseCase(email = call.authUser.email)
             .mapBoth(
-                success = { (dm, group) -> GetDestinationIndexResponse.from(dm, group) },
+                success = { (dms, groups) -> GetDestinationIndexResponse.from(dms, groups) },
                 failure = { ExceptionSerializable.from(it) },
             ).consume(
                 success = { response -> call.respond(response) },
@@ -31,14 +31,14 @@ fun Route.destinationsIndexGet() {
 
 @Serializable
 private data class GetDestinationIndexResponse(
-    val dm: List<DestinationSerializable>,
-    val group: List<DestinationSerializable>,
+    val dms: List<DestinationSerializable>,
+    val groups: List<DestinationSerializable>,
 ) {
     companion object {
         fun from(dm: List<DM>, group: List<Group>) =
             GetDestinationIndexResponse(
-                dm = dm.map { DestinationSerializable.from(it) },
-                group = group.map { DestinationSerializable.from(it) },
+                dms = dm.map { DestinationSerializable.from(it) },
+                groups = group.map { DestinationSerializable.from(it) },
             )
     }
 }
