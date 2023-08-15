@@ -1,5 +1,6 @@
 package com.vb4.mail.imap
 
+import javax.mail.Flags
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant
 import javax.mail.Message
@@ -43,6 +44,7 @@ class ImapMail private constructor(private val message: Message) {
     }
     val subject: String by lazy { message.subject.orEmpty() }
     val body: String by lazy { message.content.toString() }
+    val isRecent: Boolean by lazy { message.flags.contains(Flags.Flag.RECENT) }
     val createdAt: Instant by lazy { message.sentDate.toInstant().toKotlinInstant() }
 
     companion object {
