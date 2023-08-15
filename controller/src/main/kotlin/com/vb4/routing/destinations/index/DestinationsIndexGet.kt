@@ -50,16 +50,19 @@ private data class GetDestinationIndexResponse(
 private data class DestinationSerializable(
     val id: String,
     val name: String,
+    val newMessageCount: Int,
 ) {
     companion object {
         fun from(dm: DM) = DestinationSerializable(
             id = dm.id.value,
             name = dm.name.value,
+            newMessageCount = dm.newMessageCount.value,
         )
 
         fun from(group: Group) = DestinationSerializable(
             id = group.id.value,
             name = group.name.value,
+            newMessageCount = 0,
         )
     }
 }

@@ -40,7 +40,7 @@ fun Application.configureKoinPlugin() {
         single<RegisterUserUseCase> { RegisterUserUseCase(userRepository = get()) }
 
         // Destination
-        single<GetUserDestinationsUseCase> { (authUser: User.AuthUser) ->
+        factory<GetUserDestinationsUseCase> { (authUser: User.AuthUser) ->
             GetUserDestinationsUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
                 groupRepository = get(),
@@ -48,29 +48,29 @@ fun Application.configureKoinPlugin() {
         }
 
         // DM
-        single<GetDMMessagesByDMIdUseCase> { (authUser: User.AuthUser) ->
+        factory<GetDMMessagesByDMIdUseCase> { (authUser: User.AuthUser) ->
             GetDMMessagesByDMIdUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
                 dmMessageRepository = getDMMessageRepository(authUser),
             )
         }
-        single<CreateDMUseCase> { (authUser: User.AuthUser) ->
+        factory<CreateDMUseCase> { (authUser: User.AuthUser) ->
             CreateDMUseCase(dmRepository = getDMRepository(database = get(), authUser = authUser))
         }
 
-        single<GetDMMessageByIdUseCase> { (authUser: User.AuthUser) ->
+        factory<GetDMMessageByIdUseCase> { (authUser: User.AuthUser) ->
             GetDMMessageByIdUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
                 dmMessageRepository = getDMMessageRepository(authUser),
             )
         }
-        single<CreateDMMessageUseCase> { (authUser: User.AuthUser) ->
+        factory<CreateDMMessageUseCase> { (authUser: User.AuthUser) ->
             CreateDMMessageUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
                 dmMessageRepository = getDMMessageRepository(authUser),
             )
         }
-        single<CreateDMReplyUseCase> { (authUser: User.AuthUser) ->
+        factory<CreateDMReplyUseCase> { (authUser: User.AuthUser) ->
             CreateDMReplyUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
                 dmMessageRepository = getDMMessageRepository(authUser),
@@ -78,13 +78,13 @@ fun Application.configureKoinPlugin() {
         }
 
         // Group
-        single<GetGroupMessagesByGroupIdUseCase> { (authUser: User.AuthUser) ->
+        factory<GetGroupMessagesByGroupIdUseCase> { (authUser: User.AuthUser) ->
             GetGroupMessagesByGroupIdUseCase(
                 groupRepository = get(),
                 groupMessageRepository = getGroupMessageRepository(authUser),
             )
         }
-        single<GetGroupMessageByIdUseCase> { (authUser: User.AuthUser) ->
+        factory<GetGroupMessageByIdUseCase> { (authUser: User.AuthUser) ->
             GetGroupMessageByIdUseCase(
                 groupRepository = get(),
                 groupMessageRepository = getGroupMessageRepository(authUser),
@@ -125,10 +125,14 @@ private fun getGroupMessageRepository(
         imap = getImap(authUser),
     )
 
-private fun getImap(authUser: User.AuthUser) = Imap.Gmail(
-    user = authUser.email.value,
-    password = authUser.password.value,
-)
+private val imap: MutableMap<String, Imap> = mutableMapOf()
+
+private fun getImap(authUser: User.AuthUser) = imap.getOrPut(authUser.email.value) {
+    Imap.Gmail(
+        user = authUser.email.value,
+        password = authUser.password.value,
+    )
+}
 
 private fun getSmtp(authUser: User.AuthUser) = Smtp.Gmail(
     user = authUser.email.value,

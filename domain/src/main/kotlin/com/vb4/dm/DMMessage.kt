@@ -1,5 +1,6 @@
 package com.vb4.dm
 
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.generateId
 import kotlinx.datetime.Clock
@@ -12,7 +13,7 @@ class DMMessage private constructor(
     val body: DMBody,
     val replies: List<DMReply>,
     val isRecent: Boolean,
-    val newMessageCount: Int,
+    val newMessageCount: NewMessageCount,
     val createdAt: DMCreatedAt,
 ) {
     companion object {
@@ -27,7 +28,7 @@ class DMMessage private constructor(
             body = body,
             replies = listOf(),
             isRecent = false,
-            newMessageCount = 0,
+            newMessageCount =  NewMessageCount(0),
             createdAt = DMCreatedAt(Clock.System.now()),
         )
 
@@ -38,7 +39,7 @@ class DMMessage private constructor(
             body: DMBody,
             replies: List<DMReply>,
             isRecent: Boolean,
-            newMessageCount: Int,
+            newMessageCount: NewMessageCount,
             createdAt: DMCreatedAt,
         ) = DMMessage(
             id = id,

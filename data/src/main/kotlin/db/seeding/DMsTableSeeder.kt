@@ -1,6 +1,7 @@
 package db.seeding
 
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
@@ -27,7 +28,7 @@ object DMsTableSeeder : DatabaseSeeder {
             id = DMId("DMId$index"),
             name = DMName("DMName$index"),
             userEmail = Email("sample1@example.com"),
-            newMessageCount = 2,
+            newMessageCount = NewMessageCount(2),
 
             // 使用しない
             to = Avatar.reconstruct(Email("")),
@@ -36,7 +37,7 @@ object DMsTableSeeder : DatabaseSeeder {
         id = DMId("example"),
         name = DMName("中銀"),
         userEmail = Email("inputUserEmail"),
-        newMessageCount = 2,
+        newMessageCount = NewMessageCount(2),
         to = Avatar.reconstruct(Email("notifications@github.com")),
     )
 }

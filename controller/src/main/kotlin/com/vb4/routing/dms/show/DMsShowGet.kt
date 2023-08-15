@@ -62,7 +62,7 @@ private data class DMMessageSerializable(
             subject = message.subject.value,
             body = message.body.value,
             createdAt = message.createdAt.value,
-            newMessageCount = message.newMessageCount,
+            newMessageCount = message.newMessageCount.value,
             replyCount = message.replies.count(),
         )
     }

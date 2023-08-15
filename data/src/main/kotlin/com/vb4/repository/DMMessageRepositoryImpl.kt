@@ -2,6 +2,7 @@ package com.vb4.repository
 
 import com.vb4.DomainException
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMBody
@@ -70,7 +71,7 @@ private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct
     createdAt = DMCreatedAt(createdAt),
     from = Avatar.reconstruct(Email(from)),
     isRecent = isRecent,
-    newMessageCount = replies.count { isRecent } + if (isRecent) 1 else 0,
+    newMessageCount = NewMessageCount(replies.count { isRecent } + if (isRecent) 1 else 0),
     replies = replies,
 )
 

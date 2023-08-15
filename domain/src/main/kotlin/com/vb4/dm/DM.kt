@@ -1,6 +1,7 @@
 package com.vb4.dm
 
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.generateId
 
@@ -9,7 +10,7 @@ class DM private constructor(
     val name: DMName,
     val userEmail: Email,
     val to: Avatar,
-    val newMessageCount: Int,
+    val newMessageCount: NewMessageCount,
 ) {
     companion object {
         fun create(name: DMName, userEmail: Email, to: Avatar) = DM(
@@ -17,7 +18,7 @@ class DM private constructor(
             name = name,
             userEmail = userEmail,
             to = to,
-            newMessageCount = 0
+            newMessageCount = NewMessageCount(0)
         )
 
         fun reconstruct(
@@ -25,7 +26,7 @@ class DM private constructor(
             name: DMName,
             userEmail: Email,
             to: Avatar,
-            newMessageCount: Int,
+            newMessageCount: NewMessageCount,
         ) = DM(id = id, name = name, userEmail = userEmail, to = to, newMessageCount = newMessageCount)
     }
 }

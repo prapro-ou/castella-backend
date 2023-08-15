@@ -1,6 +1,7 @@
 package db.table
 
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
@@ -21,5 +22,5 @@ internal fun ResultRow.toDM(newMessageCount: Int) = DM.reconstruct(
     name = DMName(this[DMsTable.name]),
     userEmail = Email(this[DMsTable.userEmail]),
     to = Avatar.reconstruct(Email(this[AvatarsTable.email])),
-    newMessageCount = newMessageCount
+    newMessageCount = NewMessageCount(newMessageCount),
 )
