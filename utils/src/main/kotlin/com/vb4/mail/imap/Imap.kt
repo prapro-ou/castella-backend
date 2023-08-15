@@ -2,6 +2,7 @@ package com.vb4.mail.imap
 
 import com.vb4.mail.imap.query.SearchQueryBuilder
 import javax.mail.FetchProfile
+import javax.mail.Flags
 import javax.mail.Folder
 import javax.mail.Session
 
@@ -26,7 +27,12 @@ sealed interface Imap {
         .also { messages -> folder.fetch(messages, fetchProfile) }
         .map { ImapMail.from(it) }
 
-    fun getMessageById(messageId: String): ImapMail? = search { messageId(messageId) }.firstOrNull()
+    fun searchRecentFlagCount(block: SearchQueryBuilder.() -> Unit): Int = SearchQueryBuilder()
+        .apply(block)
+        .build()
+        .let { term -> folder.search(term) }
+        .also { messages -> folder.fetch(messages, FetchProfile().apply { add(FetchProfile.Item.FLAGS) }) }
+        .count { it.flags.contains(Flags.Flag.RECENT) }
 }
 
 private val fetchProfile = FetchProfile().apply {
