@@ -9,6 +9,7 @@ class DM private constructor(
     val name: DMName,
     val userEmail: Email,
     val to: Avatar,
+    val newMessageCount: Int,
 ) {
     companion object {
         fun create(name: DMName, userEmail: Email, to: Avatar) = DM(
@@ -16,6 +17,7 @@ class DM private constructor(
             name = name,
             userEmail = userEmail,
             to = to,
+            newMessageCount = 0
         )
 
         fun reconstruct(
@@ -23,7 +25,8 @@ class DM private constructor(
             name: DMName,
             userEmail: Email,
             to: Avatar,
-        ) = DM(id = id, name = name, userEmail = userEmail, to = to)
+            newMessageCount: Int,
+        ) = DM(id = id, name = name, userEmail = userEmail, to = to, newMessageCount = newMessageCount)
     }
 }
 

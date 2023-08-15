@@ -5,6 +5,7 @@ import com.vb4.Email
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
 import com.vb4.dm.DMRepository
+import com.vb4.mail.imap.Imap
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
@@ -22,6 +23,7 @@ import java.util.UUID
 
 class DMRepositoryImpl(
     private val database: Database,
+    private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMRepository {
     override suspend fun getDMsByUserEmail(userEmail: Email): ApiResult<List<DM>, DomainException> =
@@ -31,21 +33,31 @@ class DMRepositoryImpl(
                     .innerJoin(DMsAvatarsTable)
                     .innerJoin(AvatarsTable)
                     .select { DMsTable.userEmail eq userEmail.value }
-                    .map { it.toDM() }
+                    .map { dm ->
+                        dm.toDM(
+                            newMessageCount = imap
+                                .searchRecentFlagCount {
+                                    dm(dm[DMsTable.userEmail], dm[AvatarsTable.email])
+                                },
+                        )
+                    }
             }
         }
 
     override suspend fun getDM(
         dmId: DMId,
     ): ApiResult<DM, DomainException> = runCatchWithContext(dispatcher) {
-        suspendTransaction(database) {
+        val dm = suspendTransaction(database) {
             DMsTable
                 .innerJoin(DMsAvatarsTable)
                 .innerJoin(AvatarsTable)
                 .select { DMsTable.id eq dmId.value }
                 .first()
-                .toDM()
         }
+        dm.toDM(
+            newMessageCount = imap
+                .searchRecentFlagCount { dm(dm[DMsTable.userEmail], dm[AvatarsTable.email]) },
+        )
     }
 
     override suspend fun insertDM(dm: DM): ApiResult<Unit, DomainException> =
