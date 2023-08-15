@@ -22,7 +22,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.dmsShowPost() {
-
     post("{dmId}") {
         val createDMMessageUseCase by this@dmsShowPost
             .inject<CreateDMMessageUseCase> { parametersOf(call.authUser) }

@@ -3,7 +3,6 @@ package com.vb4.routing.register.index
 import com.vb4.Email
 import com.vb4.result.consume
 import com.vb4.result.flatMap
-import com.vb4.result.map
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
 import com.vb4.routing.getRequest

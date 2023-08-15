@@ -42,8 +42,11 @@ fun Application.configureAuthenticationPlugin() {
                     .email
                     ?.let { email ->
                         val user = getUserUseCase(email)
-                        if (user is ApiResult.Success) AuthUserPrincipal.from(user.value)
-                        else null
+                        if (user is ApiResult.Success) {
+                            AuthUserPrincipal.from(user.value)
+                        } else {
+                            null
+                        }
                     }
             }
             challenge { _, _ ->

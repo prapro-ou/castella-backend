@@ -97,14 +97,12 @@ fun Application.configureKoinPlugin() {
     install(Koin) { modules(module) }
 }
 
-
-
 private fun getDMMessageRepository(
     authUser: User.AuthUser,
 ): DMMessageRepository =
     DMMessageRepositoryImpl(
         Imap.Gmail(authUser.email.value, authUser.password.value),
-        Smtp.Gmail(authUser.email.value, authUser.password.value)
+        Smtp.Gmail(authUser.email.value, authUser.password.value),
     )
 
 private fun getGroupMessageRepository(

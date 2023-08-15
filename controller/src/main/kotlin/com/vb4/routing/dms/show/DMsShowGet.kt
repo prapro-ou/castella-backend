@@ -20,7 +20,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.dmsShowGet() {
-
     get("{dmId}") {
         val getDMMessagesByDMIdUseCase by this@dmsShowGet
             .inject<GetDMMessagesByDMIdUseCase> { parametersOf(call.authUser) }
