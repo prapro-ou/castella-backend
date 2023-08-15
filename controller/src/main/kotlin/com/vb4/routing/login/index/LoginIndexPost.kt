@@ -31,7 +31,7 @@ fun Route.loginIndexPost() {
                 )
             }
             .mapBoth(
-                success = { user -> LoginIndexPostResponse(token = createJWT(user.email)) },
+                success = { user -> LoginIndexPostResponse(token = this@loginIndexPost.createJWT(user.email)) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
