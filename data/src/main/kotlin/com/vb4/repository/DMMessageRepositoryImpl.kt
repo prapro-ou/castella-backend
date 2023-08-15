@@ -69,6 +69,8 @@ private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct
     body = DMBody(body),
     createdAt = DMCreatedAt(createdAt),
     from = Avatar.reconstruct(Email(from)),
+    isRecent = isRecent,
+    newMessageCount = replies.count { isRecent } + if (isRecent) 1 else 0,
     replies = replies,
 )
 
@@ -77,6 +79,7 @@ private fun ImapMail.toDMReply() = DMReply.reconstruct(
     subject = DMSubject(subject),
     body = DMBody(body),
     createdAt = DMCreatedAt(createdAt),
+    isRecent = isRecent,
     from = Avatar.reconstruct(Email(from)),
 )
 

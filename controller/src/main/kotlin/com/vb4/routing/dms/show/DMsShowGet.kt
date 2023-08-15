@@ -53,6 +53,7 @@ private data class DMMessageSerializable(
     val subject: String,
     val body: String,
     @SerialName("created_at") val createdAt: Instant,
+    @SerialName("new_message_count") val newMessageCount: Int,
     @SerialName("reply_count") val replyCount: Int,
 ) {
     companion object {
@@ -61,6 +62,7 @@ private data class DMMessageSerializable(
             subject = message.subject.value,
             body = message.body.value,
             createdAt = message.createdAt.value,
+            newMessageCount = message.newMessageCount,
             replyCount = message.replies.count(),
         )
     }

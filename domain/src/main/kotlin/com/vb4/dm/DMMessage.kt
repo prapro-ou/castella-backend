@@ -11,6 +11,8 @@ class DMMessage private constructor(
     val subject: DMSubject,
     val body: DMBody,
     val replies: List<DMReply>,
+    val isRecent: Boolean,
+    val newMessageCount: Int,
     val createdAt: DMCreatedAt,
 ) {
     companion object {
@@ -24,6 +26,8 @@ class DMMessage private constructor(
             subject = subject,
             body = body,
             replies = listOf(),
+            isRecent = false,
+            newMessageCount = 0,
             createdAt = DMCreatedAt(Clock.System.now()),
         )
 
@@ -33,6 +37,8 @@ class DMMessage private constructor(
             subject: DMSubject,
             body: DMBody,
             replies: List<DMReply>,
+            isRecent: Boolean,
+            newMessageCount: Int,
             createdAt: DMCreatedAt,
         ) = DMMessage(
             id = id,
@@ -40,6 +46,8 @@ class DMMessage private constructor(
             subject = subject,
             body = body,
             replies = replies,
+            isRecent = isRecent,
+            newMessageCount = newMessageCount,
             createdAt = createdAt,
         )
     }
@@ -50,6 +58,7 @@ class DMReply private constructor(
     val from: Avatar,
     val subject: DMSubject,
     val body: DMBody,
+    val isRecent: Boolean,
     val createdAt: DMCreatedAt,
 ) {
     companion object {
@@ -62,6 +71,7 @@ class DMReply private constructor(
             from = from,
             subject = DMSubject("Re: ${parent.subject.value}"),
             body = body,
+            isRecent = false,
             createdAt = DMCreatedAt(Clock.System.now()),
         )
 
@@ -70,12 +80,14 @@ class DMReply private constructor(
             from: Avatar,
             subject: DMSubject,
             body: DMBody,
+            isRecent: Boolean,
             createdAt: DMCreatedAt,
         ) = DMReply(
             id = id,
             from = from,
             subject = subject,
             body = body,
+            isRecent = isRecent,
             createdAt = createdAt,
         ) }
 }

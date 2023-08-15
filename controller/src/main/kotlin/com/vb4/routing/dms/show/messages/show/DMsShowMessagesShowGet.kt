@@ -55,6 +55,7 @@ private data class DMMessageSerializable(
     val id: String,
     val email: String,
     val body: String,
+    @SerialName("is_recent") val isRecent: Boolean,
     @SerialName("created_at") val createdAt: Instant,
 ) {
     companion object {
@@ -63,6 +64,7 @@ private data class DMMessageSerializable(
                 id = message.id.value,
                 email = message.from.email.value,
                 body = message.body.value,
+                isRecent = message.isRecent,
                 createdAt = message.createdAt.value,
             ),
         ) + message.replies.map { reply -> from(reply = reply) }
@@ -71,6 +73,7 @@ private data class DMMessageSerializable(
             id = reply.id.value,
             email = reply.from.email.value,
             body = reply.body.value,
+            isRecent = reply.isRecent,
             createdAt = reply.createdAt.value,
         )
     }
