@@ -16,7 +16,7 @@ val DevDB: Database by lazy {
     val pool = hikari()
     Database.connect(pool)
         .also { pool.migrate() }
-        .also { it.seeding() }
+//        .also { it.seeding() }
 }
 
 private fun hikari(): HikariDataSource {

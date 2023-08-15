@@ -4,7 +4,9 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.vb4.DomainException
 import com.vb4.Email
+import com.vb4.result.ApiResult
 import com.vb4.result.mapBoth
+import com.vb4.routing.ExceptionSerializable
 import com.vb4.user.GetUserUseCase
 import com.vb4.user.MailPassword
 import com.vb4.user.User
@@ -13,6 +15,7 @@ import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.Principal
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.response.respond
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toJavaInstant
 import org.koin.ktor.ext.inject
@@ -35,16 +38,15 @@ fun Application.configureAuthenticationPlugin() {
                 credential.payload
                     .email
                     ?.let { email ->
-                        getUserUseCase(email)
-                            .mapBoth(
-                                success = { user -> AuthUserPrincipal.from(user) },
-                                failure = { null },
-                            )
+                        val user = getUserUseCase(email)
+                        if (user is ApiResult.Success) AuthUserPrincipal.from(user.value)
+                        else null
                     }
-                null
             }
             challenge { _, _ ->
-                throw DomainException.AuthException("Token is not valid or has expired")
+                DomainException.AuthException("Token is not valid or has expired")
+                    .let { ExceptionSerializable.from(it) }
+                    .also { (exception, status) -> call.respond(status, exception.message) }
             }
         }
     }
@@ -54,7 +56,7 @@ fun createJWT(email: Email): String = JWT.create()
     .withAudience(audience)
     .withIssuer(issuer)
     .withEmail(email)
-    .withExpiresAt(Clock.System.now().toJavaInstant().plusMillis(60000))
+    .withExpiresAt(Clock.System.now().toJavaInstant().plusSeconds(60000))
     .sign(Algorithm.HMAC256(secret))
 
 data class AuthUserPrincipal(

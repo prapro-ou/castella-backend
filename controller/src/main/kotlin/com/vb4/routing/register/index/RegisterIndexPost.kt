@@ -1,9 +1,14 @@
 package com.vb4.routing.register.index
 
+import com.vb4.Email
 import com.vb4.result.consume
+import com.vb4.result.flatMap
+import com.vb4.result.map
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable
 import com.vb4.routing.getRequest
+import com.vb4.user.LoginPassword
+import com.vb4.user.MailPassword
 import com.vb4.user.RegisterUserUseCase
 import io.ktor.server.application.call
 import io.ktor.server.response.respond
@@ -18,6 +23,13 @@ fun Route.registerIndexPost() {
 
     post {
         call.getRequest<RegisterIndexPostRequest>()
+            .flatMap { (email, loginPassword, mailPassword) ->
+                registerUserUseCase(
+                    email = Email(email),
+                    loginPassword = LoginPassword(loginPassword),
+                    mailPassword = MailPassword(mailPassword),
+                )
+            }
             .mapBoth(
                 success = { RegisterIndexPostResponse(isSuccess = true) },
                 failure = { ExceptionSerializable.from(it) },
