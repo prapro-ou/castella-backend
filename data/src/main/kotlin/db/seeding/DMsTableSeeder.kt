@@ -27,6 +27,7 @@ object DMsTableSeeder : DatabaseSeeder {
             id = DMId("DMId$index"),
             name = DMName("DMName$index"),
             userEmail = Email("sample1@example.com"),
+            newMessageCount = 2,
 
             // 使用しない
             to = Avatar.reconstruct(Email("")),
@@ -35,6 +36,7 @@ object DMsTableSeeder : DatabaseSeeder {
         id = DMId("example"),
         name = DMName("中銀"),
         userEmail = Email("inputUserEmail"),
+        newMessageCount = 2,
         to = Avatar.reconstruct(Email("notifications@github.com")),
     )
 }

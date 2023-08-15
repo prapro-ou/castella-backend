@@ -4,6 +4,7 @@ import com.vb4.dm.CreateDMReplyUseCase
 import com.vb4.dm.DMBody
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessageId
+import com.vb4.plugins.auth.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.map
@@ -17,12 +18,14 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.dMsShowMessagesShowPost() {
-    val createDMReplyUseCase by inject<CreateDMReplyUseCase>()
-
     post("{dmId}/{messageId}") {
+        val createDMReplyUseCase by this@dMsShowMessagesShowPost
+            .inject<CreateDMReplyUseCase> { parametersOf(call.authUser) }
+
         call.getTwoParameter<String, String>("dmId", "messageId")
             .flatMap { (dmId, messageId) ->
                 call.getRequest<DMsShowMessagesShowPostRequest>()

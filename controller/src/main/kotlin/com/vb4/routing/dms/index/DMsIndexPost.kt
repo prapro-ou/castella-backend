@@ -16,12 +16,14 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.dMsIndexPost() {
-    val createDMUseCase by inject<CreateDMUseCase>()
-
     post {
+        val createDMUseCase by this@dMsIndexPost
+            .inject<CreateDMUseCase> { parametersOf(call.authUser) }
+
         call.getRequest<DMsIndexPostRequest>()
             .flatMap { (name, to) ->
                 createDMUseCase(

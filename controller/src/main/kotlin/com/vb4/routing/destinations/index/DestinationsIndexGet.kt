@@ -12,12 +12,15 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import kotlinx.serialization.Serializable
+import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.destinationsIndexGet() {
-    val getDestinationsUseCase by inject<GetUserDestinationsUseCase>()
 
     get {
+        val getDestinationsUseCase by this@destinationsIndexGet
+            .inject<GetUserDestinationsUseCase> { parametersOf(call.authUser)  }
+
         getDestinationsUseCase(email = call.authUser.email)
             .mapBoth(
                 success = { (dms, groups) -> GetDestinationIndexResponse.from(dms, groups) },
