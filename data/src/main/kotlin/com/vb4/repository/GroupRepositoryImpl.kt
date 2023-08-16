@@ -5,6 +5,7 @@ import com.vb4.Email
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupRepository
+import com.vb4.mail.imap.Imap
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
@@ -23,6 +24,7 @@ import org.jetbrains.exposed.sql.select
 
 class GroupRepositoryImpl(
     private val database: Database,
+    private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GroupRepository {
     override suspend fun getGroupsByUserEmail(userEmail: Email): ApiResult<List<Group>, DomainException> =

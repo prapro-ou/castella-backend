@@ -7,6 +7,7 @@ import com.vb4.routing.dms.show.dmsShowGet
 import com.vb4.routing.dms.show.dmsShowPost
 import com.vb4.routing.dms.show.messages.show.dMsShowMessagesShowPost
 import com.vb4.routing.dms.show.messages.show.dmsShowMessagesShowGet
+import com.vb4.routing.groups.index.groupsIndexPost
 import com.vb4.routing.groups.messages.show.groupsMessagesShowGet
 import com.vb4.routing.groups.show.groupsShowGet
 import com.vb4.routing.login.index.loginIndexPost
@@ -48,6 +49,9 @@ fun Application.mainRoute() {
                 dMsShowMessagesShowPost()
             }
             route("groups") {
+                // 新しいGroup先を追加
+                groupsIndexPost()
+
                 // 特定のGroupとのメッセージを取得
                 groupsShowGet()
 

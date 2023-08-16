@@ -16,7 +16,5 @@ dependencies {
 
     implementation(libs.bundles.database)
 
-    implementation(libs.java.mail)
-
     testImplementation(libs.bundles.test)
 }

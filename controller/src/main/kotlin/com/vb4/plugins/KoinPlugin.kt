@@ -7,6 +7,9 @@ import com.vb4.dm.DMMessageRepository
 import com.vb4.dm.DMRepository
 import com.vb4.dm.GetDMMessageByIdUseCase
 import com.vb4.dm.GetDMMessagesByDMIdUseCase
+import com.vb4.group.CreateGroupMessageUseCase
+import com.vb4.group.CreateGroupReplyUseCase
+import com.vb4.group.CreateGroupUseCase
 import com.vb4.group.GetGroupMessageByIdUseCase
 import com.vb4.group.GetGroupMessagesByGroupIdUseCase
 import com.vb4.group.GroupMessageRepository
@@ -80,19 +83,33 @@ fun Application.configureKoinPlugin() {
         // Group
         factory<GetGroupMessagesByGroupIdUseCase> { (authUser: User.AuthUser) ->
             GetGroupMessagesByGroupIdUseCase(
-                groupRepository = get(),
+                groupRepository = getGroupRepository(get(), authUser),
                 groupMessageRepository = getGroupMessageRepository(authUser),
             )
         }
+        factory<CreateGroupUseCase> { (authUser: User.AuthUser) ->
+            CreateGroupUseCase(groupRepository = getGroupRepository(get(), authUser))
+        }
         factory<GetGroupMessageByIdUseCase> { (authUser: User.AuthUser) ->
             GetGroupMessageByIdUseCase(
-                groupRepository = get(),
+                groupRepository = getGroupRepository(get(), authUser),
+                groupMessageRepository = getGroupMessageRepository(authUser),
+            )
+        }
+        factory<CreateGroupMessageUseCase> { (authUser: User.AuthUser) ->
+            CreateGroupMessageUseCase(
+                groupRepository = getGroupRepository(get(), authUser),
+                groupMessageRepository = getGroupMessageRepository(authUser),
+            )
+        }
+        factory<CreateGroupReplyUseCase> { (authUser: User.AuthUser) ->
+            CreateGroupReplyUseCase(
+                groupRepository = getGroupRepository(get(), authUser),
                 groupMessageRepository = getGroupMessageRepository(authUser),
             )
         }
 
         /*** Repository ***/
-        single<GroupRepository> { GroupRepositoryImpl(database = get()) }
         single<UserRepository> { UserRepositoryImpl(database = get()) }
 
         single<Database> { DevDB }
@@ -106,6 +123,15 @@ private fun getDMRepository(
     authUser: User.AuthUser,
 ): DMRepository =
     DMRepositoryImpl(
+        database = database,
+        imap = getImap(authUser),
+    )
+
+private fun getGroupRepository(
+    database: Database,
+    authUser: User.AuthUser,
+): GroupRepository =
+    GroupRepositoryImpl(
         database = database,
         imap = getImap(authUser),
     )
