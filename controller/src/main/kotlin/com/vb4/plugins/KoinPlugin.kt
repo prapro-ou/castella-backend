@@ -123,6 +123,7 @@ private fun getGroupMessageRepository(
 ): GroupMessageRepository =
     GroupMessageRepositoryImpl(
         imap = getImap(authUser),
+        smtp = getSmtp(authUser),
     )
 
 private val imap: MutableMap<String, Imap> = mutableMapOf()

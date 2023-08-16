@@ -22,7 +22,7 @@ class MimeMessageWithMessageId(
             session: Session,
         ) = MimeMessageWithMessageId(session, mail.id).apply {
             setFrom(mail.from)
-            setRecipient(Message.RecipientType.TO, mail.to)
+            setRecipients(Message.RecipientType.TO, mail.to.toTypedArray())
             mail.cc?.let { cc -> setRecipients(Message.RecipientType.CC, cc.toTypedArray()) }
             mail.bcc?.let { bcc -> setRecipients(Message.RecipientType.BCC, bcc.toTypedArray()) }
             subject = mail.subject

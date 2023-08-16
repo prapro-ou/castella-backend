@@ -7,4 +7,8 @@ interface GroupMessageRepository {
     suspend fun getGroupMessages(group: Group): ApiResult<List<GroupMessage>, DomainException>
 
     suspend fun getGroupMessage(group: Group, messageId: GroupMessageId): ApiResult<GroupMessage, DomainException>
+
+    suspend fun insertGroupMessage(group: Group, message: GroupMessage): ApiResult<Unit, DomainException>
+
+    suspend fun insertGroupReply(group: Group, reply: GroupReply): ApiResult<Unit, DomainException>
 }

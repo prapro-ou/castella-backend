@@ -19,11 +19,11 @@ class ImapMail private constructor(private val message: Message) {
             ?.getOrNull(0)
             ?.toString() ?: ""
     }
-    val to: String by lazy {
+    val to: List<String> by lazy {
         message
             .getRecipients(Message.RecipientType.TO)
-            ?.getOrNull(0)
-            ?.toString() ?: ""
+            ?.map { it.toString() }
+            ?: emptyList()
     }
     val cc: List<String> by lazy {
         message

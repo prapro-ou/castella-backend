@@ -40,6 +40,11 @@ class SearchQueryBuilder {
             }
         }
 
+    fun group(user: String, to: List<String>) {
+        from(user)
+        to.forEach(::to)
+    }
+
     fun replyTo(pattern: String) = query.add(ReplyToStringTerm(pattern))
 
     fun sentDate(comparison: Int, date: Instant, timeZone: TimeZone = TimeZone.UTC) {

@@ -1,5 +1,6 @@
 package com.vb4.group
 
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.generateId
 import kotlinx.datetime.Clock
@@ -10,6 +11,8 @@ class GroupMessage private constructor(
     val from: Avatar,
     val subject: GroupSubject,
     val body: GroupBody,
+    val isRecent: Boolean,
+    val newMessageCount: NewMessageCount,
     val replies: List<GroupReply>,
     val createdAt: GroupCreatedAt,
 ) {
@@ -24,6 +27,8 @@ class GroupMessage private constructor(
             subject = subject,
             body = body,
             replies = listOf(),
+            isRecent = false,
+            newMessageCount = NewMessageCount(0),
             createdAt = GroupCreatedAt(Clock.System.now()),
         )
 
@@ -32,6 +37,8 @@ class GroupMessage private constructor(
             from: Avatar,
             subject: GroupSubject,
             body: GroupBody,
+            isRecent: Boolean,
+            newMessageCount: NewMessageCount,
             replies: List<GroupReply>,
             createdAt: GroupCreatedAt,
         ) = GroupMessage(
@@ -39,6 +46,8 @@ class GroupMessage private constructor(
             from = from,
             subject = subject,
             body = body,
+            isRecent = isRecent,
+            newMessageCount = newMessageCount,
             replies = replies,
             createdAt = createdAt,
         )
@@ -50,6 +59,7 @@ class GroupReply private constructor(
     val from: Avatar,
     val subject: GroupSubject,
     val body: GroupBody,
+    val isRecent: Boolean,
     val createdAt: GroupCreatedAt,
 ) {
     companion object {
@@ -62,6 +72,7 @@ class GroupReply private constructor(
             from = from,
             subject = subject,
             body = body,
+            isRecent = false,
             createdAt = GroupCreatedAt(Clock.System.now()),
         )
 
@@ -70,13 +81,14 @@ class GroupReply private constructor(
             from: Avatar,
             subject: GroupSubject,
             body: GroupBody,
-            replies: List<GroupReply>,
+            isRecent: Boolean,
             createdAt: GroupCreatedAt,
         ) = GroupReply(
             id = id,
             from = from,
             subject = subject,
             body = body,
+            isRecent = isRecent,
             createdAt = createdAt,
         )
     }
