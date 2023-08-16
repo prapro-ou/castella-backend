@@ -9,4 +9,6 @@ interface GroupRepository {
     suspend fun getGroupsByUserEmail(userEmail: Email): ApiResult<List<Group>, DomainException>
 
     suspend fun getGroup(groupId: GroupId): ApiResult<Group, DomainException>
+
+    suspend fun insertGroup(group: Group): ApiResult<Unit, DomainException>
 }

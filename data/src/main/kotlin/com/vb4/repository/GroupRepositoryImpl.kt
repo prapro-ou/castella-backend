@@ -12,9 +12,13 @@ import db.table.AvatarsTable
 import db.table.GroupsAvatarsTable
 import db.table.GroupsTable
 import db.table.toGroup
+import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
 
 class GroupRepositoryImpl(
@@ -42,6 +46,32 @@ class GroupRepositoryImpl(
                     .select { GroupsTable.id eq groupId.value }
                     .toList()
                     .toGroup()
+            }
+        }
+
+    override suspend fun insertGroup(group: Group): ApiResult<Unit, DomainException> =
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                GroupsTable
+                    .insert {
+                        it[id] = group.id.value
+                        it[name] = group.name.value
+                        it[userEmail] = group.userEmail.value
+                    }
+                group.to
+                    .map { it.email }
+                    .forEach { email ->
+                        AvatarsTable
+                            .insertIgnore { it[AvatarsTable.email] = email.value }
+
+                        GroupsAvatarsTable
+                            .insert {
+                                it[id] = UUID.randomUUID().toString()
+                                it[groupId] = group.id.value
+                                it[avatarEmail] = email.value
+                            }
+                    }
+
             }
         }
 }
