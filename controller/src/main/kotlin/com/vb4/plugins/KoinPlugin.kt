@@ -46,7 +46,7 @@ fun Application.configureKoinPlugin() {
         factory<GetUserDestinationsUseCase> { (authUser: User.AuthUser) ->
             GetUserDestinationsUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
-                groupRepository = get(),
+                groupRepository = getGroupRepository(database = get(), authUser = authUser),
             )
         }
 
