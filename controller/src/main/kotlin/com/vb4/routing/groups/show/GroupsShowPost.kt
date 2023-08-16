@@ -48,7 +48,6 @@ fun Route.groupsShowPost() {
     }
 }
 
-
 @Serializable
 private data class GroupsShowPostRequest(val subject: String, val body: String)
 

@@ -29,7 +29,7 @@ fun Route.groupsIndexPost() {
                 createGroupUseCase(
                     name = GroupName(name),
                     userEmail = call.authUser.email,
-                    to = to.map { Avatar.reconstruct(Email(it)) }
+                    to = to.map { Avatar.reconstruct(Email(it)) },
                 )
             }
             .mapBoth(

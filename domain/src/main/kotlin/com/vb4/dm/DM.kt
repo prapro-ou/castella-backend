@@ -18,7 +18,7 @@ class DM private constructor(
             name = name,
             userEmail = userEmail,
             to = to,
-            newMessageCount = NewMessageCount(0)
+            newMessageCount = NewMessageCount(0),
         )
 
         fun reconstruct(

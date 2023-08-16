@@ -28,7 +28,7 @@ class DMMessage private constructor(
             body = body,
             replies = listOf(),
             isRecent = false,
-            newMessageCount =  NewMessageCount(0),
+            newMessageCount = NewMessageCount(0),
             createdAt = DMCreatedAt(Clock.System.now()),
         )
 

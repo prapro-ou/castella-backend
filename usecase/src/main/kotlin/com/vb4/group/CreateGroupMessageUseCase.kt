@@ -1,7 +1,6 @@
 package com.vb4.group
 
 import com.vb4.avatar.Avatar
-import com.vb4.result.flatMap
 import com.vb4.result.map
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

@@ -19,9 +19,9 @@ import com.vb4.mail.smtp.Smtp
 import com.vb4.mail.smtp.SmtpMail
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
-import javax.mail.internet.InternetAddress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import javax.mail.internet.InternetAddress
 
 class GroupMessageRepositoryImpl(
     private val imap: Imap,
