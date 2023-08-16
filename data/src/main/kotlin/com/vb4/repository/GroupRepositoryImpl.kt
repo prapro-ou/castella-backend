@@ -17,11 +17,11 @@ import db.table.toGroup
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
 import java.util.UUID
-import org.jetbrains.exposed.sql.ResultRow
 
 class GroupRepositoryImpl(
     private val database: Database,
@@ -84,7 +84,7 @@ class GroupRepositoryImpl(
             .searchRecentFlagCount {
                 group(
                     user = resultRows.first()[GroupsTable.userEmail],
-                    to = resultRows.map { it[AvatarsTable.email] }
+                    to = resultRows.map { it[AvatarsTable.email] },
                 )
             },
     )

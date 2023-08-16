@@ -40,7 +40,7 @@ class DMRepositoryImpl(
                                 imap
                                     .searchRecentFlagCount {
                                         dm(dm[DMsTable.userEmail], dm[AvatarsTable.email])
-                                    }
+                                    },
                             ),
                         )
                     }
@@ -60,7 +60,7 @@ class DMRepositoryImpl(
         dm.toDM(
             newMessageCount = NewMessageCount(
                 imap
-                    .searchRecentFlagCount { dm(dm[DMsTable.userEmail], dm[AvatarsTable.email]) }
+                    .searchRecentFlagCount { dm(dm[DMsTable.userEmail], dm[AvatarsTable.email]) },
             ),
         )
     }

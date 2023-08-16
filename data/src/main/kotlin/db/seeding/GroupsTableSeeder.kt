@@ -30,7 +30,7 @@ object GroupsTableSeeder : DatabaseSeeder {
             // 使用しない
             userEmail = Email("sample1@example.com"),
             to = listOf(),
-            newMessageCount = NewMessageCount(2)
+            newMessageCount = NewMessageCount(2),
         )
     }
 }
