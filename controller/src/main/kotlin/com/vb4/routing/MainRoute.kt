@@ -10,6 +10,7 @@ import com.vb4.routing.dms.show.messages.show.dmsShowMessagesShowGet
 import com.vb4.routing.groups.index.groupsIndexPost
 import com.vb4.routing.groups.show.messages.show.groupsShowMessagesShowGet
 import com.vb4.routing.groups.show.groupsShowGet
+import com.vb4.routing.groups.show.messages.show.groupsShowMessagesShowPost
 import com.vb4.routing.login.index.loginIndexPost
 import com.vb4.routing.register.index.registerIndexPost
 import io.ktor.server.application.Application
@@ -57,6 +58,9 @@ fun Application.mainRoute() {
 
                 // 特定のGroupとの特定のメッセージへの返信を作成
                 groupsShowMessagesShowGet()
+
+                //特定のGroup先との特定のメッセージへの返信を作成
+                groupsShowMessagesShowPost()
             }
         }
     }

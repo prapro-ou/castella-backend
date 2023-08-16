@@ -65,12 +65,12 @@ class GroupReply private constructor(
     companion object {
         fun create(
             from: Avatar,
-            subject: GroupSubject,
             body: GroupBody,
+            parent: GroupMessage,
         ) = GroupReply(
             id = GroupMessageId(generateId()),
             from = from,
-            subject = subject,
+            subject = GroupSubject("Re: ${parent.subject.value}"),
             body = body,
             isRecent = false,
             createdAt = GroupCreatedAt(Clock.System.now()),

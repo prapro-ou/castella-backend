@@ -1,6 +1,7 @@
 package com.vb4.group
 
 import com.vb4.avatar.Avatar
+import com.vb4.result.flatMap
 import com.vb4.result.map
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -13,16 +14,21 @@ class CreateGroupReplyUseCase(
 ) {
     suspend operator fun invoke(
         groupId: GroupId,
-        subject: GroupSubject,
+        groupMessageId: GroupMessageId,
         body: GroupBody,
     ) = withContext(dispatcher) {
         groupRepository
             .getGroup(groupId)
-            .map { group ->
+            .flatMap { group ->
+                groupMessageRepository
+                    .getGroupMessage(group, groupMessageId)
+                    .map { message -> group to message }
+            }
+            .map { (group, message) ->
                 group to GroupReply.create(
                     from = Avatar.reconstruct(group.userEmail),
-                    subject = subject,
                     body = body,
+                    parent = message,
                 )
             }
             .map { (group, reply) -> groupMessageRepository.insertGroupReply(group, reply) }
