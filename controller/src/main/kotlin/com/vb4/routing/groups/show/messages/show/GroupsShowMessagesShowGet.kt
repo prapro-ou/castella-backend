@@ -1,4 +1,4 @@
-package com.vb4.routing.groups.messages.show
+package com.vb4.routing.groups.show.messages.show
 
 import com.vb4.group.GetGroupMessageByIdUseCase
 import com.vb4.group.GroupId
@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
-fun Route.groupsMessagesShowGet() {
+fun Route.groupsShowMessagesShowGet() {
     val getGroupMessageByIdUseCase by inject<GetGroupMessageByIdUseCase>()
 
     get("{groupId}/{messageId}") {
