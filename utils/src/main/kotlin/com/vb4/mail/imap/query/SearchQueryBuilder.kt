@@ -41,8 +41,16 @@ class SearchQueryBuilder {
         }
 
     fun group(user: String, to: List<String>) {
-        from(user)
-        to.forEach(::to)
+        val emails = to + user
+        or {
+            emails.forEachIndexed { index, _ ->
+                val (from, tos) = emails.toMutableList().also { it to it.removeAt(index) }
+                and {
+                    from(from)
+                    tos.forEach(::to)
+                }
+            }
+        }
     }
 
     fun replyTo(pattern: String) = query.add(ReplyToStringTerm(pattern))
