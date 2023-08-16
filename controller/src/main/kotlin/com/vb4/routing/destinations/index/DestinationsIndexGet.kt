@@ -61,7 +61,7 @@ private data class DestinationSerializable(
         fun from(group: Group) = DestinationSerializable(
             id = group.id.value,
             name = group.name.value,
-            newMessageCount = 0,
+            newMessageCount = group.newMessageCount.value,
         )
     }
 }

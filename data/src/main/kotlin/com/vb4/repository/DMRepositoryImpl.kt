@@ -2,6 +2,7 @@ package com.vb4.repository
 
 import com.vb4.DomainException
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
 import com.vb4.dm.DMRepository
@@ -35,10 +36,12 @@ class DMRepositoryImpl(
                     .select { DMsTable.userEmail eq userEmail.value }
                     .map { dm ->
                         dm.toDM(
-                            newMessageCount = imap
-                                .searchRecentFlagCount {
-                                    dm(dm[DMsTable.userEmail], dm[AvatarsTable.email])
-                                },
+                            newMessageCount = NewMessageCount(
+                                imap
+                                    .searchRecentFlagCount {
+                                        dm(dm[DMsTable.userEmail], dm[AvatarsTable.email])
+                                    }
+                            ),
                         )
                     }
             }
@@ -55,8 +58,10 @@ class DMRepositoryImpl(
                 .first()
         }
         dm.toDM(
-            newMessageCount = imap
-                .searchRecentFlagCount { dm(dm[DMsTable.userEmail], dm[AvatarsTable.email]) },
+            newMessageCount = NewMessageCount(
+                imap
+                    .searchRecentFlagCount { dm(dm[DMsTable.userEmail], dm[AvatarsTable.email]) }
+            ),
         )
     }
 

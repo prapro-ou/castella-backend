@@ -1,6 +1,7 @@
 package db.table
 
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupName
@@ -15,9 +16,10 @@ object GroupsTable : Table("groups") {
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
 
-internal fun List<ResultRow>.toGroup() = Group.reconstruct(
+internal fun List<ResultRow>.toGroup(newMessageCount: NewMessageCount) = Group.reconstruct(
     id = GroupId(this.first()[GroupsTable.id]),
     name = GroupName(this.first()[GroupsTable.name]),
     userEmail = Email(this.first()[GroupsTable.userEmail]),
     to = this.map { it.toAvatar() },
+    newMessageCount = newMessageCount,
 )

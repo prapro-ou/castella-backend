@@ -2,6 +2,7 @@ package com.vb4.repository
 
 import com.vb4.DomainException
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupRepository
@@ -20,6 +21,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
 import java.util.UUID
+import org.jetbrains.exposed.sql.ResultRow
 
 class GroupRepositoryImpl(
     private val database: Database,
@@ -34,20 +36,22 @@ class GroupRepositoryImpl(
                     .innerJoin(AvatarsTable)
                     .select { GroupsTable.userEmail eq userEmail.value }
                     .groupBy(keySelector = { it[GroupsTable.id] })
-                    .map { (_, value) -> value.toGroup() }
+                    .map { (_, value) ->
+                        value.toGroup(newMessageCount = getNewMessageCount(value))
+                    }
             }
         }
 
     override suspend fun getGroup(groupId: GroupId): ApiResult<Group, DomainException> =
         runCatchWithContext(dispatcher) {
-            suspendTransaction(database) {
+            val group = suspendTransaction(database) {
                 GroupsTable
                     .innerJoin(GroupsAvatarsTable)
                     .innerJoin(AvatarsTable)
                     .select { GroupsTable.id eq groupId.value }
                     .toList()
-                    .toGroup()
             }
+            group.toGroup(newMessageCount = getNewMessageCount(group))
         }
 
     override suspend fun insertGroup(group: Group): ApiResult<Unit, DomainException> =
@@ -74,4 +78,14 @@ class GroupRepositoryImpl(
                     }
             }
         }
+
+    private fun getNewMessageCount(resultRows: List<ResultRow>) = NewMessageCount(
+        value = imap
+            .searchRecentFlagCount {
+                group(
+                    user = resultRows.first()[GroupsTable.userEmail],
+                    to = resultRows.map { it[AvatarsTable.email] }
+                )
+            },
+    )
 }

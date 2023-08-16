@@ -51,6 +51,7 @@ private data class GroupMessageSerializable(
     val subject: String,
     val body: String,
     @SerialName("created_at") val createdAt: Instant,
+    @SerialName("new_message_count") val newMessageCount: Int,
     @SerialName("reply_count") val replyCount: Int,
 ) {
     companion object {
@@ -59,6 +60,7 @@ private data class GroupMessageSerializable(
             subject = message.subject.value,
             body = message.body.value,
             createdAt = message.createdAt.value,
+            newMessageCount = message.newMessageCount.value,
             replyCount = message.replies.count(),
         )
     }

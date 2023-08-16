@@ -1,6 +1,7 @@
 package com.vb4.group
 
 import com.vb4.Email
+import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
 import com.vb4.generateId
 
@@ -9,6 +10,7 @@ class Group private constructor(
     val name: GroupName,
     val userEmail: Email,
     val to: List<Avatar>,
+    val newMessageCount: NewMessageCount,
 ) {
     companion object {
         fun create(name: GroupName, userEmail: Email, to: List<Avatar>) = Group(
@@ -16,6 +18,7 @@ class Group private constructor(
             name = name,
             userEmail = userEmail,
             to = to,
+            newMessageCount = NewMessageCount(0),
         )
 
         fun reconstruct(
@@ -23,7 +26,8 @@ class Group private constructor(
             name: GroupName,
             userEmail: Email,
             to: List<Avatar>,
-        ) = Group(id = id, name = name, userEmail = userEmail, to = to)
+            newMessageCount: NewMessageCount,
+        ) = Group(id = id, name = name, userEmail = userEmail, to = to, newMessageCount = newMessageCount)
     }
 }
 

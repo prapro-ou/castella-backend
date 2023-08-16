@@ -11,9 +11,9 @@ class GroupMessage private constructor(
     val from: Avatar,
     val subject: GroupSubject,
     val body: GroupBody,
+    val replies: List<GroupReply>,
     val isRecent: Boolean,
     val newMessageCount: NewMessageCount,
-    val replies: List<GroupReply>,
     val createdAt: GroupCreatedAt,
 ) {
     companion object {
