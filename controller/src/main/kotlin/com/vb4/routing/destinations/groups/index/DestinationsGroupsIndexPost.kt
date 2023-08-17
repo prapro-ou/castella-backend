@@ -1,4 +1,4 @@
-package com.vb4.routing.groups.index
+package com.vb4.routing.destinations.groups.index
 
 import com.vb4.Email
 import com.vb4.avatar.Avatar
@@ -19,12 +19,12 @@ import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
-fun Route.groupsIndexPost() {
+fun Route.destinationsGroupsIndexPost() {
     post {
-        val createGroupUseCase by this@groupsIndexPost
+        val createGroupUseCase by this@destinationsGroupsIndexPost
             .inject<CreateGroupUseCase> { parametersOf(call.authUser) }
 
-        call.getRequest<GroupsIndexPostRequest>()
+        call.getRequest<DestinationsGroupsIndexPostRequest>()
             .flatMap { (name, to) ->
                 createGroupUseCase(
                     name = GroupName(name),
@@ -33,7 +33,7 @@ fun Route.groupsIndexPost() {
                 )
             }
             .mapBoth(
-                success = { GroupsIndexPostResponse(isSuccess = true) },
+                success = { DestinationsGroupsIndexPostResponse(isSuccess = true) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -44,10 +44,10 @@ fun Route.groupsIndexPost() {
 }
 
 @Serializable
-private data class GroupsIndexPostRequest(
+private data class DestinationsGroupsIndexPostRequest(
     val name: String,
     val to: List<String>,
 )
 
 @Serializable
-private data class GroupsIndexPostResponse(@SerialName("is_success") val isSuccess: Boolean)
+private data class DestinationsGroupsIndexPostResponse(@SerialName("is_success") val isSuccess: Boolean)

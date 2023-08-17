@@ -1,4 +1,4 @@
-package com.vb4.routing.groups.show
+package com.vb4.routing.destinations.groups.show
 
 import com.vb4.group.GetGroupMessagesByGroupIdUseCase
 import com.vb4.group.GroupId
@@ -17,14 +17,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
-fun Route.groupsShowGet() {
+fun Route.destinationsGroupsShowGet() {
     val getGroupMessagesByGroupIdUseCase by inject<GetGroupMessagesByGroupIdUseCase>()
 
     get("{groupId}") {
         call.getParameter<String>("groupId")
             .flatMap { id -> getGroupMessagesByGroupIdUseCase(GroupId(id)) }
             .mapBoth(
-                success = { messages -> GroupsShowGetResponse.from(messages) },
+                success = { messages -> DestinationsGroupsShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -35,11 +35,11 @@ fun Route.groupsShowGet() {
 }
 
 @Serializable
-private data class GroupsShowGetResponse(
+private data class DestinationsGroupsShowGetResponse(
     val messages: List<GroupMessageSerializable>,
 ) {
     companion object {
-        fun from(messages: List<GroupMessage>) = GroupsShowGetResponse(
+        fun from(messages: List<GroupMessage>) = DestinationsGroupsShowGetResponse(
             messages = messages.map { GroupMessageSerializable.from(it) },
         )
     }

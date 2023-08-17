@@ -2,16 +2,16 @@ package com.vb4.routing
 
 import com.vb4.plugins.auth.JWT_AUTH
 import com.vb4.routing.destinations.index.destinationsIndexGet
-import com.vb4.routing.dms.index.dMsIndexPost
-import com.vb4.routing.dms.show.dmsShowGet
-import com.vb4.routing.dms.show.dmsShowPost
-import com.vb4.routing.dms.show.messages.show.dMsShowMessagesShowPost
-import com.vb4.routing.dms.show.messages.show.dmsShowMessagesShowGet
-import com.vb4.routing.groups.index.groupsIndexPost
-import com.vb4.routing.groups.show.groupsShowGet
-import com.vb4.routing.groups.show.groupsShowPost
-import com.vb4.routing.groups.show.messages.show.groupsShowMessagesShowGet
-import com.vb4.routing.groups.show.messages.show.groupsShowMessagesShowPost
+import com.vb4.routing.destinations.dms.index.destinationsDMsIndexPost
+import com.vb4.routing.destinations.dms.show.destinationsDMsShowGet
+import com.vb4.routing.destinations.dms.show.destinationsDMsShowPost
+import com.vb4.routing.destinations.dms.show.messages.show.destinationsDMsShowMessagesShowPost
+import com.vb4.routing.destinations.dms.show.messages.show.destinationsDMsShowMessagesShowGet
+import com.vb4.routing.destinations.groups.index.destinationsGroupsIndexPost
+import com.vb4.routing.destinations.groups.show.destinationsGroupsShowGet
+import com.vb4.routing.destinations.groups.show.destinationsGroupsShowPost
+import com.vb4.routing.destinations.groups.show.messages.show.destinationsGroupsShowMessagesShowGet
+import com.vb4.routing.destinations.groups.show.messages.show.destinationsGroupsShowMessagesShowPost
 import com.vb4.routing.login.index.loginIndexPost
 import com.vb4.routing.register.index.registerIndexPost
 import io.ktor.server.application.Application
@@ -35,34 +35,35 @@ fun Application.mainRoute() {
             route("destinations") {
                 // DMとGroupを検索する機能
                 destinationsIndexGet()
-            }
-            route("dms") {
-                // 新しいDM先を追加
-                dMsIndexPost()
 
-                // 特定のDM先とのメッセージを取得
-                dmsShowGet()
-                // 特定のDM先宛の新しいメッセージを作成
-                dmsShowPost()
+                route("dms") {
+                    // 新しいDM先を追加
+                    destinationsDMsIndexPost()
 
-                // 特定のDM先との特定のメッセージを取得
-                dmsShowMessagesShowGet()
-                // 特定のDM先との特定のメッセージへの返信を作成
-                dMsShowMessagesShowPost()
-            }
-            route("groups") {
-                // 新しいGroup先を追加
-                groupsIndexPost()
+                    // 特定のDM先とのメッセージを取得
+                    destinationsDMsShowGet()
+                    // 特定のDM先宛の新しいメッセージを作成
+                    destinationsDMsShowPost()
 
-                // 特定のGroupとのメッセージを取得
-                groupsShowGet()
-                // 特定のGroup先宛の新しいメッセージを作成
-                groupsShowPost()
+                    // 特定のDM先との特定のメッセージを取得
+                    destinationsDMsShowMessagesShowGet()
+                    // 特定のDM先との特定のメッセージへの返信を作成
+                    destinationsDMsShowMessagesShowPost()
+                }
+                route("groups") {
+                    // 新しいGroup先を追加
+                    destinationsGroupsIndexPost()
 
-                // 特定のGroupとの特定のメッセージへの返信を作成
-                groupsShowMessagesShowGet()
-                // 特定のGroup先との特定のメッセージへの返信を作成
-                groupsShowMessagesShowPost()
+                    // 特定のGroupとのメッセージを取得
+                    destinationsGroupsShowGet()
+                    // 特定のGroup先宛の新しいメッセージを作成
+                    destinationsGroupsShowPost()
+
+                    // 特定のGroupとの特定のメッセージへの返信を作成
+                    destinationsGroupsShowMessagesShowGet()
+                    // 特定のGroup先との特定のメッセージへの返信を作成
+                    destinationsGroupsShowMessagesShowPost()
+                }
             }
         }
     }

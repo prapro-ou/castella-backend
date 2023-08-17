@@ -1,4 +1,4 @@
-package com.vb4.routing.dms.show.messages.show
+package com.vb4.routing.destinations.dms.show.messages.show
 
 import com.vb4.dm.CreateDMReplyUseCase
 import com.vb4.dm.DMBody
@@ -21,14 +21,14 @@ import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
-fun Route.dMsShowMessagesShowPost() {
+fun Route.destinationsDMsShowMessagesShowPost() {
     post("{dmId}/{messageId}") {
-        val createDMReplyUseCase by this@dMsShowMessagesShowPost
+        val createDMReplyUseCase by this@destinationsDMsShowMessagesShowPost
             .inject<CreateDMReplyUseCase> { parametersOf(call.authUser) }
 
         call.getTwoParameter<String, String>("dmId", "messageId")
             .flatMap { (dmId, messageId) ->
-                call.getRequest<DMsShowMessagesShowPostRequest>()
+                call.getRequest<DestinationsDMsShowMessagesShowPostRequest>()
                     .map { (body) ->
                         createDMReplyUseCase(
                             dmId = DMId(dmId),
@@ -38,7 +38,7 @@ fun Route.dMsShowMessagesShowPost() {
                     }
             }
             .mapBoth(
-                success = { DMsShowMessagesShowPostResponse(isSuccess = true) },
+                success = { DestinationsDMsShowMessagesShowPostResponse(isSuccess = true) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -49,9 +49,7 @@ fun Route.dMsShowMessagesShowPost() {
 }
 
 @Serializable
-private data class DMsShowMessagesShowPostRequest(
-    val body: String,
-)
+private data class DestinationsDMsShowMessagesShowPostRequest(val body: String)
 
 @Serializable
-private data class DMsShowMessagesShowPostResponse(@SerialName("is_success") val isSuccess: Boolean)
+private data class DestinationsDMsShowMessagesShowPostResponse(@SerialName("is_success") val isSuccess: Boolean)

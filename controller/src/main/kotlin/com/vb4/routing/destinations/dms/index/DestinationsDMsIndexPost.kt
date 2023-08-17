@@ -1,4 +1,4 @@
-package com.vb4.routing.dms.index
+package com.vb4.routing.destinations.dms.index
 
 import com.vb4.Email
 import com.vb4.avatar.Avatar
@@ -19,12 +19,12 @@ import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
-fun Route.dMsIndexPost() {
+fun Route.destinationsDMsIndexPost() {
     post {
-        val createDMUseCase by this@dMsIndexPost
+        val createDMUseCase by this@destinationsDMsIndexPost
             .inject<CreateDMUseCase> { parametersOf(call.authUser) }
 
-        call.getRequest<DMsIndexPostRequest>()
+        call.getRequest<DestinationsDMsIndexPostRequest>()
             .flatMap { (name, to) ->
                 createDMUseCase(
                     name = DMName(name),
@@ -33,7 +33,7 @@ fun Route.dMsIndexPost() {
                 )
             }
             .mapBoth(
-                success = { DMsIndexPostResponse(isSuccess = true) },
+                success = { DestinationsDMsIndexPostResponse(isSuccess = true) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -44,10 +44,10 @@ fun Route.dMsIndexPost() {
 }
 
 @Serializable
-private data class DMsIndexPostRequest(
+private data class DestinationsDMsIndexPostRequest(
     val name: String,
     val to: String,
 )
 
 @Serializable
-private data class DMsIndexPostResponse(@SerialName("is_success") val isSuccess: Boolean)
+private data class DestinationsDMsIndexPostResponse(@SerialName("is_success") val isSuccess: Boolean)

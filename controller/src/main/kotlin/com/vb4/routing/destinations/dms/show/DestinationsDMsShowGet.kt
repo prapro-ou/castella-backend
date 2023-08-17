@@ -1,4 +1,4 @@
-package com.vb4.routing.dms.show
+package com.vb4.routing.destinations.dms.show
 
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
@@ -19,14 +19,14 @@ import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
-fun Route.dmsShowGet() {
+fun Route.destinationsDMsShowGet() {
     get("{dmId}") {
-        val getDMMessagesByDMIdUseCase by this@dmsShowGet
+        val getDMMessagesByDMIdUseCase by this@destinationsDMsShowGet
             .inject<GetDMMessagesByDMIdUseCase> { parametersOf(call.authUser) }
         call.getParameter<String>("dmId")
             .flatMap { id -> getDMMessagesByDMIdUseCase(DMId(id)) }
             .mapBoth(
-                success = { messages -> DMsShowGetResponse.from(messages) },
+                success = { messages -> DestinationsDMsShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -37,11 +37,11 @@ fun Route.dmsShowGet() {
 }
 
 @Serializable
-private data class DMsShowGetResponse(
+private data class DestinationsDMsShowGetResponse(
     val messages: List<DMMessageSerializable>,
 ) {
     companion object {
-        fun from(messages: List<DMMessage>) = DMsShowGetResponse(
+        fun from(messages: List<DMMessage>) = DestinationsDMsShowGetResponse(
             messages = messages.map { DMMessageSerializable.from(it) },
         )
     }

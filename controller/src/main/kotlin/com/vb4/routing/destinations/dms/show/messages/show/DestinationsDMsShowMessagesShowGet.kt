@@ -1,10 +1,11 @@
-package com.vb4.routing.groups.show.messages.show
+package com.vb4.routing.destinations.dms.show.messages.show
 
-import com.vb4.group.GetGroupMessageByIdUseCase
-import com.vb4.group.GroupId
-import com.vb4.group.GroupMessage
-import com.vb4.group.GroupMessageId
-import com.vb4.group.GroupReply
+import com.vb4.dm.DMId
+import com.vb4.dm.DMMessage
+import com.vb4.dm.DMMessageId
+import com.vb4.dm.DMReply
+import com.vb4.dm.GetDMMessageByIdUseCase
+import com.vb4.plugins.auth.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -17,16 +18,18 @@ import io.ktor.server.routing.get
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
-fun Route.groupsShowMessagesShowGet() {
-    val getGroupMessageByIdUseCase by inject<GetGroupMessageByIdUseCase>()
+fun Route.destinationsDMsShowMessagesShowGet() {
+    get("{dmId}/{messageId}") {
+        val getDmMessageByIdUseCase by this@destinationsDMsShowMessagesShowGet
+            .inject<GetDMMessageByIdUseCase> { parametersOf(call.authUser) }
 
-    get("{groupId}/{messageId}") {
-        call.getTwoParameter<String, String>("groupId", "messageId")
-            .flatMap { (groupId, messageId) -> getGroupMessageByIdUseCase(GroupId(groupId), GroupMessageId(messageId)) }
+        call.getTwoParameter<String, String>("dmId", "messageId")
+            .flatMap { (dmId, messageId) -> getDmMessageByIdUseCase(DMId(dmId), DMMessageId(messageId)) }
             .mapBoth(
-                success = { messages -> GroupsMessagesShowGetResponse.from(messages) },
+                success = { messages -> DestinationsDMsMessagesShowGetResponse.from(messages) },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -37,18 +40,18 @@ fun Route.groupsShowMessagesShowGet() {
 }
 
 @Serializable
-private data class GroupsMessagesShowGetResponse(
-    val messages: List<GroupMessageSerializable>,
+private data class DestinationsDMsMessagesShowGetResponse(
+    val messages: List<DMMessageSerializable>,
 ) {
     companion object {
-        fun from(message: GroupMessage) = GroupsMessagesShowGetResponse(
-            messages = GroupMessageSerializable.from(message),
+        fun from(message: DMMessage) = DestinationsDMsMessagesShowGetResponse(
+            messages = DMMessageSerializable.from(message),
         )
     }
 }
 
 @Serializable
-private data class GroupMessageSerializable(
+private data class DMMessageSerializable(
     val id: String,
     val email: String,
     val body: String,
@@ -56,8 +59,8 @@ private data class GroupMessageSerializable(
     @SerialName("created_at") val createdAt: Instant,
 ) {
     companion object {
-        fun from(message: GroupMessage) = listOf(
-            GroupMessageSerializable(
+        fun from(message: DMMessage) = listOf(
+            DMMessageSerializable(
                 id = message.id.value,
                 email = message.from.email.value,
                 body = message.body.value,
@@ -66,7 +69,7 @@ private data class GroupMessageSerializable(
             ),
         ) + message.replies.map { reply -> from(reply = reply) }
 
-        fun from(reply: GroupReply) = GroupMessageSerializable(
+        fun from(reply: DMReply) = DMMessageSerializable(
             id = reply.id.value,
             email = reply.from.email.value,
             body = reply.body.value,
