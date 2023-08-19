@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.bundles.koin)
 
     implementation(libs.bundles.database)
+    implementation("io.ktor:ktor-server-cors-jvm:2.3.2")
 
     testImplementation(libs.bundles.test)
 }

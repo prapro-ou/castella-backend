@@ -6,4 +6,5 @@ fun Application.installPlugins() {
     configureKoinPlugin()
     configureSerializerPlugin()
     configureSessionPlugin()
+    configureCORSPlugin()
 }

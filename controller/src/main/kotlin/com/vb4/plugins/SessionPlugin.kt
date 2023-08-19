@@ -11,21 +11,24 @@ import io.ktor.server.auth.Principal
 import io.ktor.server.auth.principal
 import io.ktor.server.auth.session
 import io.ktor.server.response.respond
+import io.ktor.server.sessions.SessionStorageMemory
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
+import io.ktor.util.hex
 
 const val CASTELLA_SESSION = "castella-session"
 const val AUTH_SESSION = "auth-session"
 
 fun Application.configureSessionPlugin() {
     install(Sessions) {
-        cookie<AuthUserSession>(CASTELLA_SESSION)
+        cookie<AuthUserSession>(CASTELLA_SESSION, SessionStorageMemory()) {
+            cookie.path = "/"
+            cookie.maxAgeInSeconds = 60
+        }
     }
     install(Authentication) {
         session<AuthUserSession>(AUTH_SESSION) {
-            validate { credentials ->
-                credentials.toPrincipal()
-            }
+            validate { it }
             challenge {
                 DomainException.AuthException("Session is not valid or has expired")
                     .let { ExceptionSerializable.from(it) }
@@ -35,11 +38,6 @@ fun Application.configureSessionPlugin() {
     }
 }
 
-data class AuthUserSession(val authUser: User.AuthUser) {
-    fun toPrincipal() = AuthUserPrincipal(authUser = authUser)
-}
-
-data class AuthUserPrincipal(val authUser: User.AuthUser) : Principal
-
-val ApplicationCall.authUser get() = principal<AuthUserPrincipal>()?.authUser
+data class AuthUserSession(val authUser: User.AuthUser) : Principal
+val ApplicationCall.authUser get() = principal<AuthUserSession>()?.authUser
     ?: throw DomainException.AuthException("No valid session found.")
