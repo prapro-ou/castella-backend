@@ -1,17 +1,17 @@
 package com.vb4.routing
 
 import com.vb4.plugins.auth.JWT_AUTH
-import com.vb4.routing.destinations.index.destinationsIndexGet
 import com.vb4.routing.destinations.dms.index.destinationsDMsIndexPost
 import com.vb4.routing.destinations.dms.show.destinationsDMsShowGet
 import com.vb4.routing.destinations.dms.show.destinationsDMsShowPost
-import com.vb4.routing.destinations.dms.show.messages.show.destinationsDMsShowMessagesShowPost
 import com.vb4.routing.destinations.dms.show.messages.show.destinationsDMsShowMessagesShowGet
+import com.vb4.routing.destinations.dms.show.messages.show.destinationsDMsShowMessagesShowPost
 import com.vb4.routing.destinations.groups.index.destinationsGroupsIndexPost
 import com.vb4.routing.destinations.groups.show.destinationsGroupsShowGet
 import com.vb4.routing.destinations.groups.show.destinationsGroupsShowPost
 import com.vb4.routing.destinations.groups.show.messages.show.destinationsGroupsShowMessagesShowGet
 import com.vb4.routing.destinations.groups.show.messages.show.destinationsGroupsShowMessagesShowPost
+import com.vb4.routing.destinations.index.destinationsIndexGet
 import com.vb4.routing.login.index.loginIndexPost
 import com.vb4.routing.register.index.registerIndexPost
 import io.ktor.server.application.Application
