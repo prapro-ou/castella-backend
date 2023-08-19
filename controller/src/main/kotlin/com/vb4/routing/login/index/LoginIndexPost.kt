@@ -1,7 +1,7 @@
 package com.vb4.routing.login.index
 
 import com.vb4.Email
-import com.vb4.plugins.CastellaSession
+import com.vb4.plugins.AuthUserSession
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -35,7 +35,7 @@ fun Route.loginIndexPost() {
             }
             .mapBoth(
                 success = { user ->
-                    call.sessions.set(CastellaSession(user))
+                    call.sessions.set(AuthUserSession(user))
                     LoginIndexPostResponse(isSuccess = true)
                 },
                 failure = { ExceptionSerializable.from(it) },
