@@ -36,13 +36,13 @@ class UserRepositoryImpl(
             val dbUser = suspendTransaction(database) {
                 UsersTable
                     .select { UsersTable.email eq user.email.value }
-                    .first()
+                    .firstOrNull()
             }
-            if (dbUser[UsersTable.loginPassword] == user.password.value) {
-                dbUser.toAuthUser()
-            } else {
+
+            if (dbUser == null || dbUser[UsersTable.loginPassword] != user.password.value) {
                 throw DomainException.AuthException("Auth failed.")
             }
+            dbUser.toAuthUser()
         }
 
     override suspend fun insertUser(
