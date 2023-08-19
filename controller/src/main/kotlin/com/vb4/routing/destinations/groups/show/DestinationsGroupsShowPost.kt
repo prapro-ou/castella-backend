@@ -4,7 +4,7 @@ import com.vb4.group.CreateGroupMessageUseCase
 import com.vb4.group.GroupBody
 import com.vb4.group.GroupId
 import com.vb4.group.GroupSubject
-import com.vb4.plugins.auth.authUser
+import com.vb4.plugins.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.map

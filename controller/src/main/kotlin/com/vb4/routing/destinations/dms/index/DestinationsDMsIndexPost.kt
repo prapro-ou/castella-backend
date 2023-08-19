@@ -4,7 +4,7 @@ import com.vb4.Email
 import com.vb4.avatar.Avatar
 import com.vb4.dm.CreateDMUseCase
 import com.vb4.dm.DMName
-import com.vb4.plugins.auth.authUser
+import com.vb4.plugins.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth

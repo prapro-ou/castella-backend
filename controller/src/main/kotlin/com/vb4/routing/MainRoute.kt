@@ -1,6 +1,6 @@
 package com.vb4.routing
 
-import com.vb4.plugins.auth.JWT_AUTH
+import com.vb4.plugins.AUTH_SESSION
 import com.vb4.routing.destinations.dms.index.destinationsDMsIndexPost
 import com.vb4.routing.destinations.dms.show.destinationsDMsShowGet
 import com.vb4.routing.destinations.dms.show.destinationsDMsShowPost
@@ -31,7 +31,7 @@ fun Application.mainRoute() {
         route("register") {
             registerIndexPost()
         }
-        authenticate(JWT_AUTH) {
+        authenticate(AUTH_SESSION) {
             route("destinations") {
                 // DMとGroupを検索する機能
                 destinationsIndexGet()

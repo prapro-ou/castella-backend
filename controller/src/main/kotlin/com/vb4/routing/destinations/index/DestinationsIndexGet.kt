@@ -2,7 +2,7 @@ package com.vb4.routing.destinations.index
 
 import com.vb4.dm.DM
 import com.vb4.group.Group
-import com.vb4.plugins.auth.authUser
+import com.vb4.plugins.authUser
 import com.vb4.result.consume
 import com.vb4.result.mapBoth
 import com.vb4.routing.ExceptionSerializable

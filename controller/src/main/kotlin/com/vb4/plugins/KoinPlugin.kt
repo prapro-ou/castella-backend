@@ -23,7 +23,6 @@ import com.vb4.repository.GroupRepositoryImpl
 import com.vb4.repository.UserRepositoryImpl
 import com.vb4.user.AuthUserUseCase
 import com.vb4.user.GetUserDestinationsUseCase
-import com.vb4.user.GetUserUseCase
 import com.vb4.user.RegisterUserUseCase
 import com.vb4.user.User
 import com.vb4.user.UserRepository
@@ -39,7 +38,6 @@ fun Application.configureKoinPlugin() {
         /*** UseCase ***/
         // User
         single<AuthUserUseCase> { AuthUserUseCase(userRepository = get()) }
-        single<GetUserUseCase> { GetUserUseCase(userRepository = get()) }
         single<RegisterUserUseCase> { RegisterUserUseCase(userRepository = get()) }
 
         // Destination

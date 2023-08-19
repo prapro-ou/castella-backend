@@ -5,7 +5,7 @@ import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
 import com.vb4.dm.DMReply
 import com.vb4.dm.GetDMMessageByIdUseCase
-import com.vb4.plugins.auth.authUser
+import com.vb4.plugins.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth

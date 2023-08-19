@@ -4,7 +4,7 @@ import com.vb4.dm.CreateDMMessageUseCase
 import com.vb4.dm.DMBody
 import com.vb4.dm.DMId
 import com.vb4.dm.DMSubject
-import com.vb4.plugins.auth.authUser
+import com.vb4.plugins.authUser
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.map
