@@ -5,6 +5,7 @@ import io.ktor.server.application.Application
 
 fun Application.installPlugins() {
     configureJWTAuthPlugin()
+    configureCORSPlugin()
     configureKoinPlugin()
     configureSerializerPlugin()
 }
