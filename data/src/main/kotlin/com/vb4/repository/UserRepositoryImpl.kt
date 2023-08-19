@@ -5,10 +5,12 @@ import com.vb4.Email
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
+import com.vb4.user.LoginPassword
 import com.vb4.user.User
 import com.vb4.user.UserRepository
 import db.table.UsersTable
 import db.table.toAuthUser
+import java.security.MessageDigest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -39,7 +41,7 @@ class UserRepositoryImpl(
                     .firstOrNull()
             }
 
-            if (dbUser == null || dbUser[UsersTable.loginPassword] != user.password.value) {
+            if (dbUser == null || dbUser[UsersTable.loginPassword] != user.password.toHash()) {
                 throw DomainException.AuthException("Auth failed.")
             }
             dbUser.toAuthUser()
@@ -52,9 +54,15 @@ class UserRepositoryImpl(
             suspendTransaction(database) {
                 UsersTable.insert {
                     it[email] = user.email.value
-                    it[loginPassword] = user.loginPassword.value
+                    it[loginPassword] = user.loginPassword.toHash()
                     it[mailPassword] = user.mailPassword.value
                 }
             }
         }
 }
+
+fun LoginPassword.toHash(): String = MessageDigest.getInstance("SHA-256")
+    .digest((this.value + SALT).toByteArray())
+    .joinToString { "%02x".format(it) }
+
+private const val SALT = "2Ktlj2hF"
