@@ -7,4 +7,5 @@ fun Application.installPlugins() {
     configureAuthenticationPlugin()
     configureKoinPlugin()
     configureSerializerPlugin()
+    configureSessionPlugin()
 }
