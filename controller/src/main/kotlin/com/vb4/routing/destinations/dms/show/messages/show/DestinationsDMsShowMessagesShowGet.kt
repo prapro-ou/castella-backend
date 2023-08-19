@@ -53,7 +53,7 @@ private data class DestinationsDMsMessagesShowGetResponse(
 @Serializable
 private data class DMMessageSerializable(
     val id: String,
-    val email: String,
+    val from: String,
     val body: String,
     @SerialName("is_recent") val isRecent: Boolean,
     @SerialName("created_at") val createdAt: Instant,
@@ -62,7 +62,7 @@ private data class DMMessageSerializable(
         fun from(message: DMMessage) = listOf(
             DMMessageSerializable(
                 id = message.id.value,
-                email = message.from.email.value,
+                from = message.from.email.value,
                 body = message.body.value,
                 isRecent = message.isRecent,
                 createdAt = message.createdAt.value,
@@ -71,7 +71,7 @@ private data class DMMessageSerializable(
 
         fun from(reply: DMReply) = DMMessageSerializable(
             id = reply.id.value,
-            email = reply.from.email.value,
+            from = reply.from.email.value,
             body = reply.body.value,
             isRecent = reply.isRecent,
             createdAt = reply.createdAt.value,

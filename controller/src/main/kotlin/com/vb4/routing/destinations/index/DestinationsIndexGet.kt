@@ -11,6 +11,7 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
@@ -49,7 +50,7 @@ private data class GetDestinationIndexResponse(
 private data class DestinationSerializable(
     val id: String,
     val name: String,
-    val newMessageCount: Int,
+    @SerialName("new_message_count") val newMessageCount: Int,
 ) {
     companion object {
         fun from(dm: DM) = DestinationSerializable(

@@ -50,7 +50,7 @@ private data class DestinationsGroupsMessagesShowGetResponse(
 @Serializable
 private data class GroupMessageSerializable(
     val id: String,
-    val email: String,
+    val from: String,
     val body: String,
     @SerialName("is_recent") val isRecent: Boolean,
     @SerialName("created_at") val createdAt: Instant,
@@ -59,7 +59,7 @@ private data class GroupMessageSerializable(
         fun from(message: GroupMessage) = listOf(
             GroupMessageSerializable(
                 id = message.id.value,
-                email = message.from.email.value,
+                from = message.from.email.value,
                 body = message.body.value,
                 isRecent = message.isRecent,
                 createdAt = message.createdAt.value,
@@ -68,7 +68,7 @@ private data class GroupMessageSerializable(
 
         fun from(reply: GroupReply) = GroupMessageSerializable(
             id = reply.id.value,
-            email = reply.from.email.value,
+            from = reply.from.email.value,
             body = reply.body.value,
             isRecent = reply.isRecent,
             createdAt = reply.createdAt.value,
