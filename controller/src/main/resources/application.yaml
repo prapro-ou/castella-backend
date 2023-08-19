@@ -5,14 +5,3 @@ ktor:
   application:
     modules:
       - com.vb4.ApplicationKt.module
-  jwt:
-    secret:
-      "secret"
-    audience:
-      "audience"
-    issuer:
-      "issuer"
-    realm:
-      "castellaRealm"
-    expiredSecond:
-      "60000"
