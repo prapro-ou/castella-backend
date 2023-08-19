@@ -10,12 +10,12 @@ import com.vb4.user.User
 import com.vb4.user.UserRepository
 import db.table.UsersTable
 import db.table.toAuthUser
-import java.security.MessageDigest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import java.security.MessageDigest
 
 class UserRepositoryImpl(
     private val database: Database,
