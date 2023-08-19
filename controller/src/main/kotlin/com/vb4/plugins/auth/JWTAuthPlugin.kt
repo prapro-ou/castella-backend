@@ -24,7 +24,7 @@ import org.koin.ktor.ext.inject
 
 const val JWT_AUTH = "jwt-auth"
 
-fun Application.configureAuthenticationPlugin() {
+fun Application.configureJWTAuthPlugin() {
     val config = environment.config
     install(Authentication) {
         jwt(JWT_AUTH) {
