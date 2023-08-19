@@ -1,7 +1,7 @@
 package com.vb4.routing.login.index
 
 import com.vb4.Email
-import com.vb4.plugins.auth.createJWT
+import com.vb4.plugins.CastellaSession
 import com.vb4.result.consume
 import com.vb4.result.flatMap
 import com.vb4.result.mapBoth
@@ -14,6 +14,9 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
+import io.ktor.server.sessions.sessions
+import io.ktor.server.sessions.set
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 
@@ -31,7 +34,10 @@ fun Route.loginIndexPost() {
                 )
             }
             .mapBoth(
-                success = { user -> LoginIndexPostResponse(token = this@loginIndexPost.createJWT(user.email)) },
+                success = { user ->
+                    call.sessions.set(CastellaSession(user))
+                    LoginIndexPostResponse(isSuccess = true)
+                },
                 failure = { ExceptionSerializable.from(it) },
             )
             .consume(
@@ -49,5 +55,5 @@ private data class LoginIndexPostRequest(
 
 @Serializable
 private data class LoginIndexPostResponse(
-    val token: String,
+    @SerialName("is_success") val isSuccess: Boolean,
 )
