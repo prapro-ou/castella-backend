@@ -28,13 +28,11 @@ inline fun <reified T, reified R> ApplicationCall.getTwoParameter(
     }
 }
 
-suspend inline fun <reified T : Any> ApplicationCall.getRequest(
-    errorMessage: String = "validation error",
-): ApiResult<T, DomainException> =
+suspend inline fun <reified T : Any> ApplicationCall.getRequest(): ApiResult<T, DomainException> =
     try {
         ApiResult.Success(this.receive())
     } catch (e: CannotTransformContentToTypeException) {
-        ApiResult.Failure(DomainException.RequestValidationException(errorMessage))
+        ApiResult.Failure(DomainException.RequestValidationException("Invalid json: cannot covert to type."))
     } catch (e: BadRequestException) {
-        ApiResult.Failure(DomainException.RequestValidationException(errorMessage))
+        ApiResult.Failure(DomainException.RequestValidationException("Invalid json: bad request."))
     }

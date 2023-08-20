@@ -10,6 +10,8 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
 import org.jetbrains.exposed.sql.transactions.transactionManager
 import kotlin.coroutines.cancellation.CancellationException
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 
 inline fun <T> runCatchDomainException(block: () -> T): ApiResult<T, DomainException> = try {
     ApiResult.Success(block())
@@ -20,7 +22,17 @@ inline fun <T> runCatchDomainException(block: () -> T): ApiResult<T, DomainExcep
 } catch (e: DomainException) {
     ApiResult.Failure(e)
 } catch (e: Exception) {
-    ApiResult.Failure(DomainException.SystemException(e.message.orEmpty(), e))
+    e.handleExposedException()
+        ?: ApiResult.Failure(DomainException.SystemException(e.message.orEmpty(), e))
+}
+
+fun <T> Exception.handleExposedException(): ApiResult<T, DomainException>? {
+    if (this !is ExposedSQLException) return null
+    return when(this.cause) {
+        is JdbcSQLIntegrityConstraintViolationException ->
+            ApiResult.Failure(DomainException.AlreadyRegisteredException("Already registered."))
+        else -> return null
+    }
 }
 
 suspend fun <T> runCatchWithContext(

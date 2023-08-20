@@ -4,6 +4,12 @@ sealed class DomainException(
     override val message: String,
     override val cause: Throwable? = null,
 ) : Exception() {
+    // 指定したEmailが既にUserとして登録されていた場合の例外
+    class AlreadyRegisteredException(
+        override val message: String
+    ) : DomainException(message)
+
+    // ログイン失敗
     class AuthException(
         override val message: String,
     ) : DomainException(message)
