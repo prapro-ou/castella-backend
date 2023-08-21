@@ -4,6 +4,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant
 import javax.mail.Flags
 import javax.mail.Message
+import javax.mail.internet.MimeMultipart
 
 class ImapMail private constructor(private val message: Message) {
 
@@ -43,7 +44,13 @@ class ImapMail private constructor(private val message: Message) {
             .orEmpty()
     }
     val subject: String by lazy { message.subject.orEmpty() }
-    val body: String by lazy { message.content.toString() }
+    val body: String by lazy {
+        (message.content as? MimeMultipart)
+            ?.getBodyPart(0)
+            ?.content
+            ?.toString()
+            ?: message.content.toString()
+    }
     val isRecent: Boolean by lazy { message.flags.contains(Flags.Flag.RECENT) }
     val createdAt: Instant by lazy { message.sentDate.toInstant().toKotlinInstant() }
 
