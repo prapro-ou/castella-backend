@@ -12,6 +12,7 @@ import javax.mail.search.AndTerm
 import javax.mail.search.FromStringTerm
 import javax.mail.search.HeaderTerm
 import javax.mail.search.MessageIDTerm
+import javax.mail.search.NotTerm
 import javax.mail.search.OrTerm
 import javax.mail.search.RecipientStringTerm
 import javax.mail.search.SearchTerm
@@ -89,6 +90,10 @@ class SearchQueryBuilder {
                     .reduce { left, right -> AndTerm(left, right) }
                     .also { query.add(it) }
         }
+    }
+
+    fun not(block: SearchQueryBuilder.() -> Unit) {
+        query.add(NotTerm(SearchQueryBuilder().apply(block).build()))
     }
 
     fun messageId(id: String) {
