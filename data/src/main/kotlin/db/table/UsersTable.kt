@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.Table
 object UsersTable : Table("users") {
     val email = varchar("email", 256)
     val loginPassword = varchar("login_password", 256)
+    val salt = varchar("salt", 256)
     val mailPassword = varchar("mail_password", 256)
 
     override val primaryKey: PrimaryKey = PrimaryKey(email)

@@ -17,6 +17,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import java.security.MessageDigest
+import java.util.UUID
 
 class UserRepositoryImpl(
     private val database: Database,
@@ -49,7 +50,10 @@ class UserRepositoryImpl(
                     .firstOrNull()
             }
 
-            if (dbUser == null || dbUser[UsersTable.loginPassword] != user.password.toHash()) {
+            if (
+                dbUser == null ||
+                dbUser[UsersTable.loginPassword] != user.password.toHash(dbUser[UsersTable.salt])
+                ) {
                 throw DomainException.AuthException("Auth failed.")
             }
             dbUser.toAuthUser()
@@ -59,18 +63,18 @@ class UserRepositoryImpl(
         user: User.RegisterUser,
     ): ApiResult<Unit, DomainException> =
         runCatchWithContext(dispatcher) {
+            val generatedSalt = UUID.randomUUID().toString()
             suspendTransaction(database) {
                 UsersTable.insert {
                     it[email] = user.email.value
-                    it[loginPassword] = user.loginPassword.toHash()
+                    it[loginPassword] = user.loginPassword.toHash(generatedSalt)
+                    it[salt] = generatedSalt
                     it[mailPassword] = user.mailPassword.value
                 }
             }
         }
 }
 
-fun LoginPassword.toHash(): String = MessageDigest.getInstance("SHA-256")
-    .digest((this.value + SALT).toByteArray())
+fun LoginPassword.toHash(salt: String): String = MessageDigest.getInstance("SHA-256")
+    .digest((this.value + salt).toByteArray())
     .joinToString { "%02x".format(it) }
-
-private const val SALT = "2Ktlj2hF"
