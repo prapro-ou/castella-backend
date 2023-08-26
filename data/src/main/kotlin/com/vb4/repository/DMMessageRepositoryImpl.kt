@@ -25,6 +25,8 @@ import db.table.DMMessagesTable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.mail.internet.InternetAddress
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -45,6 +47,7 @@ class DMMessageRepositoryImpl(
 ) : DMMessageRepository {
     override suspend fun getDMMessages(dm: DM): ApiResult<List<DMMessage>, DomainException> =
         runCatchWithContext(dispatcher) {
+
             val dbDMMessages = transaction(database) {
                 DMMessagesTable
                     .select { DMMessagesTable.dmId eq dm.id.value }
@@ -52,31 +55,38 @@ class DMMessageRepositoryImpl(
                     .map { it.toDMMessageDto() }
             }
 
-            val imapDMMessage = imap.search {
-                dm(dm.userEmail.value, dm.to.email.value)
-                not {
-                    or {
-                        dbDMMessages.forEach { messageId(it.id) }
+            if(dbDMMessages.isEmpty()) {
+                val imapDMMessage = imap.search {
+                    dm(dm.userEmail.value, dm.to.email.value)
+                    dbDMMessages.forEach {
+                        not { messageId(it.id) }
                     }
                 }
-            }.map { it.toDMMessageDto() }
+                    .map { it.toDMMessageDto() }
 
-            transaction(database) {
-                DMMessagesTable.batchInsert(imapDMMessage) {
-                    this[DMMessagesTable.id] = it.id
-                    this[DMMessagesTable.dmId] = dm.id.value
-                    this[DMMessagesTable.dmMessageId] = it.inReplyTo
-                    this[DMMessagesTable.from] = it.from
-                    this[DMMessagesTable.subject] = it.subject
-                    this[DMMessagesTable.body] = it.body
-                    this[DMMessagesTable.isRecent] = true
-                    this[DMMessagesTable.createdAt] = it.createdAt
-                        .toLocalDateTime(TimeZone.UTC)
-                        .toJavaLocalDateTime()
+                transaction(database) {
+                    DMMessagesTable.batchInsert(imapDMMessage) {
+                        this[DMMessagesTable.id] = it.id
+                        this[DMMessagesTable.dmId] = dm.id.value
+                        this[DMMessagesTable.dmMessageId] = it.inReplyTo
+                        this[DMMessagesTable.from] = it.from
+                        this[DMMessagesTable.subject] = it.subject
+                        this[DMMessagesTable.body] = it.body
+                        this[DMMessagesTable.isRecent] = true
+                        this[DMMessagesTable.createdAt] = it.createdAt
+                            .toLocalDateTime(TimeZone.UTC)
+                            .toJavaLocalDateTime()
+                    }
                 }
             }
 
-            (dbDMMessages + imapDMMessage).toDomain()
+            return@runCatchWithContext transaction(database) {
+                DMMessagesTable
+                    .select { DMMessagesTable.dmId eq dm.id.value }
+                    .toList()
+            }
+                .map { it.toDMMessageDto() }
+                .toDomain()
         }
 
     override suspend fun getDMMessage(

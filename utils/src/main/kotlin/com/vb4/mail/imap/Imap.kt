@@ -11,7 +11,11 @@ sealed interface Imap {
 
     class Gmail(user: String, password: String) : Imap {
         override val folder: Folder by lazy {
-            val property = System.getProperties()
+            val property = System.getProperties().apply {
+                setProperty("mail.imap.fetchsize", "10000000")
+                setProperty("mail.imap.connectionpoolsize", "5")
+            }
+
 
             Session
                 .getInstance(property, null).also { it.debug = true }
