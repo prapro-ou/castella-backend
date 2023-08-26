@@ -54,11 +54,11 @@ class DMMessageRepositoryImpl(
 
             val imapDMMessage = imap.search {
                 dm(dm.userEmail.value, dm.to.email.value)
-//                not {
-//                    or {
-//                        dbDMMessages.forEach { messageId(it.id) }
-//                    }
-//                }
+                not {
+                    or {
+                        dbDMMessages.forEach { messageId(it.id) }
+                    }
+                }
             }.map { it.toDMMessageDto() }
 
             transaction(database) {
