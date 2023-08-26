@@ -16,11 +16,19 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import java.security.MessageDigest
+import org.jetbrains.exposed.sql.selectAll
 
 class UserRepositoryImpl(
     private val database: Database,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : UserRepository {
+    override suspend fun getUsers(): ApiResult<List<User.AuthUser>, DomainException> =
+        runCatchWithContext(dispatcher) {
+            suspendTransaction(database) {
+                UsersTable.selectAll().map { it.toAuthUser() }
+            }
+        }
+
     override suspend fun getUser(email: Email): ApiResult<User.AuthUser, DomainException> =
         runCatchWithContext(dispatcher) {
             suspendTransaction(database) {

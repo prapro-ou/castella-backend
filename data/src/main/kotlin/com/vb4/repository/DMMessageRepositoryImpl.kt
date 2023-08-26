@@ -24,6 +24,7 @@ import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.andWhere
+import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -101,6 +102,33 @@ class DMMessageRepositoryImpl(
             }
         }
     }
+
+    override suspend fun updateDMMessages(dm: DM): ApiResult<Unit, DomainException> =
+        runCatchWithContext(dispatcher) {
+            val dmIds = transaction(database) {
+                DMMessagesTable
+                    .select { DMMessagesTable.dmId eq dm.id.value }
+                    .map { it[DMMessagesTable.id] }
+            }
+            val fetchedMessages = imap.search {
+                    dm(dm.userEmail.value, dm.to.email.value)
+                    dmIds.forEach { not { messageId(it) } }
+                }
+            transaction(database) {
+                DMMessagesTable.batchInsert(fetchedMessages) {
+                    this[DMMessagesTable.id] = it.id
+                    this[DMMessagesTable.dmId] = dm.id.value
+                    this[DMMessagesTable.dmMessageId] = it.inReplyTo
+                    this[DMMessagesTable.from] = it.from
+                    this[DMMessagesTable.isRecent] = it.isRecent
+                    this[DMMessagesTable.subject] = it.subject
+                    this[DMMessagesTable.body] = it.body
+                    this[DMMessagesTable.createdAt] = it.createdAt
+                        .toLocalDateTime(TimeZone.UTC)
+                        .toJavaLocalDateTime()
+                }
+            }
+        }
 }
 
 private fun SmtpMail.Companion.from(dm: DM, message: DMMessage) = SmtpMail(
