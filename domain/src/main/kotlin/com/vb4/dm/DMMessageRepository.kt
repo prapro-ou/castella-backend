@@ -10,5 +10,5 @@ interface DMMessageRepository {
 
     suspend fun insertDMMessage(dm: DM, message: DMMessage): ApiResult<Unit, DomainException>
 
-    suspend fun insertDMReply(dm: DM, reply: DMReply): ApiResult<Unit, DomainException>
+    suspend fun insertDMReply(dm: DM, inReplyTo: DMMessageId, reply: DMReply): ApiResult<Unit, DomainException>
 }

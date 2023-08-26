@@ -1,5 +1,6 @@
 package com.vb4.mail.imap
 
+import com.sun.mail.imap.IMAPFolder
 import com.vb4.mail.imap.query.SearchQueryBuilder
 import javax.mail.FetchProfile
 import javax.mail.Flags
@@ -47,4 +48,5 @@ private val fetchProfile = FetchProfile().apply {
     add(FetchProfile.Item.SIZE)
     add("Message-ID")
     add("In-Reply-To")
+    add(IMAPFolder.FetchProfileItem.MESSAGE)
 }

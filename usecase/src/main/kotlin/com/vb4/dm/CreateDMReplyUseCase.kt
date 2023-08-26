@@ -31,6 +31,6 @@ class CreateDMReplyUseCase(
                     parent = message,
                 )
             }
-            .map { (dm, reply) -> dmMessageRepository.insertDMReply(dm, reply) }
+            .map { (dm, reply) -> dmMessageRepository.insertDMReply(dm, dmMessageId, reply) }
     }
 }

@@ -6,11 +6,11 @@ import com.vb4.NewMessageCount
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
 import com.vb4.dm.DMRepository
-import com.vb4.mail.imap.Imap
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
 import db.table.AvatarsTable
+import db.table.DMMessagesTable
 import db.table.DMsAvatarsTable
 import db.table.DMsTable
 import db.table.toDM
@@ -21,10 +21,10 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
 import java.util.UUID
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class DMRepositoryImpl(
     private val database: Database,
-    private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMRepository {
     override suspend fun getDMsByUserEmail(userEmail: Email): ApiResult<List<DM>, DomainException> =
@@ -36,12 +36,7 @@ class DMRepositoryImpl(
                     .select { DMsTable.userEmail eq userEmail.value }
                     .map { dm ->
                         dm.toDM(
-                            newMessageCount = NewMessageCount(
-                                imap
-                                    .searchRecentFlagCount {
-                                        dm(dm[DMsTable.userEmail], dm[AvatarsTable.email])
-                                    },
-                            ),
+                            newMessageCount = getNewMessageCount(DMId(dm[DMsTable.id])),
                         )
                     }
             }
@@ -58,10 +53,7 @@ class DMRepositoryImpl(
                 .first()
         }
         dm.toDM(
-            newMessageCount = NewMessageCount(
-                imap
-                    .searchRecentFlagCount { dm(dm[DMsTable.userEmail], dm[AvatarsTable.email]) },
-            ),
+            newMessageCount = getNewMessageCount(DMId(dm[DMsTable.id])),
         )
     }
 
@@ -84,4 +76,12 @@ class DMRepositoryImpl(
                     }
             }
         }
+
+    private fun getNewMessageCount(dmId: DMId) = NewMessageCount(
+        transaction(database) {
+            DMMessagesTable
+                .select { DMMessagesTable.id eq dmId.value }
+                .count { it[DMMessagesTable.isRecent] }
+        }
+    )
 }

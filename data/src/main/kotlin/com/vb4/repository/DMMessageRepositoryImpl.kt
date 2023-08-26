@@ -1,52 +1,64 @@
 package com.vb4.repository
 
 import com.vb4.DomainException
-import com.vb4.Email
-import com.vb4.NewMessageCount
-import com.vb4.avatar.Avatar
 import com.vb4.dm.DM
-import com.vb4.dm.DMBody
-import com.vb4.dm.DMCreatedAt
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
 import com.vb4.dm.DMMessageRepository
 import com.vb4.dm.DMReply
-import com.vb4.dm.DMSubject
-import com.vb4.mail.imap.Imap
-import com.vb4.mail.imap.ImapMail
-import com.vb4.mail.imap.ImapMail.Companion.groupingOriginalToReply
 import com.vb4.mail.smtp.Smtp
 import com.vb4.mail.smtp.SmtpMail
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
+import com.vb4.suspendTransactionAsync
+import db.table.DMMessagesTable
+import db.table.toDMMessage
+import db.table.toDMMessages
+import db.table.toDMReply
+import javax.mail.internet.InternetAddress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.mail.internet.InternetAddress
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.andWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class DMMessageRepositoryImpl(
-    private val imap: Imap,
+    private val database: Database,
     private val smtp: Smtp,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMMessageRepository {
     override suspend fun getDMMessages(dm: DM): ApiResult<List<DMMessage>, DomainException> =
         runCatchWithContext(dispatcher) {
-            imap.search { dm(dm.userEmail.value, dm.to.email.value) }
-                .groupingOriginalToReply()
-                .map { (original, replies) ->
-                    original.toDMMessage(replies = replies.map { it.toDMReply() })
-                }
+            transaction(database) {
+                DMMessagesTable
+                    .select { DMMessagesTable.dmId eq dm.id.value }
+                    .toList()
+            }
+                .toDMMessages()
         }
 
     override suspend fun getDMMessage(
         dm: DM,
         messageId: DMMessageId,
     ): ApiResult<DMMessage, DomainException> = runCatchWithContext(dispatcher) {
-        imap.search { dm(dm.userEmail.value, dm.to.email.value) }
-            .groupingOriginalToReply()
-            .first { (original, _) -> original.id == messageId.value }
-            .let { (original, replies) ->
-                original.toDMMessage(replies = replies.map { it.toDMReply() })
-            }
+        val original = suspendTransactionAsync(database) {
+            DMMessagesTable
+                .select { DMMessagesTable.dmId eq dm.id.value }
+                .andWhere { DMMessagesTable.id eq messageId.value }
+                .first()
+        }
+        val replies = suspendTransactionAsync(database) {
+            DMMessagesTable
+                .select { DMMessagesTable.dmId eq dm.id.value }
+                .andWhere { DMMessagesTable.dmMessageId eq messageId.value }
+                .toList()
+        }
+        original.await().toDMMessage(replies = replies.await().map { it.toDMReply() })
     }
 
     override suspend fun insertDMMessage(
@@ -54,35 +66,40 @@ class DMMessageRepositoryImpl(
         message: DMMessage,
     ): ApiResult<Unit, DomainException> = runCatchWithContext(dispatcher) {
         smtp.send(SmtpMail.from(dm, message))
+        transaction(database) {
+            DMMessagesTable.insert {
+                it[id] = message.id.value
+                it[dmId] = dm.id.value
+                it[dmMessageId] = null
+                it[from] = message.from.email.value
+                it[subject] = message.subject.value
+                it[body] = message.body.value
+                it[isRecent] = message.isRecent
+                it[createdAt] = message.createdAt.value.toLocalDateTime(TimeZone.UTC).toJavaLocalDateTime()
+            }
+        }
     }
 
     override suspend fun insertDMReply(
         dm: DM,
+        inReplyTo: DMMessageId,
         reply: DMReply,
     ): ApiResult<Unit, DomainException> = runCatchWithContext(dispatcher) {
-        smtp.send(SmtpMail.from(dm, reply))
+        smtp.send(SmtpMail.from(dm, inReplyTo, reply))
+        transaction(database) {
+            DMMessagesTable.insert {
+                it[id] = reply.id.value
+                it[dmId] = dm.id.value
+                it[dmMessageId] = inReplyTo.value
+                it[from] = reply.from.email.value
+                it[subject] = reply.subject.value
+                it[body] = reply.body.value
+                it[isRecent] = reply.isRecent
+                it[createdAt] = reply.createdAt.value.toLocalDateTime(TimeZone.UTC).toJavaLocalDateTime()
+            }
+        }
     }
 }
-
-private fun ImapMail.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(
-    id = DMMessageId(id),
-    subject = DMSubject(subject),
-    body = DMBody(body),
-    createdAt = DMCreatedAt(createdAt),
-    from = Avatar.reconstruct(Email(from)),
-    isRecent = isRecent,
-    newMessageCount = NewMessageCount(replies.count { isRecent } + if (isRecent) 1 else 0),
-    replies = replies,
-)
-
-private fun ImapMail.toDMReply() = DMReply.reconstruct(
-    id = DMMessageId(id),
-    subject = DMSubject(subject),
-    body = DMBody(body),
-    createdAt = DMCreatedAt(createdAt),
-    isRecent = isRecent,
-    from = Avatar.reconstruct(Email(from)),
-)
 
 private fun SmtpMail.Companion.from(dm: DM, message: DMMessage) = SmtpMail(
     id = message.id.value,
@@ -92,11 +109,11 @@ private fun SmtpMail.Companion.from(dm: DM, message: DMMessage) = SmtpMail(
     body = message.body.value,
 )
 
-private fun SmtpMail.Companion.from(dm: DM, reply: DMReply) = SmtpMail(
+private fun SmtpMail.Companion.from(dm: DM, inReplyTo: DMMessageId, reply: DMReply) = SmtpMail(
     id = reply.id.value,
     from = InternetAddress(dm.userEmail.value),
     to = InternetAddress(dm.to.email.value),
-    inReplyTo = dm.to.email.value,
+    inReplyTo = inReplyTo.value,
     subject = reply.subject.value,
     body = reply.body.value,
 )

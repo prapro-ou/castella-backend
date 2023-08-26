@@ -1,58 +1,59 @@
 package com.vb4.mail.imap
 
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toKotlinInstant
-import javax.mail.Flags
 import javax.mail.Message
-import javax.mail.internet.MimeMultipart
+import javax.mail.Multipart
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
-class ImapMail private constructor(private val message: Message) {
+class ImapMail private constructor(message: Message) {
 
-    val id: String by lazy {
+    val id: String =
         message
             .getHeader("Message-ID")
             ?.firstOrNull()
             .orEmpty()
-    }
-    val from: String by lazy {
+
+    val from: String =
         message
-            .getRecipients(Message.RecipientType.TO)
+            .from
             ?.getOrNull(0)
             ?.toString() ?: ""
-    }
-    val to: List<String> by lazy {
+
+    val to: List<String> =
         message
             .getRecipients(Message.RecipientType.TO)
             ?.map { it.toString() }
             ?: emptyList()
-    }
-    val cc: List<String> by lazy {
+
+    val cc: List<String> =
         message
             .getRecipients(Message.RecipientType.CC)
             ?.map { it.toString() }
             ?: emptyList()
-    }
-    val bcc: List<String> by lazy {
+
+    val bcc: List<String> =
         message
             .getRecipients(Message.RecipientType.BCC)
             ?.map { it.toString() } ?: emptyList()
-    }
-    val inReplyTo: String by lazy {
+
+    val inReplyTo: String? =
         message
             .getHeader("In-Reply-To")
             ?.firstOrNull()
-            .orEmpty()
+
+    val subject: String = message.subject.orEmpty()
+    val body: String = when {
+        message.contentType == "text/plain" -> message.content.toString()
+        message.contentType.contains("multipart") ->
+            (message.content as Multipart)
+            .getBodyPart(0)
+            .content
+            .toString()
+        else -> message.content.toString()
     }
-    val subject: String by lazy { message.subject.orEmpty() }
-    val body: String by lazy {
-        (message.content as? MimeMultipart)
-            ?.getBodyPart(0)
-            ?.content
-            ?.toString()
-            ?: message.content.toString()
-    }
-    val isRecent: Boolean by lazy { message.flags.contains(Flags.Flag.RECENT) }
-    val createdAt: Instant by lazy { message.sentDate.toInstant().toKotlinInstant() }
+
+    val isRecent: Boolean = false
+    val createdAt: Instant = Clock.System.now()
 
     companion object {
         fun from(message: Message) = ImapMail(message)
