@@ -1,6 +1,7 @@
 package com.vb4.repository
 
 import com.vb4.DomainException
+import com.vb4.datetime.toJavaLocalDateTime
 import com.vb4.dm.DM
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
@@ -75,7 +76,7 @@ class DMMessageRepositoryImpl(
                 it[subject] = message.subject.value
                 it[body] = message.body.value
                 it[isRecent] = message.isRecent
-                it[createdAt] = message.createdAt.value.toLocalDateTime(TimeZone.UTC).toJavaLocalDateTime()
+                it[createdAt] = message.createdAt.value.toJavaLocalDateTime()
             }
         }
     }
@@ -95,7 +96,7 @@ class DMMessageRepositoryImpl(
                 it[subject] = reply.subject.value
                 it[body] = reply.body.value
                 it[isRecent] = reply.isRecent
-                it[createdAt] = reply.createdAt.value.toLocalDateTime(TimeZone.UTC).toJavaLocalDateTime()
+                it[createdAt] = reply.createdAt.value.toJavaLocalDateTime()
             }
         }
     }

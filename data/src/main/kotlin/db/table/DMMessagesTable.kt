@@ -3,6 +3,7 @@ package db.table
 import com.vb4.Email
 import com.vb4.NewMessageCount
 import com.vb4.avatar.Avatar
+import com.vb4.datetime.toKotlinInstant
 import com.vb4.dm.DMBody
 import com.vb4.dm.DMCreatedAt
 import com.vb4.dm.DMMessage
@@ -48,7 +49,7 @@ fun ResultRow.toDMMessage(replies: List<DMReply>) = DMMessage.reconstruct(
     isRecent = this[DMMessagesTable.isRecent],
     newMessageCount = NewMessageCount(replies.count { it.isRecent } + if (this[DMMessagesTable.isRecent]) 1 else 0),
     replies = replies,
-    createdAt = DMCreatedAt(this[DMMessagesTable.createdAt].toKotlinLocalDateTime().toInstant(TimeZone.UTC)),
+    createdAt = DMCreatedAt(this[DMMessagesTable.createdAt].toKotlinInstant()),
 )
 
 fun ResultRow.toDMReply() = DMReply.reconstruct(
@@ -57,5 +58,5 @@ fun ResultRow.toDMReply() = DMReply.reconstruct(
     subject = DMSubject(this[DMMessagesTable.subject]),
     body = DMBody(this[DMMessagesTable.body]),
     isRecent = this[DMMessagesTable.isRecent],
-    createdAt = DMCreatedAt(this[DMMessagesTable.createdAt].toKotlinLocalDateTime().toInstant(TimeZone.UTC)),
+    createdAt = DMCreatedAt(this[DMMessagesTable.createdAt].toKotlinInstant()),
 )
