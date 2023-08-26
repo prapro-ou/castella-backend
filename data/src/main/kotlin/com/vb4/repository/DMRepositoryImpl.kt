@@ -6,7 +6,6 @@ import com.vb4.NewMessageCount
 import com.vb4.dm.DM
 import com.vb4.dm.DMId
 import com.vb4.dm.DMRepository
-import com.vb4.mail.imap.Imap
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
@@ -26,7 +25,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class DMRepositoryImpl(
     private val database: Database,
-    private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DMRepository {
     override suspend fun getDMsByUserEmail(userEmail: Email): ApiResult<List<DM>, DomainException> =
