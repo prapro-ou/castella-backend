@@ -37,11 +37,10 @@ class ImapMail private constructor(private val message: Message) {
             .getRecipients(Message.RecipientType.BCC)
             ?.map { it.toString() } ?: emptyList()
     }
-    val inReplyTo: String by lazy {
+    val inReplyTo: String? by lazy {
         message
             .getHeader("In-Reply-To")
             ?.firstOrNull()
-            .orEmpty()
     }
     val subject: String by lazy { message.subject.orEmpty() }
     val body: String by lazy {

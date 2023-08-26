@@ -54,7 +54,7 @@ fun Application.configureKoinPlugin() {
         factory<GetDMMessagesByDMIdUseCase> { (authUser: User.AuthUser) ->
             GetDMMessagesByDMIdUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
-                dmMessageRepository = getDMMessageRepository(authUser),
+                dmMessageRepository = getDMMessageRepository(database = get(), authUser = authUser),
             )
         }
         factory<CreateDMUseCase> { (authUser: User.AuthUser) ->
@@ -64,19 +64,19 @@ fun Application.configureKoinPlugin() {
         factory<GetDMMessageByIdUseCase> { (authUser: User.AuthUser) ->
             GetDMMessageByIdUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
-                dmMessageRepository = getDMMessageRepository(authUser),
+                dmMessageRepository = getDMMessageRepository(database = get(), authUser = authUser),
             )
         }
         factory<CreateDMMessageUseCase> { (authUser: User.AuthUser) ->
             CreateDMMessageUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
-                dmMessageRepository = getDMMessageRepository(authUser),
+                dmMessageRepository = getDMMessageRepository(database = get(), authUser = authUser),
             )
         }
         factory<CreateDMReplyUseCase> { (authUser: User.AuthUser) ->
             CreateDMReplyUseCase(
                 dmRepository = getDMRepository(database = get(), authUser = authUser),
-                dmMessageRepository = getDMMessageRepository(authUser),
+                dmMessageRepository = getDMMessageRepository(database = get(), authUser = authUser),
             )
         }
 
@@ -137,9 +137,11 @@ private fun getGroupRepository(
     )
 
 private fun getDMMessageRepository(
+    database: Database,
     authUser: User.AuthUser,
 ): DMMessageRepository =
     DMMessageRepositoryImpl(
+        database = database,
         imap = getImap(authUser),
         smtp = getSmtp(authUser),
     )
