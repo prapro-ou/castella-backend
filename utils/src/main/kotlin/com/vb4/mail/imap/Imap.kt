@@ -1,5 +1,6 @@
 package com.vb4.mail.imap
 
+import com.sun.mail.imap.IMAPFolder
 import com.vb4.mail.imap.query.SearchQueryBuilder
 import javax.mail.FetchProfile
 import javax.mail.Flags
@@ -15,7 +16,6 @@ sealed interface Imap {
                 setProperty("mail.imap.fetchsize", "10000000")
                 setProperty("mail.imap.connectionpoolsize", "5")
             }
-
 
             Session
                 .getInstance(property, null).also { it.debug = true }
@@ -48,4 +48,5 @@ private val fetchProfile = FetchProfile().apply {
     add(FetchProfile.Item.SIZE)
     add("Message-ID")
     add("In-Reply-To")
+    add(IMAPFolder.FetchProfileItem.MESSAGE)
 }

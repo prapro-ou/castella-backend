@@ -1,12 +1,9 @@
 package com.vb4.mail.imap
 
-import java.util.UUID
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toKotlinInstant
-import javax.mail.Flags
 import javax.mail.Message
-import javax.mail.internet.MimeMultipart
+import javax.mail.Multipart
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 class ImapMail private constructor(message: Message) {
 
@@ -45,13 +42,15 @@ class ImapMail private constructor(message: Message) {
             ?.firstOrNull()
 
     val subject: String = message.subject.orEmpty()
-    val body: String =
-        message.content.toString()
-//        (message.content as? MimeMultipart)
-//            ?.getBodyPart(0)
-//            ?.content
-//            ?.toString()
-//            ?: message.content.toString()
+    val body: String = when {
+        message.contentType == "text/plain" -> message.content.toString()
+        message.contentType.contains("multipart") ->
+            (message.content as Multipart)
+            .getBodyPart(0)
+            .content
+            .toString()
+        else -> message.content.toString()
+    }
 
     val isRecent: Boolean = false
     val createdAt: Instant = Clock.System.now()

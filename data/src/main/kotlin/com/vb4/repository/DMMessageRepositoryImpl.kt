@@ -49,13 +49,13 @@ class DMMessageRepositoryImpl(
         val original = suspendTransactionAsync(database) {
             DMMessagesTable
                 .select { DMMessagesTable.dmId eq dm.id.value }
-                .andWhere { DMMessagesTable.id eq dm.id.value }
+                .andWhere { DMMessagesTable.id eq messageId.value }
                 .first()
         }
         val replies = suspendTransactionAsync(database) {
             DMMessagesTable
                 .select { DMMessagesTable.dmId eq dm.id.value }
-                .andWhere { DMMessagesTable.dmMessageId eq dm.id.value }
+                .andWhere { DMMessagesTable.dmMessageId eq messageId.value }
                 .toList()
         }
         original.await().toDMMessage(replies = replies.await().map { it.toDMReply() })

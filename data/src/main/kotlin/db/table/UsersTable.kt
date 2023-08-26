@@ -14,7 +14,7 @@ object UsersTable : Table("users") {
     override val primaryKey: PrimaryKey = PrimaryKey(email)
 }
 
-internal fun ResultRow.toAuthUser() = User.AuthUser.reconstruct(
+fun ResultRow.toAuthUser() = User.AuthUser.reconstruct(
     email = Email(this[UsersTable.email]),
     password = MailPassword(this[UsersTable.mailPassword]),
 )
