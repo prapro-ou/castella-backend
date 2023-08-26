@@ -15,7 +15,6 @@ import db.table.DMMessagesTable
 import db.table.toDMMessage
 import db.table.toDMMessages
 import db.table.toDMReply
-import javax.mail.internet.InternetAddress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.TimeZone
@@ -26,6 +25,7 @@ import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import javax.mail.internet.InternetAddress
 
 class DMMessageRepositoryImpl(
     private val database: Database,

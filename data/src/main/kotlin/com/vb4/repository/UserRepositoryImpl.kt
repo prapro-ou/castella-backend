@@ -15,8 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
-import java.security.MessageDigest
 import org.jetbrains.exposed.sql.selectAll
+import java.security.MessageDigest
 
 class UserRepositoryImpl(
     private val database: Database,

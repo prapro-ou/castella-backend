@@ -89,5 +89,5 @@ private fun getNewMessageCount(dmId: DMId) = NewMessageCount(
         DMMessagesTable
             .select { DMMessagesTable.id eq dmId.value }
             .count { it[DMMessagesTable.isRecent] }
-    }
+    },
 )

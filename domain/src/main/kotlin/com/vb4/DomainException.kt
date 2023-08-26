@@ -6,7 +6,7 @@ sealed class DomainException(
 ) : Exception() {
     // 指定したEmailが既にUserとして登録されていた場合の例外
     class AlreadyRegisteredException(
-        override val message: String
+        override val message: String,
     ) : DomainException(message)
 
     // ログイン失敗

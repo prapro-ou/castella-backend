@@ -1,9 +1,9 @@
 package com.vb4.mail.imap
 
-import javax.mail.Message
-import javax.mail.Multipart
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import javax.mail.Message
+import javax.mail.Multipart
 
 class ImapMail private constructor(message: Message) {
 
@@ -46,9 +46,9 @@ class ImapMail private constructor(message: Message) {
         message.contentType == "text/plain" -> message.content.toString()
         message.contentType.contains("multipart") ->
             (message.content as Multipart)
-            .getBodyPart(0)
-            .content
-            .toString()
+                .getBodyPart(0)
+                .content
+                .toString()
         else -> message.content.toString()
     }
 
