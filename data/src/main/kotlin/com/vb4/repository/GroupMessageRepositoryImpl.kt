@@ -16,7 +16,6 @@ import db.table.GroupMessagesTable
 import db.table.toGroupMessage
 import db.table.toGroupMessages
 import db.table.toGroupReply
-import javax.mail.internet.InternetAddress
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -24,6 +23,7 @@ import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import javax.mail.internet.InternetAddress
 
 class GroupMessageRepositoryImpl(
     private val database: Database,

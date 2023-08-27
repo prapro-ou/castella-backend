@@ -1,5 +1,6 @@
 package com.vb4
 
+import com.vb4.datetime.toJavaLocalDateTime
 import com.vb4.dm.DMId
 import com.vb4.mail.imap.Imap
 import com.vb4.result.ApiResult
@@ -15,9 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -60,12 +59,10 @@ private suspend fun updateDMMessages(): ApiResult<Unit, DomainException> =
                         .select { DMMessagesTable.dmId eq dm.id.value }
                         .map { it[DMMessagesTable.id] }
                 }
-                println("dmMessageIds: ${dmMessageIds.joinToString()}")
                 val fetchedMessages = imap.search {
                     dm(dm.userEmail.value, dm.to.email.value)
                     dmMessageIds.forEach { not { messageId(it) } }
                 }
-                println("fetch: ${fetchedMessages.count()}")
                 transaction(database) {
                     DMMessagesTable.batchInsert(fetchedMessages) {
                         this[DMMessagesTable.id] = it.id
@@ -75,9 +72,7 @@ private suspend fun updateDMMessages(): ApiResult<Unit, DomainException> =
                         this[DMMessagesTable.isRecent] = it.isRecent
                         this[DMMessagesTable.subject] = it.subject
                         this[DMMessagesTable.body] = it.body
-                        this[DMMessagesTable.createdAt] = it.createdAt
-                            .toLocalDateTime(TimeZone.UTC)
-                            .toJavaLocalDateTime()
+                        this[DMMessagesTable.createdAt] = it.createdAt.toJavaLocalDateTime()
                     }
                 }
             }

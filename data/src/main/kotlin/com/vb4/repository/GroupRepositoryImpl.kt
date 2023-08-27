@@ -14,7 +14,6 @@ import db.table.GroupMessagesTable
 import db.table.GroupsAvatarsTable
 import db.table.GroupsTable
 import db.table.toGroup
-import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -22,6 +21,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.UUID
 
 class GroupRepositoryImpl(
     private val database: Database,

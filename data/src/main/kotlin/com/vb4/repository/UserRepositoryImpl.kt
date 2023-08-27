@@ -53,7 +53,7 @@ class UserRepositoryImpl(
             if (
                 dbUser == null ||
                 dbUser[UsersTable.loginPassword] != user.password.toHash(dbUser[UsersTable.salt])
-                ) {
+            ) {
                 throw DomainException.AuthException("Auth failed.")
             }
             dbUser.toAuthUser()

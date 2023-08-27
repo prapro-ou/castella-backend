@@ -13,7 +13,6 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.inject
 
 fun Route.destinationsIndexGet() {
