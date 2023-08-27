@@ -22,7 +22,7 @@ import org.koin.ktor.ext.inject
 fun Route.destinationsDMsIndexPost() {
     post {
         val createDMUseCase by this@destinationsDMsIndexPost
-            .inject<CreateDMUseCase> { parametersOf(call.authUser) }
+            .inject<CreateDMUseCase>()
 
         call.getRequest<DestinationsDMsIndexPostRequest>()
             .flatMap { (name, to) ->

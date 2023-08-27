@@ -22,7 +22,7 @@ import org.koin.ktor.ext.inject
 fun Route.destinationsGroupsIndexPost() {
     post {
         val createGroupUseCase by this@destinationsGroupsIndexPost
-            .inject<CreateGroupUseCase> { parametersOf(call.authUser) }
+            .inject<CreateGroupUseCase>()
 
         call.getRequest<DestinationsGroupsIndexPostRequest>()
             .flatMap { (name, to) ->

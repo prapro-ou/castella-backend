@@ -6,26 +6,25 @@ import com.vb4.NewMessageCount
 import com.vb4.group.Group
 import com.vb4.group.GroupId
 import com.vb4.group.GroupRepository
-import com.vb4.mail.imap.Imap
 import com.vb4.result.ApiResult
 import com.vb4.runCatchWithContext
 import com.vb4.suspendTransaction
 import db.table.AvatarsTable
+import db.table.GroupMessagesTable
 import db.table.GroupsAvatarsTable
 import db.table.GroupsTable
 import db.table.toGroup
+import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.select
-import java.util.UUID
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class GroupRepositoryImpl(
     private val database: Database,
-    private val imap: Imap,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GroupRepository {
     override suspend fun getGroupsByUserEmail(userEmail: Email): ApiResult<List<Group>, DomainException> =
@@ -36,9 +35,8 @@ class GroupRepositoryImpl(
                     .innerJoin(AvatarsTable)
                     .select { GroupsTable.userEmail eq userEmail.value }
                     .groupBy(keySelector = { it[GroupsTable.id] })
-                    .map { (_, value) ->
-                        value.toGroup(newMessageCount = getNewMessageCount(value))
-                    }
+            }.map { (groupId, groups) ->
+                groups.toGroup(newMessageCount = getNewMessageCount(GroupId(groupId)))
             }
         }
 
@@ -51,7 +49,7 @@ class GroupRepositoryImpl(
                     .select { GroupsTable.id eq groupId.value }
                     .toList()
             }
-            group.toGroup(newMessageCount = getNewMessageCount(group))
+            group.toGroup(newMessageCount = getNewMessageCount(GroupId(group.first()[GroupsTable.id])))
         }
 
     override suspend fun insertGroup(group: Group): ApiResult<Unit, DomainException> =
@@ -79,13 +77,11 @@ class GroupRepositoryImpl(
             }
         }
 
-    private fun getNewMessageCount(resultRows: List<ResultRow>) = NewMessageCount(
-        value = imap
-            .searchRecentFlagCount {
-                group(
-                    user = resultRows.first()[GroupsTable.userEmail],
-                    to = resultRows.map { it[AvatarsTable.email] },
-                )
-            },
+    private fun getNewMessageCount(groupId: GroupId) = NewMessageCount(
+        transaction(database) {
+            GroupMessagesTable
+                .select { GroupMessagesTable.id eq groupId.value }
+                .count { it[GroupMessagesTable.isRecent] }
+        },
     )
 }

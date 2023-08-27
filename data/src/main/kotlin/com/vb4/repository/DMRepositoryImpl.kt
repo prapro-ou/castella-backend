@@ -34,11 +34,11 @@ class DMRepositoryImpl(
                     .innerJoin(DMsAvatarsTable)
                     .innerJoin(AvatarsTable)
                     .select { DMsTable.userEmail eq userEmail.value }
-                    .map { dm ->
-                        dm.toDM(
-                            newMessageCount = getNewMessageCount(DMId(dm[DMsTable.id])),
-                        )
-                    }
+                    .toList()
+            }.map { dm ->
+                dm.toDM(
+                    newMessageCount = getNewMessageCount(DMId(dm[DMsTable.id])),
+                )
             }
         }
 

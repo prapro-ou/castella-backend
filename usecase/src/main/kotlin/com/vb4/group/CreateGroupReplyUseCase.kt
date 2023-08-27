@@ -31,6 +31,6 @@ class CreateGroupReplyUseCase(
                     parent = message,
                 )
             }
-            .map { (group, reply) -> groupMessageRepository.insertGroupReply(group, reply) }
+            .map { (group, reply) -> groupMessageRepository.insertGroupReply(group, groupMessageId, reply) }
     }
 }
