@@ -1,5 +1,6 @@
 package com.vb4.routing.destinations.dms.show
 
+import com.vb4.datetime.toDisplayString
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.GetDMMessagesByDMIdUseCase
@@ -52,7 +53,7 @@ private data class DMMessageSerializable(
     val id: String,
     val subject: String,
     val body: String,
-    @SerialName("created_at") val createdAt: Instant,
+    @SerialName("created_at") val createdAt: String,
     @SerialName("new_message_count") val newMessageCount: Int,
     @SerialName("reply_count") val replyCount: Int,
 ) {
@@ -61,7 +62,7 @@ private data class DMMessageSerializable(
             id = message.id.value,
             subject = message.subject.value,
             body = message.body.value,
-            createdAt = message.createdAt.value,
+            createdAt = message.createdAt.value.toDisplayString(),
             newMessageCount = message.newMessageCount.value,
             replyCount = message.replies.count(),
         )

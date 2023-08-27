@@ -1,5 +1,6 @@
 package com.vb4.routing.destinations.groups.show
 
+import com.vb4.datetime.toDisplayString
 import com.vb4.group.GetGroupMessagesByGroupIdUseCase
 import com.vb4.group.GroupId
 import com.vb4.group.GroupMessage
@@ -50,7 +51,7 @@ private data class GroupMessageSerializable(
     val id: String,
     val subject: String,
     val body: String,
-    @SerialName("created_at") val createdAt: Instant,
+    @SerialName("created_at") val createdAt: String,
     @SerialName("new_message_count") val newMessageCount: Int,
     @SerialName("reply_count") val replyCount: Int,
 ) {
@@ -59,7 +60,7 @@ private data class GroupMessageSerializable(
             id = message.id.value,
             subject = message.subject.value,
             body = message.body.value,
-            createdAt = message.createdAt.value,
+            createdAt = message.createdAt.value.toDisplayString(),
             newMessageCount = message.newMessageCount.value,
             replyCount = message.replies.count(),
         )

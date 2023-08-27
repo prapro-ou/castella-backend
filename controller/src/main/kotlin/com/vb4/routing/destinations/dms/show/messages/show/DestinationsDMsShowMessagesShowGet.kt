@@ -1,5 +1,6 @@
 package com.vb4.routing.destinations.dms.show.messages.show
 
+import com.vb4.datetime.toDisplayString
 import com.vb4.dm.DMId
 import com.vb4.dm.DMMessage
 import com.vb4.dm.DMMessageId
@@ -56,7 +57,7 @@ private data class DMMessageSerializable(
     val from: String,
     val body: String,
     @SerialName("is_recent") val isRecent: Boolean,
-    @SerialName("created_at") val createdAt: Instant,
+    @SerialName("created_at") val createdAt: String,
 ) {
     companion object {
         fun from(message: DMMessage) = listOf(
@@ -65,7 +66,7 @@ private data class DMMessageSerializable(
                 from = message.from.email.value,
                 body = message.body.value,
                 isRecent = message.isRecent,
-                createdAt = message.createdAt.value,
+                createdAt = message.createdAt.value.toDisplayString(),
             ),
         ) + message.replies.map { reply -> from(reply = reply) }
 
@@ -74,7 +75,7 @@ private data class DMMessageSerializable(
             from = reply.from.email.value,
             body = reply.body.value,
             isRecent = reply.isRecent,
-            createdAt = reply.createdAt.value,
+            createdAt = reply.createdAt.value.toDisplayString(),
         )
     }
 }

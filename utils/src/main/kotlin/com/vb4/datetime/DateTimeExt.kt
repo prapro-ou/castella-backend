@@ -8,10 +8,16 @@ import kotlinx.datetime.toKotlinLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.LocalDateTime
 
-fun LocalDateTime.toKotlinInstant(timeZone: TimeZone = TimeZone.UTC) = this
+val DEFAULT_TIME_ZONE = TimeZone.UTC
+
+fun LocalDateTime.toKotlinInstant(timeZone: TimeZone = DEFAULT_TIME_ZONE) = this
     .toKotlinLocalDateTime()
     .toInstant(timeZone)
 
-fun Instant.toJavaLocalDateTime(timeZone: TimeZone = TimeZone.UTC) = this
+fun Instant.toJavaLocalDateTime(timeZone: TimeZone = DEFAULT_TIME_ZONE) = this
     .toLocalDateTime(timeZone)
     .toJavaLocalDateTime()
+
+fun Instant.toDisplayString() = this
+    .toLocalDateTime(DEFAULT_TIME_ZONE)
+    .let { "${it.date}" }
